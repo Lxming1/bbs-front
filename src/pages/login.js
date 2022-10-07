@@ -5,7 +5,7 @@ import { throttle } from 'lodash'
 
 import { loginAction } from '../store/actionCreater/userActions'
 
-const Login = ({}) => {
+const Login = () => {
   const dispatch = useDispatch()
   const [email, setEmail] = useState('1215743289@qq.com')
   const [password, setPassword] = useState('')
@@ -13,9 +13,8 @@ const Login = ({}) => {
   const navigate = useNavigate()
 
   const login = throttle(async () => {
-    dispatch(loginAction({ email, password })).then(() => {
-      navigate('/')
-    })
+    const path = await dispatch(loginAction({ email, password, tokenState }))
+    navigate(path)
   }, 1000)
 
   const inputClassName = 'input input-bordered input-md w-80 font-bold my-2 text-base'
@@ -45,7 +44,9 @@ const Login = ({}) => {
             type="checkbox"
             checked={tokenState}
             className="checkbox-xs mr-2"
-            onChange={() => setTokenState(!tokenState)}
+            onChange={() => {
+              setTokenState(!tokenState)
+            }}
           />
           <span className="label-text text-xs">30天内自动登录</span>
         </label>

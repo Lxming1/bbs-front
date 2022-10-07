@@ -4,9 +4,7 @@ const XmHome = () => {
   return (
     <div>
       <Header />
-      <div className="m-auto max-w-full min-w-md w-9/12 border-l-2 border-r-2 min-h-screen bg-white shadow-sm">
-        首页
-      </div>
+      <div className="m-auto max-w-full min-w-md w-9/12 border-l-2 border-r-2 min-h-screen bg-white shadow-sm"></div>
       <Footer />
     </div>
   )

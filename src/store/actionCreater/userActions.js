@@ -1,5 +1,5 @@
-import { loginApi } from '../../service/user'
-import { verifyEmail } from '../../utils/common'
+import { loginApi, registerApi } from '../../service/user'
+import { verifyEmail, xmMesage } from '../../utils/common'
 import { SET_USER } from '../constant'
 
 export const setUserMes = (user) => ({
@@ -7,17 +7,37 @@ export const setUserMes = (user) => ({
   user,
 })
 
-export const loginAction = ({ email, password }) => {
+export const loginAction = ({ email, password, tokenState }) => {
   return async (dispatch) => {
     return new Promise(async (resolve, reject) => {
       if (verifyEmail(email)) {
         const res = await loginApi({ email, password })
         if (res.code === 0) {
-          localStorage.setItem('bbs-user', JSON.stringify(res.data))
+          const jsonMes = JSON.stringify(res.data)
+          tokenState
+            ? localStorage.setItem('bbs-user', jsonMes)
+            : sessionStorage.setItem('bbs-user', jsonMes)
+
           dispatch(setUserMes(res.data))
-          resolve()
+          resolve('/')
         }
       }
     })
   }
+}
+
+export const registerAction = ({ email, password, passwordAgain, code }) => {
+  return new Promise(async (resolve, reject) => {
+    if (verifyEmail(email)) {
+      if (password === passwordAgain) {
+        const res = await registerApi({ email, password, code })
+        if (res.code === 0) {
+          xmMesage(res.code, res.message)
+          resolve('/login')
+        }
+      } else {
+        xmMesage(2, '两次密码不一致，请重新输入')
+      }
+    }
+  })
 }

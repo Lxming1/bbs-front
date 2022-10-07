@@ -1,44 +1,56 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setUserMes } from '../../store/actionCreater/userActions'
 import { Search } from './cpn/search'
 import { Select } from './cpn/select'
 
 export const Header = () => {
-  const user = JSON.parse(localStorage.getItem('bbs-user'))
-  const isLogin = user !== {}
+  const dispatch = useDispatch()
+  const [user, setUser] = useState({})
+  const logout = () => {
+    sessionStorage.removeItem('bbs-user')
+    localStorage.removeItem('bbs-user')
+    dispatch(setUserMes({}))
+    setUser({})
+  }
 
-  const userMes = () => {
-    return (
-      <div className="avatar">
-        <div className="w-10 rounded-full">
-          <img src="https://placeimg.com/192/192/people" />
+  const rightContent = () => {
+    return Object.keys(user).length === 0 ? (
+      <a href="/login" className="link link-hover text-md">
+        登录
+      </a>
+    ) : (
+      <div>
+        <div className="avatar placeholder hover:cursor-default">
+          <div className="bg-neutral-focus text-neutral-content rounded-full p-2">
+            <span className="text-base">小白</span>
+          </div>
         </div>
-        <div className="link link-hover">退出登录</div>
+        <a className="link link-hover text-neutral ml-2" onClick={logout}>
+          退出登录
+        </a>
       </div>
     )
   }
 
-  const rightContent = () => {
-    return !isLogin ? (
-      <a href="/login" className="link link-hover text-md hover:text-gray">
-        登录
-      </a>
-    ) : (
-      userMes()
-    )
-  }
+  useEffect(() => {
+    const sessionUser = JSON.parse(localStorage.getItem('bbs-user'))
+    const storageUser = JSON.parse(sessionStorage.getItem('bbs-user'))
+
+    setUser(sessionUser || storageUser || {})
+  }, [])
 
   return (
     <div className="h-24 bg-gray-50 text-white font-bold px-28 flex items-center border border-0 border-b-2 shadow-sm">
-      <div className="w-3/5 flex items-center justify-between">
-        <div>
-          <img src={require('../../assets/img/logo.png')} alt="PYPBBS" className="h-32" />
-        </div>
+      <div className="flex-1 h-24 flex items-center justify-between">
+        <img src={require('../../assets/img/logo.png')} alt="PYPBBS" className="h-3/4" />
+
         <div className="flex items-center">
           <Select />
           <Search />
         </div>
       </div>
-      <div className="flex items-center">{rightContent()}</div>
+      <div className="flex-1 flex items-center px-10">{rightContent()}</div>
     </div>
   )
 }
