@@ -21,11 +21,12 @@ export const emailCode = ({ email }) => {
   })
 }
 
-export const registerApi = ({ email, password, code }) => {
+export const registerApi = ({ name, email, password, code }) => {
   return request({
     url: '/users',
     method: 'post',
     data: {
+      name,
       email,
       password,
       code,

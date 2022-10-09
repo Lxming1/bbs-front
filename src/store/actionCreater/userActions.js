@@ -26,11 +26,11 @@ export const loginAction = ({ email, password, tokenState }) => {
   }
 }
 
-export const registerAction = ({ email, password, passwordAgain, code }) => {
+export const registerAction = ({ name, email, password, passwordAgain, code }) => {
   return new Promise(async (resolve, reject) => {
     if (verifyEmail(email)) {
       if (password === passwordAgain) {
-        const res = await registerApi({ email, password, code })
+        const res = await registerApi({ name, email, password, code })
         if (res.code === 0) {
           xmMesage(res.code, res.message)
           resolve('/login')
