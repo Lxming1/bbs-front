@@ -4,12 +4,13 @@ export const ToastEl = () => {
     <ToastContainer
       limit={3}
       position="top-center"
-      autoClose={1000}
+      autoClose={500}
       hideProgressBar
       rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
+      pauseOnFocusLoss={false}
+      draggable={false}
+      closeButton={false}
+      pauseOnHover={false}
       transition={Zoom}
     />
   )

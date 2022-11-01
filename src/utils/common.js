@@ -1,29 +1,33 @@
 import { toast } from 'react-toastify'
 
-// 验证邮箱有效性
 export const verifyEmail = (email) => {
   const regEmail =
-    /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/ //验证邮箱正则
-
-  if (!regEmail.test(email)) {
-    xmMesage(2, '邮箱格式有误')
-    return false
-  }
-  return true
+    /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
+  return regEmail.test(email)
 }
 
-export const xmMesage = (code, mes, time = 1) => {
+export const verifyName = (name) => {
+  const regName = /^[\u4e00-\u9fa5a-zA-Z0-9_]{1,16}$/
+  return regName.test(name)
+}
+
+export const verifyPass = (pass) => {
+  const regPass = /^[0-9a-zA-Z_]{6,16}$/
+  return regPass.test(pass)
+}
+
+export const xmMesage = (code, mes) => {
   const style = {
     fontSize: '14px',
     color: 'black',
   }
   const html = <span style={style}>{mes}</span>
   if (code === 0) {
-    toast.success(html, time)
+    toast.success(html)
   } else if (code === 1) {
-    toast.error(html, time)
+    toast.error(html)
   } else {
-    toast.warning(html, time)
+    toast.warning(html)
   }
 }
 

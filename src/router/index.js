@@ -63,16 +63,16 @@ const Register = lazy(() => import('../pages/register'))
 
 const routes = [
   {
-    path: '/',
-    element: <Home />,
-  },
-  {
     path: '/login',
     element: <Login />,
   },
   {
     path: '/register',
     element: <Register />,
+  },
+  {
+    path: '/',
+    element: <Home />,
   },
 ]
 
