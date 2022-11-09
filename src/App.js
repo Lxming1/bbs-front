@@ -1,7 +1,5 @@
 import { Suspense, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-
-import { ToastEl } from './components/toast'
 import AppWrapper from './router'
 import { setUserMes } from './store/actionCreater/userActions'
 
@@ -14,11 +12,10 @@ function App() {
   }, [])
 
   return (
-    <div className="bg-gray-50">
+    <div>
       <Suspense fallback={<div>page loading</div>}>
         <AppWrapper />
       </Suspense>
-      <ToastEl />
     </div>
   )
 }

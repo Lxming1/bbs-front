@@ -1,8 +1,5 @@
 /* @import '~normalize.css'; */
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-/* @import '~antd/dist/antd.css'; */
+@import '~antd/dist/antd.css';
 
 body, html, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, 
 header, menu, section, p, input, td, th, ins {
@@ -66,6 +63,10 @@ body, textarea, select, input, button {
 .wrap-v2 {
   width: 980px;
   margin: 0 auto;
+}
+
+.ant-form-item-explain-error {
+  font-size: 12px !important
 }
 
 input::-webkit-input-placeholder { /* WebKit, Blink, Edge */

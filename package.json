@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@reduxjs/toolkit": "^1.8.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.23.4",
     "axios": "^0.27.2",
-    "daisyui": "^2.31.0",
     "immutable": "^4.1.0",
     "lodash": "^4.17.21",
     "normalize.css": "^8.0.1",
@@ -18,10 +18,10 @@
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
-    "react-toastify": "^9.0.8",
     "redux": "^4.2.0",
     "redux-immutable": "^4.0.0",
     "redux-thunk": "^2.4.1",
+    "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -3,31 +3,42 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getPlateList } from '../../service/palte'
 import { getMomentsAction } from '../../store/actionCreater/momentAction'
 import Moments from './cpns/moments'
+import Right from './cpns/right'
+import MomentWrapper from './style'
 
-export const Moment = () => {
+export default () => {
   const dispatch = useDispatch()
   const pagesize = 10
   const [pageNum, setPageNum] = useState(1)
   const [plateList, setPlateList] = useState([])
 
+  const getPlate = async () => {
+    const res = await getPlateList()
+    setPlateList(res.data)
+  }
+
   useEffect(() => {
+    getPlate()
     dispatch(getMomentsAction(pageNum, pagesize))
-    getPlateList().then((res) => {
-      console.log(res)
-      setPlateList(res.data)
-    })
   }, [])
 
   return (
-    <div>
-      <nav>
+    <MomentWrapper className="wrap-v2">
+      <nav className="nav">
         <ul>
           {plateList?.map((item) => {
-            return <li key={item.id}>{item.name}</li>
+            return (
+              <li key={item.id}>
+                <a href="#">{item.name}</a>
+              </li>
+            )
           })}
         </ul>
       </nav>
-      <Moments />
-    </div>
+      <div>
+        <Moments />
+        <Right />
+      </div>
+    </MomentWrapper>
   )
 }

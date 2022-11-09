@@ -1,4 +1,4 @@
-import { toast } from 'react-toastify'
+import { message } from 'antd'
 
 export const verifyEmail = (email) => {
   const regEmail =
@@ -17,17 +17,12 @@ export const verifyPass = (pass) => {
 }
 
 export const xmMesage = (code, mes) => {
-  const style = {
-    fontSize: '14px',
-    color: 'black',
-  }
-  const html = <span style={style}>{mes}</span>
   if (code === 0) {
-    toast.success(html)
+    message.success(mes)
   } else if (code === 1) {
-    toast.error(html)
+    message.error(mes)
   } else {
-    toast.warning(html)
+    message.warning(mes)
   }
 }
 

@@ -6,7 +6,6 @@ import { Provider } from 'react-redux'
 import App from './App'
 import store from './store'
 import './assets/css/reset.css'
-import 'react-toastify/dist/ReactToastify.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
