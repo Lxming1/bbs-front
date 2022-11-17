@@ -91,7 +91,7 @@ const Register = () => {
     if (!email) return isNotInput(setEmailTip, '请输入邮箱账号！', emailRef)
     if (!code) return isNotInput(setCodeTip, '请输入验证码！', codeRef)
     if (!password) return isNotInput(setPassTip, '请输入密码！', passRef)
-    if (!passwordAgain) return isNotInput(setPasswordAgain, '请确认密码！', passAgainRef)
+    if (!passwordAgain) return isNotInput(setPassAgainTip, '请确认密码！', passAgainRef)
     if (emailTip || codeTip || passTip || passAgainTip) return
     if (passTip !== passAgainTip)
       return isNotInput(setPassAgainTip, '两次密码不一致，请重新输入', passAgainRef)

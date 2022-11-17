@@ -1,6 +1,6 @@
 import request from './index'
 
-export const loginApi = ({ email, password }) => {
+export const login = ({ email, password }) => {
   return request({
     url: '/login',
     method: 'post',
@@ -21,7 +21,7 @@ export const emailCode = ({ email }) => {
   })
 }
 
-export const registerApi = ({ name, email, password, code }) => {
+export const register = ({ name, email, password, code }) => {
   return request({
     url: '/users',
     method: 'post',
@@ -31,5 +31,59 @@ export const registerApi = ({ name, email, password, code }) => {
       password,
       code,
     },
+  })
+}
+
+export const care = (uid) => {
+  return request({
+    url: `/users/${uid}/care`,
+    method: 'post',
+  })
+}
+
+export const cancelCare = (uid) => {
+  return request({
+    url: `/users/${uid}/care`,
+    method: 'delete',
+  })
+}
+
+export const getFansList = (uid, pagenum, pagesize) => {
+  return request({
+    url: `/users/${uid}/fans`,
+    params: {
+      pagenum,
+      pagesize,
+    },
+  })
+}
+
+export const getCareList = (uid, pagenum, pagesize) => {
+  return request({
+    url: `/users/${uid}/care`,
+    params: {
+      pagenum,
+      pagesize,
+    },
+  })
+}
+
+export const editUserInfo = ({ address, name, birthday, gender, introduction }) => {
+  return request({
+    url: '/users/edit',
+    method: 'post',
+    data: {
+      address,
+      name,
+      birthday,
+      gender,
+      introduction,
+    },
+  })
+}
+
+export const getAvatar = (userId) => {
+  return request({
+    url: `/user/${userId}/avatar`,
   })
 }

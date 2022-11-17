@@ -1,11 +1,84 @@
 import request from './'
 
-export const getMomentsApi = (pagenum, pagesize) => {
+export const getMoments = (pagenum, pagesize) => {
   return request({
     url: '/moment',
     params: {
       pagenum,
       pagesize,
+    },
+  })
+}
+
+export const getMoment = (momentId) => {
+  return request({
+    url: `/moment/${momentId}`,
+  })
+}
+
+export const sendMoment = ({ title, content, plateId, visible }) => {
+  request({
+    url: '/moment',
+    method: 'post',
+    data: {
+      title,
+      content,
+      plateId,
+      visible,
+    },
+  })
+}
+
+export const delMoment = (momentId) => {
+  return request({
+    url: `/moment/${momentId}`,
+    method: 'delete',
+  })
+}
+
+export const editMoment = (momentId, { title, content, plateId, visible }) => {
+  return request({
+    url: `/moment/${momentId}`,
+    method: 'patch',
+    data: {
+      title,
+      content,
+      plateId,
+      visible,
+    },
+  })
+}
+
+export const searchMoment = (content, pagenum, pagesize) => {
+  return request({
+    url: '/moment',
+    params: {
+      content,
+      pagenum,
+      pagesize,
+    },
+  })
+}
+
+export const praiseMoment = (momentId) => {
+  return request({
+    url: `/moment/${momentId}/praise`,
+    method: 'post',
+  })
+}
+
+export const cancelPraiseMoment = (momentId) => {
+  return request({
+    url: `/moment/${momentId}/praise`,
+    method: 'delete',
+  })
+}
+
+export const getMomentPic = (filename, type) => {
+  return request({
+    url: `/moment/image/${filename}`,
+    params: {
+      type,
     },
   })
 }

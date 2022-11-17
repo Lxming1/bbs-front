@@ -1,4 +1,4 @@
-import { loginApi, registerApi } from '../../service/user'
+import { login, register } from '../../service/user'
 import { verifyEmail, xmMesage } from '../../utils/common'
 import { SET_USER } from '../constant'
 
@@ -11,7 +11,7 @@ export const loginAction = ({ email, password, tokenState }) => {
   return async (dispatch) => {
     return new Promise(async (resolve, reject) => {
       if (verifyEmail(email)) {
-        const res = await loginApi({ email, password })
+        const res = await login({ email, password })
         if (res.code === 0) {
           xmMesage(0, '登录成功')
           const jsonMes = JSON.stringify(res.data)
@@ -33,7 +33,7 @@ export const registerAction = ({ name, email, password, passwordAgain, code }) =
   return new Promise(async (resolve, reject) => {
     if (verifyEmail(email)) {
       if (password === passwordAgain) {
-        const res = await registerApi({ name, email, password, code })
+        const res = await register({ name, email, password, code })
         if (res.code === 0) {
           xmMesage(res.code, res.message)
           resolve('/login')

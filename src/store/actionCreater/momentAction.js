@@ -1,4 +1,4 @@
-import { getMomentsApi } from '../../service/moment'
+import { getMoments } from '../../service/moment'
 import { SET_MOMENTS } from '../constant'
 
 export const setMomentsAction = (momentList) => ({
@@ -8,7 +8,7 @@ export const setMomentsAction = (momentList) => ({
 
 export const getMomentsAction = (pagenum, pagesize) => {
   return async (dispatch) => {
-    const result = await getMomentsApi(pagenum, pagesize)
+    const result = await getMoments(pagenum, pagesize)
     await dispatch(setMomentsAction(result.data))
   }
 }

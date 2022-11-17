@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { getPlateList } from '../../service/palte'
+import { getPlateList } from '../../service/plate'
 import { setUserMes } from '../../store/actionCreater/userActions'
 import { Search } from './cpn/search'
 import HeaderWrapper from './style'
