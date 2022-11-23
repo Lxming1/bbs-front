@@ -7,20 +7,20 @@ import { lazy } from 'react'
 // const Register = lazy(() => import('../pages/register'))
 // const Moment = lazy(() => import('../pages/moment'))
 // const Profile = lazy(() => import('../pages/profile'))
-import Home from '../pages'
+import Main from '../pages'
 import Login from '../pages/login'
 import Register from '../pages/register'
 import Profile from '../pages/profile'
-import Moment from '../pages/moment'
+import Home from '../pages/home'
 
 const routes = [
   {
     path: '/',
-    element: <Home />,
+    element: <Main />,
     children: [
       {
         path: '/',
-        element: <Moment />,
+        element: <Home />,
       },
       {
         path: '/profile',

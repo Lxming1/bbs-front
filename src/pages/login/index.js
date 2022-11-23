@@ -116,7 +116,7 @@ const Login = () => {
       <div className="loginFooter">
         <a href="">忘记密码</a>
         <i style={{ margin: '0 5px' }}>|</i>
-        <a href="/register">注册新账号</a>
+        <a href="#/register">注册新账号</a>
       </div>
     </LoginWrapper>
   )

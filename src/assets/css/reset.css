@@ -8,6 +8,10 @@ header, menu, section, p, input, td, th, ins {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+body {
+  background: #f6f6f6;
+}
+
 ul, li, ol{
   list-style: none;
 }

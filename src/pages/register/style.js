@@ -9,6 +9,7 @@ export default styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background-color: white;
 
   h2 {
     font-size: 22px;

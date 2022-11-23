@@ -178,7 +178,7 @@ const Register = () => {
         </Button>
       </Form.Item>
       <div style={{ textAlign: 'center' }}>
-        <a href="/login">已有账号</a>
+        <a href="#/login">已有账号</a>
       </div>
     </RegisterWrapper>
   )

@@ -3,7 +3,8 @@ import styled from 'styled-components'
 export default styled.div`
   height: 60px;
   align-items: center;
-  box-shadow: 0 1px 5px #ccc;
+  background-color: white;
+  box-shadow: 0 1px 3px hsl(0deg 0% 7% / 10%);
 
   .mainBox {
     display: flex;

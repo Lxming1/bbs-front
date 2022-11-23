@@ -1,12 +1,9 @@
-import { useSelector } from 'react-redux'
-import MomentItem from './momentsItem'
+import { useStoreInfo } from '../../../../hooks'
+import MomentItem from './momentItem'
 import { MomentWrapper } from './style'
 const Moments = () => {
-  const { moments } = useSelector((state) => ({
-    moments: state.get('moments'),
-  }))
-  // const totle = moments.total
-  const momentList = moments.moments
+  const momentList = useStoreInfo('moments')
+  console.log(momentList)
   return (
     <MomentWrapper>
       {momentList?.map((item) => {
