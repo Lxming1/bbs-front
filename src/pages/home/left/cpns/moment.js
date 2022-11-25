@@ -1,14 +1,16 @@
+import { Empty } from 'antd'
 import { useStoreInfo } from '../../../../hooks'
 import MomentItem from './momentItem'
 import { MomentWrapper } from './style'
+
 const Moments = () => {
-  const momentList = useStoreInfo('moments')
-  console.log(momentList)
+  const moments = useStoreInfo('moments')
+
   return (
     <MomentWrapper>
-      {momentList?.map((item) => {
+      {moments?.map((item) => {
         return <MomentItem moment={item} key={item.id} />
-      })}
+      }) ?? <Empty />}
     </MomentWrapper>
   )
 }

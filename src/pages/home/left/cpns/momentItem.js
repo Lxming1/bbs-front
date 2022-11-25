@@ -11,7 +11,7 @@ const MomentItem = ({ moment }) => {
       </div>
       <div className="praise">{moment.praiseCount}人赞同了该回答</div>
       <div className="content">{moment.content}</div>
-      <div className="createTime">{dayjs(moment.createTime).format('YYYY-MM-DD hh:ss')}</div>
+      <div className="createTime">发布于 {dayjs(moment.createTime).format('YYYY-MM-DD hh:ss')}</div>
     </MomentItemWrapper>
   )
 }

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { throttle } from 'lodash'
 import LoginWrapper from './style'
 import { loginAction } from '../../store/actionCreater/userActions'
-import { verifyEmail } from '../../utils/common'
+import { verifyEmail } from '../../utils'
 import { LoadingOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Form, Input } from 'antd'
 

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { xmMesage } from '../utils/common'
+import { xmMesage } from '../utils'
 
 const instance = axios.create({
   baseURL: '/api',

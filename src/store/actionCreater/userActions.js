@@ -1,5 +1,5 @@
 import { login, register } from '../../service/user'
-import { verifyEmail, xmMesage } from '../../utils/common'
+import { verifyEmail, xmMesage } from '../../utils'
 import { SET_USER } from '../constant'
 
 export const setUserMes = (user) => ({
