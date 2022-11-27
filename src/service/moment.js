@@ -1,8 +1,8 @@
 import request from './'
 
-export const getMoments = (pagenum, pagesize) => {
+export const getMoments = (pagenum, pagesize, plateId) => {
   return request({
-    url: '/moment',
+    url: `/moment/plate/${plateId}`,
     params: {
       pagenum,
       pagesize,
@@ -80,5 +80,11 @@ export const getMomentPic = (filename, type) => {
     params: {
       type,
     },
+  })
+}
+
+export const getPriaseList = () => {
+  return request({
+    url: `/moment/praise`,
   })
 }

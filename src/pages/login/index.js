@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { throttle } from 'lodash'
@@ -8,7 +8,7 @@ import { verifyEmail } from '../../utils'
 import { LoadingOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Form, Input } from 'antd'
 
-const Login = () => {
+const Login = memo(() => {
   const emailRules = '4-16个字符（字母、数字、下划线），下划线不能在首尾'
 
   const [form] = Form.useForm()
@@ -33,11 +33,11 @@ const Login = () => {
       const { email, password } = await form.validateFields()
       if (!email) return isNotInput(setEmailTip, '请输入邮箱！', emailRef)
       if (!password) return isNotInput(setPasswordTip, '请输入密码！', passRef)
-      if (emailTip || passwordTip) return
+      // if (emailTip || passwordTip) return
+      if (passwordTip) return
       setIsSending(true)
       try {
         const path = await dispatch(loginAction({ email, password, tokenState }))
-        console.log(path)
         navigate(path)
       } catch (e) {
         setIsSending(false)
@@ -54,7 +54,7 @@ const Login = () => {
 
   const emailChange = (e) => {
     setEmail(e.target.value)
-    setEmailTip(verifyEmail(email) ? null : emailRules)
+    // setEmailTip(verifyEmail(email) ? null : emailRules)
   }
 
   const passwordChange = (e) => {
@@ -91,7 +91,7 @@ const Login = () => {
           label="密码"
           help={passwordTip}
           validateStatus={passwordTip !== null && 'error'}>
-          <Input
+          <Input.Password
             type="password"
             placeholder="输入密码"
             value={password}
@@ -120,6 +120,6 @@ const Login = () => {
       </div>
     </LoginWrapper>
   )
-}
+})
 
 export default Login

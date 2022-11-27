@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { throttle } from 'lodash'
 import RegisterWrapper from './style'
@@ -8,12 +8,7 @@ import { registerAction } from '../../store/actionCreater/userActions'
 import { Button, Form, Input } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 
-const Register = () => {
-  const inputClassName = 'input input-bordered input-sm font-bold my-2 text-sm '
-  const errorTip = 'ml-1 text-red-500 '
-  const codeBtnClassName = 'btn btn-primary btn-sm ml-2 '
-  const btnClassName = 'btn btn-sm btn-primary w-full mt-6 mb-4 '
-
+const Register = memo(() => {
   // const nameRules = '4-16个字符（汉字、字母、数字、下划线）'
   const emailRules = '4-16个字符（字母、数字、下划线），下划线不能在首尾'
   const codeRules = '请输入验证码'
@@ -182,6 +177,6 @@ const Register = () => {
       </div>
     </RegisterWrapper>
   )
-}
+})
 
 export default Register

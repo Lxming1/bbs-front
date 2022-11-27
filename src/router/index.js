@@ -7,11 +7,13 @@ import { lazy } from 'react'
 // const Register = lazy(() => import('../pages/register'))
 // const Moment = lazy(() => import('../pages/moment'))
 // const Profile = lazy(() => import('../pages/profile'))
-import Main from '../pages'
-import Login from '../pages/login'
-import Register from '../pages/register'
-import Profile from '../pages/profile'
-import Home from '../pages/home'
+import Main from '@/pages'
+import Login from '@/pages/login'
+import Register from '@/pages/register'
+import Profile from '@/pages/profile'
+import Home from '@/pages/home'
+import Moments from '@/pages/home/left/moment'
+import NotFount from '@/pages/notFount'
 
 const routes = [
   {
@@ -21,6 +23,10 @@ const routes = [
       {
         path: '/',
         element: <Home />,
+        children: [
+          { path: '/', element: <Moments /> },
+          { path: '/:plateId', element: <Moments /> },
+        ],
       },
       {
         path: '/profile',
@@ -35,6 +41,10 @@ const routes = [
   {
     path: '/register',
     element: <Register />,
+  },
+  {
+    path: '*',
+    element: <NotFount />,
   },
 ]
 

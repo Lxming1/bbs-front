@@ -9,6 +9,7 @@ export default styled.div`
   .mainBox {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     .leftContent {
       display: flex;
@@ -38,6 +39,18 @@ export default styled.div`
     .rightContent {
       display: flex;
       align-items: center;
+
+      .avatar {
+        height: 30px;
+        width: 30px;
+        cursor: pointer;
+
+        img {
+          border-radius: 2px;
+          height: 100%;
+          width: 100%;
+        }
+      }
     }
   }
 `

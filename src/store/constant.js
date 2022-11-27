@@ -1,6 +1,7 @@
-const SET_USER = 'set_user'
-const SET_MOMENTS = 'set_moments'
-const SET_PLATE_LIST = 'set_plate_list'
-const SET_MOMENT_TOTAL = 'set_moment_total'
+const SET_USER = 'SET_USER'
+const SET_MOMENTS = 'SET_MOMENTS'
+const SET_PLATE_LIST = 'SET_PLATE_LIST'
+const SET_MOMENT_TOTAL = 'SET_MOMENT_TOTAL'
+const SET_PLATE_ID = 'SET_PLATE_ID'
 
-export { SET_USER, SET_MOMENTS, SET_PLATE_LIST, SET_MOMENT_TOTAL }
+export { SET_USER, SET_MOMENTS, SET_PLATE_LIST, SET_MOMENT_TOTAL, SET_PLATE_ID }

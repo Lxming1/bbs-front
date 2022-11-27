@@ -1,15 +1,18 @@
+import { memo } from 'react'
 import { Outlet } from 'react-router-dom'
-import { Footer } from '../components/footer'
-import { Header } from '../components/header'
+import { Footer } from './common/footer'
+import { Header } from './common/header'
+import { useLazyLoad } from '@/hooks'
 
-const XmHome = () => {
+const XmHome = memo(() => {
+  useLazyLoad()
   return (
     <div>
       <Header />
       <Outlet />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
-}
+})
 
 export default XmHome
