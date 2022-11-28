@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { xmMesage } from '../utils'
+import { xmMessage } from '../utils'
 
 const instance = axios.create({
   baseURL: '/api',
@@ -26,7 +26,7 @@ instance.interceptors.response.use(
       const res = err.response.data
       // if (err.response.status === 401) {
       // }
-      xmMesage(res.code, res.message)
+      xmMessage(res.code, res.message)
     }
     return err
   }

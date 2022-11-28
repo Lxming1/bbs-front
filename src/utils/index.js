@@ -1,4 +1,5 @@
 import { message } from 'antd'
+import dayjs from 'dayjs'
 
 export const verifyEmail = (email) => {
   const regEmail =
@@ -16,7 +17,7 @@ export const verifyPass = (pass) => {
   return regPass.test(pass)
 }
 
-export const xmMesage = (code, mes) => {
+export const xmMessage = (code, mes) => {
   if (code === 0) {
     message.success(mes)
   } else if (code === 1) {
@@ -30,7 +31,7 @@ export const verifyForm = (refs) => {
   for (const item of refs) {
     const input = item.current
     if (input.value.trim() === '') {
-      xmMesage(2, input.name + '不为空！')
+      xmMessage(2, input.name + '不为空！')
       input.focus()
       return false
     }
@@ -62,7 +63,7 @@ export function throttle(fn, delay, options = { firstExecute: true, keyUpExecute
   }
 }
 
-export function debounce(fn, delay, immediate = false) {
+export function debounce(fn, delay, immediate = true) {
   let timer = null
   // 控制当设置立即执行后，需要在每一次输入的开始执行一次
   let invoke = false
@@ -77,7 +78,7 @@ export function debounce(fn, delay, immediate = false) {
     } else {
       // 延迟执行
       timer = setTimeout(() => {
-        fn.call(this, ...args)
+        // fn.call(this, ...args)
         timer = null
         invoke = false
       }, delay)
@@ -94,4 +95,49 @@ export function debounce(fn, delay, immediate = false) {
   }
 
   return _debounce
+}
+
+export function debounce_2(fn, wait) {
+  let timerId = null
+  let flag = true
+  return async function (...args) {
+    clearTimeout(timerId)
+    if (flag) {
+      await fn.apply(this, args)
+      flag = false
+    }
+    timerId = setTimeout(() => {
+      flag = true
+    }, wait)
+  }
+}
+
+export function promiseDebounce(func, wait) {
+  let loading = false
+  let promise = null
+  return function (...args) {
+    if (loading && promise) {
+      return promise
+    }
+    loading = true
+    setTimeout(() => {
+      loading = false
+    }, wait)
+    const context = this
+    promise = func.apply(context, args)
+    return promise
+  }
+}
+
+export function handleDate(time) {
+  const nowYear = dayjs().format('YYYY')
+  const split = time.split('T')
+  if (time.substring(0, 4) !== nowYear) {
+    return split[0]
+  }
+  const nowDay = dayjs().format('YYYY-MM-DD')
+  if (split[0] === nowDay) {
+    return split[1].substring(0, 5)
+  }
+  return split[0].substring(5, 10)
 }

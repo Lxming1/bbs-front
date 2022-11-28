@@ -1,5 +1,5 @@
 import { login, register } from '../../service/user'
-import { verifyEmail, xmMesage } from '../../utils'
+import { verifyEmail, xmMessage } from '../../utils'
 import { SET_USER } from '../constant'
 
 export const setUserMes = (user) => ({
@@ -13,7 +13,7 @@ export const loginAction = ({ email, password, tokenState }) => {
       // if (verifyEmail(email)) {
       const res = await login({ email, password })
       if (res.code === 0) {
-        xmMesage(0, '登录成功')
+        xmMessage(0, '登录成功')
         const jsonMes = JSON.stringify(res.data)
         tokenState
           ? localStorage.setItem('bbs-user', jsonMes)
@@ -35,13 +35,13 @@ export const registerAction = ({ name, email, password, passwordAgain, code }) =
       if (password === passwordAgain) {
         const res = await register({ name, email, password, code })
         if (res.code === 0) {
-          xmMesage(res.code, res.message)
+          xmMessage(res.code, res.message)
           resolve('/login')
         } else {
           reject()
         }
       } else {
-        xmMesage(2, '两次密码不一致，请重新输入')
+        xmMessage(2, '两次密码不一致，请重新输入')
       }
     }
   })

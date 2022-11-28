@@ -13,7 +13,7 @@ export const createComment = (content, momentId) => {
 
 export const replyComment = (commentId, content, momentId) => {
   return request({
-    url: `/comment/${commentId}`,
+    url: `/comment/${commentId}/reply`,
     method: 'post',
     data: {
       content,
@@ -29,13 +29,12 @@ export const delComment = (commentId) => {
   })
 }
 
-export const getCommentList = (momentId, pagenum, pagesize) => {
+export const getCommentList = (momentId, userId) => {
   return request({
     url: '/comment',
     params: {
       momentId,
-      pagenum,
-      pagesize,
+      userId,
     },
   })
 }

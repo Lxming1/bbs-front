@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { throttle } from 'lodash'
 import RegisterWrapper from './style'
 import { emailCode } from '../../service/user'
-import { verifyEmail, verifyPass, xmMesage } from '../../utils'
+import { verifyEmail, verifyPass, xmMessage } from '../../utils'
 import { registerAction } from '../../store/actionCreater/userActions'
 import { Button, Form, Input } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
@@ -59,7 +59,7 @@ const Register = memo(() => {
     const res = await emailCode({ email })
     if (res.code === 0) {
       codeRef.current.focus()
-      xmMesage(res.code, res.message)
+      xmMessage(res.code, res.message)
       let i = 60
       setCodeBtnContent(`${i--}秒后重新获取`)
       const timer = setInterval(() => {

@@ -27,7 +27,7 @@ export const Header = memo(() => {
   const logout = () => {
     sessionStorage.removeItem('bbs-user')
     localStorage.removeItem('bbs-user')
-    dispatch(setUserMes({}))
+    dispatch(setUserMes(null))
   }
 
   const changeRoute = (item) => {

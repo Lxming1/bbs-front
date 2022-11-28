@@ -124,7 +124,6 @@ export const MomentItemWrapper = styled.div`
     color: #8590a6;
     display: flex;
     font-size: 14px;
-    margin-bottom: 10px;
 
     .praiseBtn {
       height: 32px;

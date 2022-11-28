@@ -6,7 +6,7 @@ import {
   UpOutlined,
 } from '@ant-design/icons'
 import dayjs from 'dayjs'
-import { memo, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useStoreInfo } from '@/hooks'
 import { praiseMoment } from '@/service/moment'
@@ -14,12 +14,39 @@ import { MomentItemWrapper } from './style'
 import { cancelPraiseMoment } from '@/service/moment'
 import { throttle } from '@/utils'
 import { setMomentsAction } from '@/store/actionCreater/homeAction'
+import { getCommentList } from '@/service/comment'
 import Comment from './comment'
+import _ from 'lodash'
+import { debounce, debounce_2, promiseDebounce, test, xmMessage } from '../../../../../utils'
+import { useNavigate } from 'react-router-dom'
 
 const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
+  const { user } = useStoreInfo('user')
   const [isOpen, setIsOpen] = useState(false)
+  const [commentOpen, setCommentOpen] = useState(false)
+  // const [lock, setLock] = useState(false)
   const { moments } = useStoreInfo('moments')
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [total, setTotal] = useState(0)
+  const [comments, setComments] = useState([])
+  const [firstOpen, setFirstOpen] = useState(true)
+  const [momentPraise, setMomentPraise] = useState([])
+  const getComments = useCallback(async () => {
+    const {
+      data: { total, comments: commentList, praiseList },
+    } = await getCommentList(moment.id, user.id)
+    setComments(commentList)
+    setTotal(total)
+    setMomentPraise(praiseList)
+  })
+
+  useEffect(() => {
+    if (commentOpen && firstOpen) {
+      getComments()
+      setFirstOpen(false)
+    }
+  }, [commentOpen])
 
   const changeState = () => {
     setIsOpen(!isOpen)
@@ -34,32 +61,37 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
     return mes + date
   }
 
-  const praise = throttle(async (id) => {
-    try {
-      const result = isPraise ? await cancelPraiseMoment(id) : await praiseMoment(id)
-      let { praiseCount, momentId } = result.data
-      momentId = parseInt(momentId)
-      const newMoments = moments.map((item) => {
-        if (item.id === moment.id) {
-          item.praiseCount = praiseCount
-        }
-        return item
-      })
-      dispatch(setMomentsAction(newMoments))
-      if (isPraise) {
-        setPraiseList((praiseList) => {
-          const index = praiseList.findIndex((item) => item === momentId)
-          const newPraiseList = [...praiseList]
-          delete newPraiseList[index]
-          return newPraiseList.filter(Boolean)
-        })
-      } else {
-        setPraiseList((praiseList) => [...praiseList, momentId])
-      }
-    } catch (e) {
-      console.log(e)
+  const openComment = () => {
+    if (user === null) {
+      xmMessage(2, '请先登录')
+      navigate('/login')
     }
-  }, 1000)
+    setCommentOpen(!commentOpen)
+  }
+
+  const praise = async (id) => {
+    const result = isPraise ? await cancelPraiseMoment(id) : await praiseMoment(id)
+    let { praiseCount, momentId } = result.data
+    momentId = parseInt(momentId)
+    const newMoments = moments.map((item) => {
+      if (item.id === moment.id) {
+        item.praiseCount = praiseCount
+      }
+      return item
+    })
+    dispatch(setMomentsAction(newMoments))
+    if (isPraise) {
+      setPraiseList((praiseList) => {
+        const index = praiseList.findIndex((item) => item === momentId)
+        const newPraiseList = [...praiseList]
+        delete newPraiseList[index]
+        return newPraiseList.filter(Boolean)
+      })
+    } else {
+      setPraiseList((praiseList) => [...praiseList, momentId])
+    }
+  }
+
   return (
     <MomentItemWrapper>
       <div className="title">{moment.title}</div>
@@ -97,8 +129,13 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
           <CaretUpFilled />
           {isPraise ? '已赞同' : '赞同'} {!moment.praiseCount ? '' : moment.praiseCount}
         </div>
-        <div>
-          <MessageFilled /> {!moment.commentCount ? '添加评论' : `${moment.commentCount}条评论`}
+        <div onClick={openComment}>
+          <MessageFilled />
+          {commentOpen
+            ? '收起评论'
+            : !moment.commentCount
+            ? '添加评论'
+            : `${moment.commentCount}条评论`}
         </div>
         <div>
           <StarFilled /> 收藏
@@ -109,7 +146,9 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
           </div>
         )}
       </div>
-      <Comment />
+      {commentOpen && (
+        <Comment comments={comments} total={total} momentId={moment.id} getComments={getComments} />
+      )}
     </MomentItemWrapper>
   )
 })
