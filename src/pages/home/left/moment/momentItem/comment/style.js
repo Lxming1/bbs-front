@@ -38,10 +38,6 @@ export default styled.div`
       color: #fff;
       cursor: pointer;
     }
-    .disableBtn {
-      cursor: default;
-      opacity: 0.5;
-    }
   }
 
   .main {

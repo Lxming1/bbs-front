@@ -11,11 +11,12 @@ export const createCollect = (name, status) => {
   })
 }
 
-export const getCollectByUid = (uid) => {
+export const getCollectByUid = (uid, momentId) => {
   return request({
     url: '/collect',
     params: {
       uid,
+      momentId,
     },
   })
 }

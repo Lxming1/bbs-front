@@ -1,5 +1,5 @@
-import { login, register } from '../../service/user'
-import { verifyEmail, xmMessage } from '../../utils'
+import { login } from '@/service/auth'
+import { xmMessage } from '@/utils'
 import { SET_USER } from '../constant'
 
 export const setUserMes = (user) => ({
@@ -27,22 +27,4 @@ export const loginAction = ({ email, password, tokenState }) => {
       // }
     })
   }
-}
-
-export const registerAction = ({ name, email, password, passwordAgain, code }) => {
-  return new Promise(async (resolve, reject) => {
-    if (verifyEmail(email)) {
-      if (password === passwordAgain) {
-        const res = await register({ name, email, password, code })
-        if (res.code === 0) {
-          xmMessage(res.code, res.message)
-          resolve('/login')
-        } else {
-          reject()
-        }
-      } else {
-        xmMessage(2, '两次密码不一致，请重新输入')
-      }
-    }
-  })
 }

@@ -2,9 +2,8 @@ import { useState, useRef, useEffect, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { throttle } from 'lodash'
 import RegisterWrapper from './style'
-import { emailCode } from '../../service/user'
-import { verifyEmail, verifyPass, xmMessage } from '../../utils'
-import { registerAction } from '../../store/actionCreater/userActions'
+import { emailCode } from '@/service/auth'
+import { verifyEmail, verifyPass, xmMessage } from '@/utils'
 import { Button, Form, Input } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 
@@ -92,8 +91,17 @@ const Register = memo(() => {
       return isNotInput(setPassAgainTip, '两次密码不一致，请重新输入', passAgainRef)
     setRegisterSending(true)
     try {
-      const path = await registerAction({ email, password, passwordAgain, code })
-      navigator(path)
+      if (verifyEmail(email)) {
+        if (password === passwordAgain) {
+          const res = await register({ email, password, code })
+          if (res.code === 0) {
+            xmMessage(res.code, res.message)
+            navigator('/login')
+          }
+        } else {
+          xmMessage(2, '两次密码不一致，请重新输入')
+        }
+      }
     } catch (e) {
       setRegisterSending(false)
     }

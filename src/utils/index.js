@@ -39,96 +39,6 @@ export const verifyForm = (refs) => {
   return true
 }
 
-export function throttle(fn, delay, options = { firstExecute: true, keyUpExecute: false }) {
-  let timer = null
-  let flag = true
-  const { firstExecute, keyUpExecute } = options
-
-  return function (...args) {
-    // 第一段时间先不执行
-    if (!firstExecute && flag) {
-      flag = false
-      timer = setTimeout(() => {
-        clearTimeout(timer)
-        timer = null
-      }, delay)
-    }
-    if (timer === null) {
-      fn.call(this, ...args)
-      timer = setTimeout(() => {
-        clearTimeout(timer)
-        timer = null
-      }, delay)
-    }
-  }
-}
-
-export function debounce(fn, delay, immediate = true) {
-  let timer = null
-  // 控制当设置立即执行后，需要在每一次输入的开始执行一次
-  let invoke = false
-
-  function _debounce(...args) {
-    if (timer) clearTimeout(timer)
-
-    // 输入第一个字符先发一次请求
-    if (immediate && !invoke) {
-      fn.call(this, ...args)
-      invoke = true
-    } else {
-      // 延迟执行
-      timer = setTimeout(() => {
-        // fn.call(this, ...args)
-        timer = null
-        invoke = false
-      }, delay)
-    }
-  }
-
-  //取消事件
-  _debounce.cancel = function () {
-    if (timer) {
-      clearTimeout(timer)
-      timer = null
-      invoke = false
-    }
-  }
-
-  return _debounce
-}
-
-export function debounce_2(fn, wait) {
-  let timerId = null
-  let flag = true
-  return async function (...args) {
-    clearTimeout(timerId)
-    if (flag) {
-      await fn.apply(this, args)
-      flag = false
-    }
-    timerId = setTimeout(() => {
-      flag = true
-    }, wait)
-  }
-}
-
-export function promiseDebounce(func, wait) {
-  let loading = false
-  let promise = null
-  return function (...args) {
-    if (loading && promise) {
-      return promise
-    }
-    loading = true
-    setTimeout(() => {
-      loading = false
-    }, wait)
-    const context = this
-    promise = func.apply(context, args)
-    return promise
-  }
-}
-
 export function handleDate(time) {
   const nowYear = dayjs().format('YYYY')
   const split = time.split('T')
@@ -140,4 +50,26 @@ export function handleDate(time) {
     return split[1].substring(0, 5)
   }
   return split[0].substring(5, 10)
+}
+
+let debounceTimer = null
+export function debounce(callback, duration, isFirstExecution) {
+  return function (...args) {
+    let ctx = this
+    const delay = function () {
+      debounceTimer = null
+      if (!isFirstExecution) callback.apply(ctx, args)
+    }
+    let executeNow = isFirstExecution && !debounceTimer
+    clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(delay, duration)
+    if (executeNow) callback.apply(ctx, args)
+  }
+}
+
+export const handlLogin = (user) => {
+  if (user === null) {
+    xmMessage(2, '请先登录')
+    window.location.href = '#/login'
+  }
 }

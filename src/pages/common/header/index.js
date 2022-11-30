@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { useDispatch } from 'react-redux'
-import { setUserMes } from '@/store/actionCreater/userActions'
+import { setUserMes } from '@/store/actionCreater/authActions'
 import HeaderWrapper from './style'
 import { Input, Menu, Popover } from 'antd'
 import { useNavigate } from 'react-router-dom'

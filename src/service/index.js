@@ -28,7 +28,7 @@ instance.interceptors.response.use(
       // }
       xmMessage(res.code, res.message)
     }
-    return err
+    // return err
   }
 )
 

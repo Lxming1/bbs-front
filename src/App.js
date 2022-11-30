@@ -2,7 +2,7 @@ import { memo, Suspense, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import AppWrapper from './router'
-import { setUserMes } from './store/actionCreater/userActions'
+import { setUserMes } from './store/actionCreater/authActions'
 
 export default memo(function App() {
   const dispatch = useDispatch()
@@ -11,7 +11,6 @@ export default memo(function App() {
     let userInfo = sessionStorage.getItem('bbs-user') || localStorage.getItem('bbs-user')
     userInfo = JSON.parse(userInfo)
     dispatch(setUserMes(userInfo))
-    navigate('/')
   }, [])
 
   return (

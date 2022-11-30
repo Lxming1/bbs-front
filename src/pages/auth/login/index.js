@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { throttle } from 'lodash'
 import LoginWrapper from './style'
-import { loginAction } from '../../store/actionCreater/userActions'
-import { verifyEmail } from '../../utils'
+import { loginAction } from '@/store/actionCreater/authActions'
 import { LoadingOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Form, Input } from 'antd'
 
@@ -33,7 +32,6 @@ const Login = memo(() => {
       const { email, password } = await form.validateFields()
       if (!email) return isNotInput(setEmailTip, '请输入邮箱！', emailRef)
       if (!password) return isNotInput(setPasswordTip, '请输入密码！', passRef)
-      // if (emailTip || passwordTip) return
       if (passwordTip) return
       setIsSending(true)
       try {
@@ -54,7 +52,6 @@ const Login = memo(() => {
 
   const emailChange = (e) => {
     setEmail(e.target.value)
-    // setEmailTip(verifyEmail(email) ? null : emailRules)
   }
 
   const passwordChange = (e) => {
@@ -114,7 +111,7 @@ const Login = memo(() => {
         </Form.Item>
       </Form>
       <div className="loginFooter">
-        <a href="">忘记密码</a>
+        <a href="#/forget">忘记密码</a>
         <i style={{ margin: '0 5px' }}>|</i>
         <a href="#/register">注册新账号</a>
       </div>

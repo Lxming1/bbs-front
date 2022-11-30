@@ -22,7 +22,7 @@ export const replyComment = (commentId, content, momentId) => {
   })
 }
 
-export const delComment = (commentId) => {
+export const delelteComment = (commentId) => {
   return request({
     url: `/comment/${commentId}`,
     method: 'delete',

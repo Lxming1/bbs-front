@@ -9,29 +9,27 @@ import dayjs from 'dayjs'
 import { memo, useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useStoreInfo } from '@/hooks'
-import { praiseMoment } from '@/service/moment'
+import { praiseMoment, cancelPraiseMoment } from '@/service/moment'
 import { MomentItemWrapper } from './style'
-import { cancelPraiseMoment } from '@/service/moment'
-import { throttle } from '@/utils'
 import { setMomentsAction } from '@/store/actionCreater/homeAction'
 import { getCommentList } from '@/service/comment'
+import { handlLogin, debounce } from '@/utils'
 import Comment from './comment'
-import _ from 'lodash'
-import { debounce, debounce_2, promiseDebounce, test, xmMessage } from '../../../../../utils'
-import { useNavigate } from 'react-router-dom'
+import Collect from './collect'
 
 const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
   const { user } = useStoreInfo('user')
   const [isOpen, setIsOpen] = useState(false)
   const [commentOpen, setCommentOpen] = useState(false)
-  // const [lock, setLock] = useState(false)
   const { moments } = useStoreInfo('moments')
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const [total, setTotal] = useState(0)
   const [comments, setComments] = useState([])
   const [firstOpen, setFirstOpen] = useState(true)
+  let [showCollect, setShowCollect] = useState(false)
   const [momentPraise, setMomentPraise] = useState([])
+
+  setShowCollect = useCallback(setShowCollect, [])
   const getComments = useCallback(async () => {
     const {
       data: { total, comments: commentList, praiseList },
@@ -62,10 +60,7 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
   }
 
   const openComment = () => {
-    if (user === null) {
-      xmMessage(2, '请先登录')
-      navigate('/login')
-    }
+    handlLogin(user)
     setCommentOpen(!commentOpen)
   }
 
@@ -124,7 +119,7 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
       )}
       <div className="bottomBtn">
         <div
-          onClick={() => praise(moment.id)}
+          onClick={debounce(() => praise(moment.id), 300, true)}
           className={`${isPraise ? 'praiseBtn-active ' : ' '} praiseBtn`}>
           <CaretUpFilled />
           {isPraise ? '已赞同' : '赞同'} {!moment.praiseCount ? '' : moment.praiseCount}
@@ -137,7 +132,7 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
             ? '添加评论'
             : `${moment.commentCount}条评论`}
         </div>
-        <div>
+        <div onClick={() => setShowCollect((state) => !state)}>
           <StarFilled /> 收藏
         </div>
         {isOpen && (
@@ -149,6 +144,7 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
       {commentOpen && (
         <Comment comments={comments} total={total} momentId={moment.id} getComments={getComments} />
       )}
+      {showCollect && <Collect setShowCollect={setShowCollect} momentId={moment.id} />}
     </MomentItemWrapper>
   )
 })

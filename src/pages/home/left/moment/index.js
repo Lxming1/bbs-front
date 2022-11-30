@@ -4,10 +4,10 @@ import MomentItem from './momentItem'
 import { MomentWrapper } from './style'
 import { memo, useCallback, useEffect, useState } from 'react'
 import { getPriaseList } from '@/service/moment'
-import { useSelector } from 'react-redux'
 
 const Moments = memo(() => {
   const { moments, user } = useStoreInfo('moments', 'user')
+
   let [praiseList, setPraiseList] = useState([])
   setPraiseList = useCallback(setPraiseList, [])
   const getPraise = async () => {

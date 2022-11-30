@@ -1,33 +1,64 @@
 import Search from 'antd/lib/transfer/search'
 import { replyComment } from '@/service/comment'
-import { MessageFilled, LikeFilled, CaretRightOutlined } from '@ant-design/icons'
-import { memo, useState } from 'react'
+import {
+  MessageFilled,
+  LikeFilled,
+  CaretRightOutlined,
+  EllipsisOutlined,
+  DeleteFilled,
+} from '@ant-design/icons'
+import { memo, useEffect, useState } from 'react'
 import { useStoreInfo } from '@/hooks'
 import CommentItemWrapper from './style'
-import { Input } from 'antd'
+import { Input, Popover } from 'antd'
 import { handleDate, xmMessage } from '@/utils'
-import { praiseComment, cancelPraiseComment } from '@/service/comment'
+import { praiseComment, cancelPraiseComment, delelteComment } from '@/service/comment'
+import { debounce } from '@/utils'
 
 export default memo(({ comment, momentId, name, getComments }) => {
+  const { user } = useStoreInfo('user')
   const [content, setContent] = useState('')
   const [isOpen, setIsOpen] = useState(false)
-  const [isPraise, setisPraise] = useState(false)
-  console.log(comment)
+  const [position, setPosition] = useState()
 
   const sendInput = async (id) => {
     if (content.trim() === '') return
     const result = await replyComment(id, content, momentId)
+    if (!result.code) return
     setContent('')
     setIsOpen(false)
     xmMessage(result.code, result.message)
     getComments()
   }
 
-  const praise = async (id) => {
-    isPraise
+  const delComment = async () => {
+    const result = await delelteComment(comment.id)
+    if (!result.code) return
+    xmMessage(result.code, result.message)
+    getComments()
+    window.scroll(0, position)
+  }
+
+  useEffect(() => {
+    setPosition(document.documentElement.scrollTop)
+  }, [])
+
+  const rightMenu = () => (
+    <div className="rightMenu">
+      <ul>
+        <li>
+          <a href="#" onClick={delComment}>
+            删除
+          </a>
+        </li>
+      </ul>
+    </div>
+  )
+
+  const praise = async () => {
+    comment.isPraise
       ? await cancelPraiseComment(comment.id, momentId)
       : await praiseComment(comment.id, momentId)
-    setisPraise(!isPraise)
     getComments()
   }
 
@@ -39,14 +70,19 @@ export default memo(({ comment, momentId, name, getComments }) => {
         key={comment.id}>
         <img src={comment.author.avatar_url} alt="" className="leftAvatar" />
         <div className="rightContent">
-          <div className="username">
-            {comment.author.name}
-            {name && (
-              <>
-                <CaretRightOutlined />
-                {name}
-              </>
-            )}
+          <div className="rightHeader">
+            <div className="username">
+              {comment.author.name}
+              {name && (
+                <>
+                  <CaretRightOutlined />
+                  {name}
+                </>
+              )}
+            </div>
+            <Popover placement="bottom" className="rightMenu" content={rightMenu()} trigger="click">
+              {comment.author.id === user.id && <EllipsisOutlined />}
+            </Popover>
           </div>
           <div className="content">{comment.content}</div>
           <div className="bottom">
@@ -56,7 +92,9 @@ export default memo(({ comment, momentId, name, getComments }) => {
                 <MessageFilled />
                 回复
               </div>
-              <div onClick={praise} className={isPraise ? 'isPraise' : ''}>
+              <div
+                onClick={debounce(praise, 1000, true)}
+                className={comment.isPraise ? 'isPraise' : ''}>
                 <LikeFilled style={{ fontSize: '15px' }} />
                 {comment.praiseCount !== 0 ? comment.praiseCount : '赞'}
               </div>

@@ -111,3 +111,8 @@ input::-ms-input-placeholder { /* Microsoft Edge */
 .rightMenu a {
   text-decoration: none;
 }
+
+.disableBtn {
+  cursor: default;
+  opacity: 0.5;
+}

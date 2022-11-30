@@ -14,14 +14,19 @@ export default styled.div`
     .rightContent {
       margin-left: 10px;
       flex: 1;
-      .username {
-        font-size: 15px;
-        line-height: 20px;
-        color: #444;
-        font-weight: bold;
 
-        span {
-          margin: 0 3px;
+      .rightHeader {
+        display: flex;
+        justify-content: space-between;
+
+        .username {
+          font-size: 15px;
+          line-height: 20px;
+          color: #444;
+          font-weight: bold;
+          span {
+            margin: 0 3px;
+          }
         }
       }
 
