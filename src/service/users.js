@@ -53,3 +53,15 @@ export const getAvatar = (userId) => {
     url: `/user/${userId}/avatar`,
   })
 }
+
+export const getUserDetail = (userId) => {
+  return request({
+    url: `/users/${userId}/detail`,
+  })
+}
+
+export const getAddress = () => {
+  return request({
+    url: '/users/address',
+  })
+}

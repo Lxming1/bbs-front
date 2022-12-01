@@ -26,6 +26,7 @@ export default memo(({ setShowCollect, momentId }) => {
       xmMessage(1, '该收藏夹已存在')
       return
     }
+    if (createTitle.trim() === '') return
     const result = await createCollect(createTitle, stateCode)
     if (result.code === undefined) return
     xmMessage(result.code, result.message)

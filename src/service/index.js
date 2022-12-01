@@ -24,6 +24,7 @@ instance.interceptors.response.use(
   (err) => {
     if (err && err.response.data) {
       const res = err.response.data
+      if (err.response.status === 404) return err
       // if (err.response.status === 401) {
       // }
       xmMessage(res.code, res.message)

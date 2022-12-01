@@ -18,7 +18,7 @@ export const Header = memo(() => {
     },
     {
       label: '我的',
-      key: '/profile',
+      key: `/people/${userInfo.id}`,
     },
   ]
 
@@ -37,7 +37,7 @@ export const Header = memo(() => {
   const rightMenu = () => (
     <ul className="rightMenu">
       <li>
-        <a href="#/profile">
+        <a href={`#/people/${userInfo.id}`}>
           <UserOutlined style={{ marginRight: '6px' }} />
           我的主页
         </a>

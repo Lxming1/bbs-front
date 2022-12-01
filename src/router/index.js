@@ -10,11 +10,12 @@ import { lazy } from 'react'
 import Main from '@/pages'
 import Login from '@/pages/auth/login'
 import Register from '@/pages/auth/register'
-import Profile from '@/pages/profile'
+import Profile from '@/pages/people'
 import Home from '@/pages/home'
 import Moments from '@/pages/home/left/moment'
 import NotFount from '@/pages/notFount'
 import Forget from '@/pages/auth/forget'
+import Edit from '../pages/people/edit'
 
 const routes = [
   {
@@ -30,7 +31,11 @@ const routes = [
         ],
       },
       {
-        path: '/profile',
+        path: '/profile/edit',
+        element: <Edit />,
+      },
+      {
+        path: '/people/:uid',
         element: <Profile />,
       },
     ],
