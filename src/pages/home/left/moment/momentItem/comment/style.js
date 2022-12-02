@@ -23,21 +23,6 @@ export default styled.div`
       border-radius: 4px;
       border: 1px solid rgb(235, 235, 235);
     }
-
-    .sendBtn {
-      height: 34px;
-      line-height: 32px;
-      font-weight: bold;
-      width: 78px;
-      font-size: 14px;
-      text-align: center;
-      border-radius: 3px;
-      margin-left: 5px;
-      background: none rgb(5, 109, 232);
-      border: 1px solid rgb(5, 109, 232);
-      color: #fff;
-      cursor: pointer;
-    }
   }
 
   .main {

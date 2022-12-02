@@ -117,3 +117,18 @@ body, textarea, select, input, button {
   padding: 0 16px;
   text-align: center;
 }
+
+.sendBtn {
+  height: 34px;
+  line-height: 32px;
+  font-weight: bold;
+  width: 78px;
+  font-size: 14px;
+  text-align: center;
+  border-radius: 3px;
+  margin-left: 5px;
+  background: none rgb(5, 109, 232);
+  border: 1px solid rgb(5, 109, 232);
+  color: #fff;
+  cursor: pointer;
+}

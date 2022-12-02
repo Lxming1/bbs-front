@@ -24,7 +24,6 @@ export default memo(({ comment, momentId, name, getComments }) => {
   const sendInput = async (id) => {
     if (content.trim() === '') return
     const result = await replyComment(id, content, momentId)
-    if (!result.code) return
     setContent('')
     setIsOpen(false)
     xmMessage(result.code, result.message)
@@ -33,7 +32,6 @@ export default memo(({ comment, momentId, name, getComments }) => {
 
   const delComment = async () => {
     const result = await delelteComment(comment.id)
-    if (!result.code) return
     xmMessage(result.code, result.message)
     getComments()
     window.scroll(0, position)

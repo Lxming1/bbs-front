@@ -36,8 +36,8 @@ export const getCareList = (uid, pagenum, pagesize) => {
 
 export const editUserInfo = ({ address, name, birthday, gender, introduction }) => {
   return request({
-    url: '/users/edit',
-    method: 'post',
+    url: '/users',
+    method: 'put',
     data: {
       address,
       name,
@@ -63,5 +63,16 @@ export const getUserDetail = (userId) => {
 export const getAddress = () => {
   return request({
     url: '/users/address',
+  })
+}
+
+export const uploadAvatar = (data) => {
+  return request({
+    url: '/upload/avatar',
+    method: 'post',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data,
   })
 }

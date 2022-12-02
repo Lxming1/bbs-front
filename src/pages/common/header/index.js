@@ -18,7 +18,7 @@ export const Header = memo(() => {
     },
     {
       label: '我的',
-      key: `/people/${userInfo.id}`,
+      key: `/people/${userInfo?.id}`,
     },
   ]
 
@@ -37,7 +37,7 @@ export const Header = memo(() => {
   const rightMenu = () => (
     <ul className="rightMenu">
       <li>
-        <a href={`#/people/${userInfo.id}`}>
+        <a href={`#/people/${userInfo?.id}`}>
           <UserOutlined style={{ marginRight: '6px' }} />
           我的主页
         </a>
@@ -52,7 +52,7 @@ export const Header = memo(() => {
   )
   return (
     <HeaderWrapper>
-      <div className="wrap-v1 mainBox">
+      <div className="mainBox">
         <div className="leftContent">
           <div className="logo">
             <img src={require('@/assets/img/logo.png')} alt="PYPBBS" />
@@ -77,7 +77,7 @@ export const Header = memo(() => {
           ) : (
             <Popover placement="bottom" content={rightMenu()} trigger="click">
               <div className="avatar">
-                <img src={userInfo.avatar_url} alt="" />
+                <img src={userInfo?.avatar_url} alt="" />
               </div>
             </Popover>
           )}

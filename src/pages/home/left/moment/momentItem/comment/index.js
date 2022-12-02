@@ -14,7 +14,6 @@ export default memo(({ comments, total, momentId, getComments }) => {
   const send = async () => {
     if (commentContent.trim() === '') return
     const result = await createComment(commentContent, momentId)
-    if (!result.code) return
     setCommentContent('')
     xmMessage(result.code, result.message)
     getComments()
