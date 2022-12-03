@@ -16,6 +16,7 @@ import { getCommentList } from '@/service/comment'
 import { handlLogin, debounce } from '@/utils'
 import Comment from './comment'
 import Collect from './collect'
+import { Image } from 'antd'
 
 const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
   const { user } = useStoreInfo('user')
@@ -63,7 +64,7 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
     handlLogin(user)
     setCommentOpen(!commentOpen)
   }
-
+  console.log(moment)
   const praise = async (id) => {
     const result = isPraise ? await cancelPraiseMoment(id) : await praiseMoment(id)
     let { praiseCount, momentId } = result.data
@@ -91,14 +92,27 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
     <MomentItemWrapper>
       <div className="title">{moment.title}</div>
       {!isOpen ? (
-        <div className="contentBox" onClick={() => setIsOpen(true)}>
-          <div className="content hiddenContent">
-            {moment.author.name}：{moment.content} <span className="seize"></span>
+        moment?.images === null ? (
+          <div className="contentBox" onClick={() => setIsOpen(true)}>
+            <div className="content hiddenContent">
+              {moment.author.name}：{moment.content} <span className="seize"></span>
+            </div>
+            <div className="openContent" onClick={changeState}>
+              阅读全文 <DownOutlined />
+            </div>
           </div>
-          <div className="openContent" onClick={changeState}>
-            阅读全文 <DownOutlined />
+        ) : (
+          <div className="hasPicBox" onClick={() => setIsOpen(true)}>
+            <div className="img">
+              <img src={moment?.images?.[0] + '?type=small'} alt="" />
+            </div>
+            <div className="hasPicContent">
+              <div className="content hiddenContent">
+                {moment.author.name}：{moment.content} <span className="seize"></span>
+              </div>
+            </div>
           </div>
-        </div>
+        )
       ) : (
         <>
           <div className="author">
@@ -114,6 +128,15 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
             {moment.praiseCount}人赞同了该动态
           </div>
           <div className="content">{moment.content}</div>
+          {moment?.images !== null && (
+            <div className="picture">
+              <Image.PreviewGroup>
+                {moment?.images?.map((item) => (
+                  <Image src={`${item}?type=small`} key={item} preview={{ src: item }} />
+                ))}
+              </Image.PreviewGroup>
+            </div>
+          )}
           <div className="createTime">{time(moment)}</div>
         </>
       )}

@@ -8,6 +8,7 @@ import { CloseOutlined } from '@ant-design/icons'
 import { createCollect } from '@/service/collect'
 import { xmMessage } from '@/utils'
 import { addToCollect, cancelCollect } from '@/service/collect'
+import Wrapper from '@/components/wrapper'
 
 export default memo(({ setShowCollect, momentId }) => {
   const dispatch = useDispatch()
@@ -53,7 +54,7 @@ export default memo(({ setShowCollect, momentId }) => {
 
   return (
     <CollectWrapper>
-      <div className="wrapper" onClick={hidden} />
+      <Wrapper hidden={hidden} />
       {collectState === 0 ? (
         <div className="dialogGroup">
           <div className="collect">

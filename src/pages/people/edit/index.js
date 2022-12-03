@@ -23,9 +23,10 @@ export default memo(() => {
   const nameTip = '限16个字符，支持中英文、数字、下划线'
 
   const handleProvinceChange = (value) => {
+    console.log(value)
     if (value === undefined) {
       setCities([])
-      setSecondCity({ id: null, name: '' })
+      setSecondCity({ id: 0, name: '' })
       return
     }
     const res = cityData.find((item) => item.id == value)
@@ -69,6 +70,15 @@ export default memo(() => {
         setAddress({
           value: address.value,
           state,
+        })
+        return
+      } else if (key === 'birthday') {
+        setProfileInfo({
+          ...profileInfo,
+          [key]: {
+            state,
+            value: null,
+          },
         })
         return
       }
@@ -146,9 +156,16 @@ export default memo(() => {
     const { name, birthday, gender, introduction } = profileInfo
     if (isBadName) return nameRef.current.focus()
     const result = await editUserInfo({
-      address: secondCity?.id ?? user.address.children.id,
+      address:
+        secondCity?.id === 0
+          ? null
+          : secondCity?.id
+          ? secondCity?.id
+          : user?.address?.children?.id
+          ? user?.address?.children?.id
+          : null,
       name: name.value,
-      birthday: birthday.value.substring(0, 10),
+      birthday: birthday?.value?.substring(0, 10) ?? null,
       gender: gender.value,
       introduction: introduction.value,
     })
@@ -283,6 +300,7 @@ export default memo(() => {
                 {profileInfo?.introduction?.state ? (
                   <>
                     <Input.TextArea
+                      allowClear
                       maxLength={30}
                       showCount
                       bordered={null}
@@ -340,8 +358,15 @@ export default memo(() => {
                   </>
                 ) : (
                   <div>
-                    <span style={{ marginRight: '10px' }}>{address?.value?.province?.name}</span>
-                    <span>{address?.value?.city?.name}</span>
+                    {(address?.value?.province?.name ?? address?.value?.city?.name) && (
+                      <>
+                        <span style={{ marginRight: '10px' }}>
+                          {address?.value?.province?.name}
+                        </span>
+                        <span>{address?.value?.city?.name}</span>
+                      </>
+                    )}
+
                     {editBtn('address')}
                   </div>
                 )}

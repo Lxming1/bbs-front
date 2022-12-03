@@ -16,6 +16,7 @@ import Moments from '@/pages/home/left/moment'
 import NotFount from '@/pages/notFount'
 import Forget from '@/pages/auth/forget'
 import Edit from '../pages/people/edit'
+import New from '../pages/home/left/moment/new'
 
 const routes = [
   {
@@ -37,6 +38,10 @@ const routes = [
       {
         path: '/people/:uid',
         element: <Profile />,
+      },
+      {
+        path: '/moment/new',
+        element: <New />,
       },
     ],
   },

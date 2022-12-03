@@ -37,27 +37,54 @@ export default styled.div`
         font-weight: 600;
         line-height: 30px;
       }
-      .gender {
-        color: #8590a6;
-        display: inline-block;
-        text-align: center;
-        font-size: 17px;
-        margin-top: 10px;
-      }
 
       .expand {
         color: #8590a6;
         font-size: 14px;
         cursor: pointer;
         margin-top: 10px;
+        width: 110px;
 
         svg {
           margin-right: 5px;
-          font-size: 10px;
+          font-size: 13px;
         }
 
         :hover {
           color: #76839b;
+        }
+      }
+
+      .detailInfo {
+        .gender {
+          color: #8590a6;
+          display: inline-block;
+          text-align: center;
+          font-size: 17px;
+          margin-top: 10px;
+        }
+        ul {
+          margin-top: 18px;
+          li {
+            display: flex;
+            margin-bottom: 18px;
+            align-items: center;
+
+            .leftKey {
+              font-synthesis: style;
+              font-weight: 600;
+              width: 60px;
+              color: #121212;
+              font-size: 14px;
+              line-height: 1.8;
+              margin-right: 37px;
+            }
+
+            .rightValue {
+              width: 600px;
+              font-size: 14px;
+            }
+          }
         }
       }
     }
@@ -74,6 +101,21 @@ export default styled.div`
       :hover {
         background-color: rgba(5, 109, 232, 0.06);
       }
+    }
+  }
+
+  .mainBox {
+    margin: 0 auto;
+
+    .leftContent {
+      background-color: #fff;
+      width: 694px;
+      margin-right: 10px;
+    }
+
+    .rightContent {
+      background-color: #fff;
+      width: 296px;
     }
   }
 `

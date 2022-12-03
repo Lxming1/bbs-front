@@ -1,17 +1,6 @@
 import styled from 'styled-components'
 
 export default styled.div`
-  .wrapper {
-    position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background-color: hsla(0, 0%, 7%, 0.65);
-    transition: background-color 0.3s ease-out;
-    z-index: 0;
-  }
-
   .dialogGroup {
     position: fixed;
     left: 50%;

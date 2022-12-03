@@ -73,3 +73,6 @@ export const handlLogin = (user) => {
     window.location.href = '#/login'
   }
 }
+
+export const getAagByTime = (time) =>
+  Math.ceil((new Date().getTime() - new Date(time).getTime()) / 31536000000)

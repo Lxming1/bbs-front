@@ -107,8 +107,104 @@ export const MomentItemWrapper = styled.div`
     }
   }
 
+  .contentBox {
+    cursor: pointer;
+
+    .hiddenContent {
+      //文本超出部分以...形式展示
+      text-overflow: -o-ellipsis-lastline;
+      //整体超出部分隐藏
+      overflow: hidden;
+      //文本超出部分以...形式展示，同第一行样式代码
+      text-overflow: ellipsis;
+      //display 块级元素展示
+      display: -webkit-box;
+      //设置文本行数为2行
+      -webkit-line-clamp: 2;
+      //设置文本行数为2行
+      line-clamp: 2;
+      //从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
+      -webkit-box-orient: vertical;
+
+      .seize {
+        width: 200px;
+      }
+    }
+
+    :hover {
+      color: #646464;
+    }
+  }
+
+  .hasPicBox {
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    margin-bottom: 10px;
+    margin-top: 1px;
+
+    .img {
+      border-radius: 4px;
+      height: 105px;
+      width: 190px;
+      position: relative;
+      overflow: hidden;
+
+      img {
+        position: relative;
+        top: -50%;
+        width: 190px;
+      }
+    }
+
+    .hasPicContent {
+      padding-top: 5px;
+      padding-left: 10px;
+    }
+
+    .hiddenContent {
+      //文本超出部分以...形式展示
+      text-overflow: -o-ellipsis-lastline;
+      //整体超出部分隐藏
+      overflow: hidden;
+      //文本超出部分以...形式展示，同第一行样式代码
+      text-overflow: ellipsis;
+      //display 块级元素展示
+      display: -webkit-box;
+      //设置文本行数为2行
+      -webkit-line-clamp: 4;
+      //设置文本行数为2行
+      line-clamp: 4;
+      //从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
+      -webkit-box-orient: vertical;
+
+      .seize {
+        width: 200px;
+      }
+    }
+
+    :hover {
+      color: #646464;
+    }
+  }
+
   .content {
     font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .picture {
+    margin-top: 10px;
+    width: 100%;
+    display: grid;
+    grid-template-rows: repeat(3, 215px);
+    grid-template-columns: repeat(3, 215px);
+    grid-gap: 5px;
+
+    img {
+      border-radius: 2px;
+      width: 215px;
+    }
   }
 
   .createTime {
