@@ -1,23 +1,33 @@
-import { Select, DatePicker, Radio, Button } from 'antd'
-import { memo, useEffect, useState } from 'react'
-import { useStoreInfo } from '../../../hooks'
-import { editUserInfo, getAddress, uploadAvatar } from '../../../service/users'
-import EditWrapper from './style'
-import { CameraFilled, EditFilled } from '@ant-design/icons'
+import { Select, DatePicker, Radio, Button, Input } from 'antd'
 import dayjs from 'dayjs'
-import { xmMessage } from '../../../utils'
+import { memo, useEffect, useState, useRef } from 'react'
+import { useStoreInfo } from '@/hooks'
+import { editUserInfo, getAddress, uploadAvatar } from '@/service/users'
+import EditWrapper from './style'
+import { CameraFilled, EditFilled, RightOutlined, RollbackOutlined } from '@ant-design/icons'
+import { xmMessage, verifyName } from '@/utils'
+import { setUserMes } from '../../../store/actionCreater/authActions'
+import { useDispatch } from 'react-redux'
 
 export default memo(() => {
   const { user } = useStoreInfo('user')
   const [cityData, setCityData] = useState([])
+  const [isBadName, setIsBadName] = useState(false)
   const [provinceData, setProvinceData] = useState([])
-  const [citiesData, setCitiesData] = useState([])
   const [cities, setCities] = useState()
   const [secondCity, setSecondCity] = useState()
   const [profileInfo, setProfileInfo] = useState({})
   const [address, setAddress] = useState({})
+  const nameRef = useRef(null)
+  const dispatch = useDispatch()
+  const nameTip = '限16个字符，支持中英文、数字、下划线'
 
   const handleProvinceChange = (value) => {
+    if (value === undefined) {
+      setCities([])
+      setSecondCity({ id: null, name: '' })
+      return
+    }
     const res = cityData.find((item) => item.id == value)
     setCities(res.children)
     setSecondCity(res.children[0])
@@ -26,20 +36,76 @@ export default memo(() => {
   const onSecondCityChange = (value) => {
     setSecondCity(cities.find((item) => item.id === value))
   }
-
   const changeGender = (e) => {
-    const newInfo = { ...profileInfo }
-    newInfo.gender = e.target.value
-    console.log(newInfo)
-    setProfileInfo(newInfo)
+    setProfileInfo({
+      ...profileInfo,
+      gender: {
+        value: e.target.value,
+        state: true,
+      },
+    })
+  }
+  const editFn = (key, state) => {
+    if (!state) {
+      if (key === 'address') {
+        setAddress({
+          value: {
+            province: user?.address?.parent,
+            city: user?.address?.children,
+          },
+          state,
+        })
+        return
+      }
+      setProfileInfo({
+        ...profileInfo,
+        [key]: {
+          state,
+          value: user[key],
+        },
+      })
+    } else {
+      if (key === 'address') {
+        setAddress({
+          value: address.value,
+          state,
+        })
+        return
+      }
+      setProfileInfo({
+        ...profileInfo,
+        [key]: {
+          state,
+          value: profileInfo[key].value,
+        },
+      })
+    }
   }
 
-  const editBtn = (fn) => (
-    <span className="editName" onClick={fn}>
+  const editBtn = (key) => (
+    <span className="editName" onClick={() => editFn(key, true)}>
       <EditFilled />
       修改
     </span>
   )
+
+  const cancel = (key) => (
+    <span className="cancelEdit" onClick={() => editFn(key, false)}>
+      取消
+    </span>
+  )
+
+  const changeName = (e) => {
+    const value = e.target.value
+    setProfileInfo({
+      ...profileInfo,
+      name: {
+        value,
+        state: true,
+      },
+    })
+    setIsBadName(!verifyName(value))
+  }
 
   const upload = async (e) => {
     const fileList = e.target.files
@@ -55,28 +121,87 @@ export default memo(() => {
     }
   }
 
+  const changeBrithday = (value) => {
+    if (value === null) {
+      setProfileInfo({
+        ...profileInfo,
+        birthday: {
+          value,
+          state: true,
+        },
+      })
+      return
+    }
+    const birthday = dayjs(value._d.getTime()).format('YYYY-MM-DD')
+    setProfileInfo({
+      ...profileInfo,
+      birthday: {
+        value: birthday,
+        state: true,
+      },
+    })
+  }
+
   const save = async () => {
     const { name, birthday, gender, introduction } = profileInfo
+    if (isBadName) return nameRef.current.focus()
     const result = await editUserInfo({
-      address: secondCity.id,
-      name,
-      birthday: birthday.substring(0, 9),
-      gender,
-      introduction,
+      address: secondCity?.id ?? user.address.children.id,
+      name: name.value,
+      birthday: birthday.value.substring(0, 10),
+      gender: gender.value,
+      introduction: introduction.value,
     })
     xmMessage(result.code, result.message)
+    dispatch(setUserMes(result.data))
+    let storeUser = JSON.parse(window.localStorage.getItem('bbs-user'))
+    if (storeUser) {
+      result.data.token = storeUser.token
+      window.localStorage.setItem('bbs-user', JSON.stringify(result.data))
+    } else {
+      window.localStorage.setItem('bbs-user', JSON.stringify(result.data))
+    }
   }
+
+  const changeIntroduction = (e) => {
+    const value = e.target.value
+    setProfileInfo({
+      ...profileInfo,
+      introduction: {
+        value,
+        state: true,
+      },
+    })
+  }
+
+  const disableControl = () =>
+    Object.keys(profileInfo).some((key) => profileInfo[key].state) || address?.state
 
   useEffect(() => {
     setProfileInfo({
-      name: user?.name,
-      gender: user?.gender,
-      introduction: user?.introduction,
-      birthday: user?.birthday,
+      name: {
+        state: false,
+        value: user?.name,
+      },
+      gender: {
+        state: false,
+        value: user?.gender,
+      },
+      introduction: {
+        state: false,
+        value: user?.introduction,
+      },
+      birthday: {
+        state: false,
+        value: user?.birthday,
+      },
     })
     setAddress({
-      province: user?.address?.parent,
-      city: user?.address?.children,
+      state: false,
+      value: {
+        province: user?.address?.parent,
+        city: user?.address?.children,
+      },
     })
   }, [user])
 
@@ -97,8 +222,8 @@ export default memo(() => {
         <div className="left">
           <label htmlFor="avatar">
             <div className="avatar">
-              <img src={user.avatar_url} alt="" />
-              <div className="avatarWrapper"></div>
+              <img src={user?.avatar_url} alt="" />
+              <div className="avatarWrapper" />
               <div className="tips">
                 <CameraFilled />
                 <div>修改我的头像</div>
@@ -108,66 +233,130 @@ export default memo(() => {
           <input type="file" hidden id="avatar" onChange={upload} />
         </div>
         <div className="right">
+          <a href={`#/people/${user?.id}`} className="back">
+            返回我的主页 <RightOutlined />
+          </a>
           <div className="name">
-            {profileInfo.name}
-            {editBtn()}
+            {profileInfo?.name?.state ? (
+              <>
+                <Input
+                  className={!isBadName ? 'Input' : ''}
+                  value={profileInfo.name.value}
+                  onChange={changeName}
+                  style={{ width: '250px' }}
+                  bordered={isBadName}
+                  status={isBadName && 'error'}
+                  ref={nameRef}
+                />
+                {isBadName && <span className="nameTip">{nameTip}</span>}
+                {cancel('name')}
+              </>
+            ) : (
+              <div>
+                {profileInfo?.name?.value}
+                {editBtn('name')}
+              </div>
+            )}
           </div>
           <ul className="editBox">
             <li>
               <span className="key">性别</span>
               <span className="value">
-                <Radio.Group onChange={changeGender} value={profileInfo.gender}>
-                  <Radio value={0}>男</Radio>
-                  <Radio value={1}>女</Radio>
-                </Radio.Group>
+                {profileInfo?.gender?.state ? (
+                  <>
+                    <Radio.Group onChange={changeGender} value={profileInfo.gender?.value}>
+                      <Radio value={0}>男</Radio>
+                      <Radio value={1}>女</Radio>
+                    </Radio.Group>
+                    {cancel('gender')}
+                  </>
+                ) : (
+                  <div>
+                    {!profileInfo.gender?.value ? '男' : '女'} {editBtn('gender')}
+                  </div>
+                )}
               </span>
             </li>
             <li>
               <span className="key">个人简介</span>
-              <span
-                className="value"
-                style={{ color: '#121212', fontSize: '15px', lineHeight: '20px' }}>
-                {profileInfo?.introduction}
-                {editBtn()}
+              <span className="value">
+                {profileInfo?.introduction?.state ? (
+                  <>
+                    <Input.TextArea
+                      maxLength={30}
+                      showCount
+                      bordered={null}
+                      autoSize={{ minRows: 2, maxRows: 6 }}
+                      className="Input"
+                      defaultValue={profileInfo?.introduction?.value}
+                      onChange={changeIntroduction}
+                    />
+                    {cancel('introduction')}
+                  </>
+                ) : (
+                  <div>
+                    {profileInfo?.introduction?.value}
+                    {editBtn('introduction')}
+                  </div>
+                )}
               </span>
             </li>
             <li>
               <span className="key">出生日期</span>
               <span className="value">
-                <DatePicker
-                  defaultValue={
-                    profileInfo?.birthday === null || profileInfo?.birthday === undefined
-                      ? ''
-                      : dayjs(profileInfo?.birthday, 'YYYY-MM-DD')
-                  }
-                />
+                {profileInfo?.birthday?.state ? (
+                  <>
+                    <DatePicker onChange={changeBrithday} />
+                    {cancel('birthday')}
+                  </>
+                ) : (
+                  <div>
+                    {profileInfo?.birthday?.value?.substring(0, 10)}
+                    {editBtn('birthday')}
+                  </div>
+                )}
               </span>
             </li>
             <li>
               <span className="key">居住地</span>
               <span className="value">
-                <Select
-                  defaultValue={address?.province?.name ?? address?.city?.name}
-                  style={{ width: 120, marginRight: '20px' }}
-                  onChange={handleProvinceChange}
-                  options={provinceData?.map((item) => ({ label: item.name, value: item.id }))}
-                />
-                <Select
-                  defaultValue={address?.city?.name}
-                  style={{ width: 120 }}
-                  value={secondCity?.name}
-                  options={cities?.map((item) => ({ label: item.name, value: item.id }))}
-                  onChange={onSecondCityChange}
-                />
+                {address?.state ? (
+                  <>
+                    <Select
+                      defaultValue={address?.value?.province?.name ?? address?.value?.city?.name}
+                      style={{ width: 120, marginRight: '20px' }}
+                      onChange={handleProvinceChange}
+                      allowClear
+                      options={provinceData?.map((item) => ({ label: item.name, value: item.id }))}
+                    />
+                    <Select
+                      defaultValue={address?.value?.city?.name}
+                      style={{ width: 120 }}
+                      value={secondCity?.name}
+                      options={cities?.map((item) => ({ label: item.name, value: item.id }))}
+                      onChange={onSecondCityChange}
+                    />
+                    {cancel('address')}
+                  </>
+                ) : (
+                  <div>
+                    <span style={{ marginRight: '10px' }}>{address?.value?.province?.name}</span>
+                    <span>{address?.value?.city?.name}</span>
+                    {editBtn('address')}
+                  </div>
+                )}
               </span>
             </li>
           </ul>
         </div>
       </div>
       <div className="save">
-        <div className="sendBtn" onClick={save}>
+        <button
+          className={'sendBtn ' + (!disableControl() ? 'disableBtn' : '')}
+          disabled={!disableControl()}
+          onClick={save}>
           保存
-        </div>
+        </button>
       </div>
     </EditWrapper>
   )

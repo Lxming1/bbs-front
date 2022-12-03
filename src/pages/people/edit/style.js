@@ -5,7 +5,7 @@ export default styled.div`
   padding: 20px 20px 10px 20px;
   background-color: #fff;
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 35px;
 
   .left {
     position: relative;
@@ -60,9 +60,19 @@ export default styled.div`
   }
 
   .right {
-    padding-left: 32px;
-    padding-top: 16px;
     flex: 1;
+    padding-top: 10px;
+    padding-left: 32px;
+    position: relative;
+
+    .back {
+      position: absolute;
+      right: 10px;
+      top: 18px;
+      color: #8590a6;
+      font-size: 14px;
+      cursor: pointer;
+    }
 
     .name {
       -webkit-box-align: center;
@@ -72,6 +82,24 @@ export default styled.div`
       font-size: 26px;
       font-synthesis: style;
       font-weight: 600;
+      position: relative;
+      margin-bottom: 20px;
+
+      .cancelEdit {
+        position: absolute;
+        display: inline-block;
+        width: 30px;
+        top: 15px;
+      }
+
+      .nameTip {
+        position: absolute;
+        width: 300px;
+        font-size: 12px;
+        color: #ff4d4f;
+        left: 16px;
+        top: 40px;
+      }
     }
 
     .editBox {
@@ -90,6 +118,14 @@ export default styled.div`
           font-weight: 600;
           width: 140px;
         }
+
+        .value {
+          color: #121212;
+          font-size: 15px;
+          line-height: 20px;
+          display: flex;
+          align-items: center;
+        }
       }
     }
   }
@@ -101,7 +137,16 @@ export default styled.div`
     font-weight: 500;
   }
 
+  .cancelEdit {
+    margin-left: 20px;
+    cursor: pointer;
+    color: #8590a6;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
   .save {
+    text-align: center;
     padding: 40px 0 35px;
 
     div {

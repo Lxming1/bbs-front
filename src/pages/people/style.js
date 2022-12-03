@@ -7,7 +7,7 @@ export default styled.div`
   .header {
     margin-top: 10px;
     background-color: white;
-    padding: 24px;
+    padding: 20px;
     border-radius: 2px;
     display: flex;
     position: relative;

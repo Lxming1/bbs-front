@@ -26,19 +26,22 @@ export default memo(({ comments, total, momentId, getComments }) => {
   return (
     <CommentWrapper ref={ref}>
       <div className="header">
-        <img src={user.avatar_url} alt="" className="avatar" />
+        <img src={user?.avatar_url} alt="" className="avatar" />
         <div className="inputGroup">
           <Input
             placeholder="评论千万条，友善第一条"
             size="large"
             bordered={false}
-            className="commentInput"
+            className="Input"
             value={commentContent}
             onChange={(e) => setCommentContent(e.target.value)}
           />
-          <div className={'sendBtn ' + (commentContent.length ? '' : 'disableBtn')} onClick={send}>
+          <button
+            className={'sendBtn ' + (commentContent.length ? '' : 'disableBtn')}
+            onClick={send}
+            disabled={!commentContent.length}>
             发布
-          </div>
+          </button>
         </div>
       </div>
       <div className="main">

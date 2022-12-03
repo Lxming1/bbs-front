@@ -19,10 +19,10 @@ export default styled.div`
     width: 100%;
     align-items: center;
 
-    .commentInput {
+    /* .Input {
       border-radius: 4px;
       border: 1px solid rgb(235, 235, 235);
-    }
+    } */
   }
 
   .main {

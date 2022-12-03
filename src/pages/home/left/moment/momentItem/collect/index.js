@@ -65,23 +65,25 @@ export default memo(({ setShowCollect, momentId }) => {
                   : '你可以创建多个收藏夹，将答案分类收藏'}
               </div>
             </div>
-            <div className="list">
-              <ul>
-                {collectList?.map((item) => (
-                  <div key={item.id} className="item">
-                    <div className="left">
-                      <div className="name">{item.name}</div>
-                      <div className="count">{item.count} 条内容</div>
+            {collectList.length !== 0 && (
+              <div className="list">
+                <ul>
+                  {collectList?.map((item) => (
+                    <div key={item.id} className="item">
+                      <div className="left">
+                        <div className="name">{item.name}</div>
+                        <div className="count">{item.count} 条内容</div>
+                      </div>
+                      <button
+                        className={'btn ' + (item.isCollected ? 'collectedBtn' : 'collectBtn')}
+                        onClick={() => collectControl(item.isCollected, item.id)}>
+                        {item.isCollected ? '已收藏' : '收藏'}
+                      </button>
                     </div>
-                    <button
-                      className={'btn ' + (item.isCollected ? 'collectedBtn' : 'collectBtn')}
-                      onClick={() => collectControl(item.isCollected, item.id)}>
-                      {item.isCollected ? '已收藏' : '收藏'}
-                    </button>
-                  </div>
-                ))}
-              </ul>
-            </div>
+                  ))}
+                </ul>
+              </div>
+            )}
             <div className="btnGroup">
               <button className="btn create" onClick={() => setCollectState(1)}>
                 创建收藏夹

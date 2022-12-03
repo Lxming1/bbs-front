@@ -98,7 +98,7 @@ body, textarea, select, input, button {
 }
 
 .disableBtn {
-  cursor: default;
+  cursor: default !important;
   opacity: 0.5;
 }
 
@@ -131,4 +131,9 @@ body, textarea, select, input, button {
   border: 1px solid rgb(5, 109, 232);
   color: #fff;
   cursor: pointer;
+}
+
+.Input {
+  border-radius: 4px !important;
+  border: 1px solid rgb(235, 235, 235) !important;
 }

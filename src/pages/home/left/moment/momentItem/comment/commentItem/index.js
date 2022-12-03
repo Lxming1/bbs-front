@@ -104,15 +104,16 @@ export default memo(({ comment, momentId, name, getComments }) => {
                 placeholder={`回复 ${comment.author.name}`}
                 size="large"
                 bordered={false}
-                className="commentInput"
+                className="Input"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
               />
-              <div
+              <button
                 className={'sendBtn ' + (content.length ? '' : 'disableBtn')}
-                onClick={() => sendInput(comment.id)}>
+                onClick={() => sendInput(comment.id)}
+                disabled={!content.length}>
                 发布
-              </div>
+              </button>
             </div>
           )}
         </div>
