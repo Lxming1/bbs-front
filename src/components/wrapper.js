@@ -11,5 +11,5 @@ export default memo(({ hidden }) => {
     transition: 'background-color 0.3s ease-out',
     zIndex: '0',
   }
-  return <div className="wrapper" onClick={hidden} style={style} />
+  return <div onClick={hidden && hidden} style={style}></div>
 })

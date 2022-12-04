@@ -17,7 +17,7 @@ export const getMoment = (momentId) => {
 }
 
 export const sendMoment = ({ title, content, plateId, visible }) => {
-  request({
+  return request({
     url: '/moment',
     method: 'post',
     data: {
@@ -86,5 +86,23 @@ export const getMomentPic = (filename, type) => {
 export const getPriaseList = () => {
   return request({
     url: `/moment/praise`,
+  })
+}
+
+export const uploadPicture = (momentId, data) => {
+  return request({
+    url: `/upload/picture?momentId=${momentId}`,
+    method: 'post',
+    data,
+  })
+}
+
+export const getMomentByUser = (uid, pagenum, pagesize) => {
+  return request({
+    url: `/users/${uid}/moments`,
+    params: {
+      pagenum,
+      pagesize,
+    },
   })
 }

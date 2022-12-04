@@ -36,8 +36,8 @@ export const Header = memo(() => {
 
   const rightMenu = () => (
     <ul className="rightMenu">
-      <li>
-        <a href={`#/people/${userInfo?.id}`}>
+      <li onClick={() => (window.location.href = `#/people/${userInfo?.id}`)}>
+        <a>
           <UserOutlined style={{ marginRight: '6px' }} />
           我的主页
         </a>

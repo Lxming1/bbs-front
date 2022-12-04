@@ -76,3 +76,9 @@ export const uploadAvatar = (data) => {
     data,
   })
 }
+
+export const getRelationship = (uid) => {
+  return request({
+    url: `/users/care_fan/${uid}`,
+  })
+}

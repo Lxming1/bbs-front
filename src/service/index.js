@@ -3,7 +3,7 @@ import { xmMessage } from '../utils'
 
 const instance = axios.create({
   baseURL: '/api',
-  timeout: 5000,
+  timeout: 20000,
 })
 
 instance.interceptors.request.use((config) => {

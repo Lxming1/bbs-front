@@ -147,12 +147,9 @@ export const MomentItemWrapper = styled.div`
       border-radius: 4px;
       height: 105px;
       width: 190px;
-      position: relative;
       overflow: hidden;
 
       img {
-        position: relative;
-        top: -50%;
         width: 190px;
       }
     }
@@ -197,13 +194,18 @@ export const MomentItemWrapper = styled.div`
     margin-top: 10px;
     width: 100%;
     display: grid;
-    grid-template-rows: repeat(3, 215px);
     grid-template-columns: repeat(3, 215px);
     grid-gap: 5px;
 
-    img {
-      border-radius: 2px;
+    .imgBox {
       width: 215px;
+      height: 215px;
+      overflow: hidden;
+      border-radius: 2px;
+
+      img {
+        width: 215px;
+      }
     }
   }
 

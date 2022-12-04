@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useState } from 'react'
-import { Input } from 'antd'
+import { Empty, Input } from 'antd'
 import { useStoreInfo } from '@/hooks'
 import CommentWrapper from './style'
 import { xmMessage } from '@/utils'
@@ -46,44 +46,51 @@ export default memo(({ comments, total, momentId, getComments }) => {
       </div>
       <div className="main">
         <div className="mainHeader">{total}条评论</div>
-        <div className="mainComment">
-          {comments?.map((item) => {
-            let children = []
-            if (item.children) {
-              const getChildren = (item) => {
-                if (!item.children) return
-                item.children.forEach((item, index) => {
-                  children.push(item)
-                  return getChildren(item)
-                })
+        {comments.length ? (
+          <div className="mainComment">
+            {comments?.map((item) => {
+              let children = []
+              if (item.children) {
+                const getChildren = (item) => {
+                  if (!item.children) return
+                  item.children.forEach((item, index) => {
+                    children.push(item)
+                    return getChildren(item)
+                  })
+                }
+                getChildren(item)
               }
-              getChildren(item)
-            }
-            children.sort((a, b) => {
-              const transTime = (time) => new Date(time).getTime()
-              const aTime = transTime(a.createTime)
-              const bTime = transTime(b.createTime)
-              return aTime - bTime
-            })
-            return (
-              <div key={item.id}>
-                <CommentItem comment={item} momentId={momentId} getComments={getComments} />
-                {children?.map((cItem) => {
-                  const name = children?.find((item1) => item1.id === cItem.commentId)?.author?.name
-                  return (
-                    <CommentItem
-                      comment={cItem}
-                      momentId={momentId}
-                      name={name}
-                      key={cItem.id}
-                      getComments={getComments}
-                    />
-                  )
-                })}
-              </div>
-            )
-          })}
-        </div>
+              children.sort((a, b) => {
+                const transTime = (time) => new Date(time).getTime()
+                const aTime = transTime(a.createTime)
+                const bTime = transTime(b.createTime)
+                return aTime - bTime
+              })
+              return (
+                <div key={item.id}>
+                  <CommentItem comment={item} momentId={momentId} getComments={getComments} />
+                  {children?.map((cItem) => {
+                    const name = children?.find((item1) => item1.id === cItem.commentId)?.author
+                      ?.name
+                    return (
+                      <CommentItem
+                        comment={cItem}
+                        momentId={momentId}
+                        name={name}
+                        key={cItem.id}
+                        getComments={getComments}
+                      />
+                    )
+                  })}
+                </div>
+              )
+            })}
+          </div>
+        ) : (
+          <div style={{ padding: '20px 0' }}>
+            <Empty description={'暂无评论'} />
+          </div>
+        )}
       </div>
     </CommentWrapper>
   )

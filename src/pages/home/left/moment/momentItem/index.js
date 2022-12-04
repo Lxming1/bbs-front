@@ -60,13 +60,19 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
     return mes + date
   }
 
+  const seePeoplePage = () => {
+    if (moment.visible === 0) {
+      window.location.href = `#/people/${moment.author.id}`
+    }
+  }
+
   const openComment = () => {
     handlLogin(user)
     setCommentOpen(!commentOpen)
   }
-  console.log(moment)
-  const praise = async (id) => {
-    const result = isPraise ? await cancelPraiseMoment(id) : await praiseMoment(id)
+
+  const praise = async () => {
+    const result = isPraise ? await cancelPraiseMoment(moment.id) : await praiseMoment(moment.id)
     let { praiseCount, momentId } = result.data
     momentId = parseInt(momentId)
     const newMoments = moments.map((item) => {
@@ -115,7 +121,10 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
         )
       ) : (
         <>
-          <div className="author">
+          <div
+            className="author"
+            style={moment.visible === 0 ? { cursor: 'pointer' } : null}
+            onClick={seePeoplePage}>
             <div className="avatar">
               <img src={moment.author.avatar_url} alt="" />
             </div>
@@ -131,8 +140,10 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
           {moment?.images !== null && (
             <div className="picture">
               <Image.PreviewGroup>
-                {moment?.images?.map((item) => (
-                  <Image src={`${item}?type=small`} key={item} preview={{ src: item }} />
+                {moment?.images?.map((item, index) => (
+                  <div className="imgBox" key={item + index}>
+                    <Image src={`${item}?type=small`} preview={{ src: item }} />
+                  </div>
                 ))}
               </Image.PreviewGroup>
             </div>
@@ -142,7 +153,7 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
       )}
       <div className="bottomBtn">
         <div
-          onClick={debounce(() => praise(moment.id), 300, true)}
+          onClick={debounce(praise, 300, true)}
           className={`${isPraise ? 'praiseBtn-active ' : ' '} praiseBtn`}>
           <CaretUpFilled />
           {isPraise ? '已赞同' : '赞同'} {!moment.praiseCount ? '' : moment.praiseCount}

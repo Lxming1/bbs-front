@@ -151,7 +151,6 @@ export default memo(() => {
       },
     })
   }
-
   const save = async () => {
     const { name, birthday, gender, introduction } = profileInfo
     if (isBadName) return nameRef.current.focus()
