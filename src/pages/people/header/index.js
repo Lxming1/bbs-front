@@ -38,7 +38,8 @@ export default memo(() => {
   }
 
   useEffect(() => {
-    if (parseInt(uid) == user?.id) {
+    if (user.id === undefined) return
+    if (parseInt(uid) === user.id) {
       setIsProfile(true)
       setPeopleInfo(user)
       setAge(getAagByTime(user?.birthday))
@@ -47,7 +48,6 @@ export default memo(() => {
     getUserDetail(uid).then(({ data: userInfo }) => {
       setIsProfile(false)
       getRelationship(userInfo.id).then((res) => {
-        console.log(res.data)
         setRelation(res.data)
       })
       setPeopleInfo(userInfo)

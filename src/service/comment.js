@@ -29,12 +29,11 @@ export const delelteComment = (commentId) => {
   })
 }
 
-export const getCommentList = (momentId, userId) => {
+export const getCommentList = (momentId) => {
   return request({
     url: '/comment',
     params: {
       momentId,
-      userId,
     },
   })
 }

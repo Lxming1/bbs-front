@@ -1,11 +1,14 @@
 import request from './'
 
-export const getMoments = (pagenum, pagesize, plateId) => {
+export const getMoments = (pagenum, pagesize, plateId, uid) => {
   return request({
     url: `/moment/plate/${plateId}`,
     params: {
       pagenum,
       pagesize,
+    },
+    data: {
+      uid,
     },
   })
 }

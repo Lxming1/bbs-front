@@ -5,7 +5,6 @@ import { Header } from './common/header'
 import { useLazyLoad } from '@/hooks'
 
 const XmHome = memo(() => {
-  useLazyLoad()
   return (
     <div>
       <Header />

@@ -19,10 +19,6 @@ export default memo(({ comments, total, momentId, getComments }) => {
     getComments()
   }
 
-  useEffect(() => {
-    console.log(ref.current.scrollHeight)
-  }, [])
-
   return (
     <CommentWrapper ref={ref}>
       <div className="header">

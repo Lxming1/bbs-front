@@ -14,7 +14,6 @@ const initialState = Map({
   plateId: 0,
   moments: [],
   plateList: [],
-  collects: [],
 })
 
 function reducer(state = initialState, actions) {
@@ -29,8 +28,6 @@ function reducer(state = initialState, actions) {
       return state.set('momentTotal', actions.total)
     case SET_PLATE_ID:
       return state.set('plateId', actions.plateId)
-    case SET_COLLECT_LIST:
-      return state.set('collects', actions.collects)
     default:
       return state
   }

@@ -18,26 +18,23 @@ import Comment from './comment'
 import Collect from './collect'
 import { Image } from 'antd'
 
-const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
+const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) => {
   const { user } = useStoreInfo('user')
   const [isOpen, setIsOpen] = useState(false)
   const [commentOpen, setCommentOpen] = useState(false)
-  const { moments } = useStoreInfo('moments')
-  const dispatch = useDispatch()
   const [total, setTotal] = useState(0)
   const [comments, setComments] = useState([])
   const [firstOpen, setFirstOpen] = useState(true)
   let [showCollect, setShowCollect] = useState(false)
-  const [momentPraise, setMomentPraise] = useState([])
+  const [isPraise, setIsPraise] = useState(moment.isPraise)
 
   setShowCollect = useCallback(setShowCollect, [])
   const getComments = useCallback(async () => {
     const {
-      data: { total, comments: commentList, praiseList },
-    } = await getCommentList(moment.id, user.id)
+      data: { total, comments: commentList },
+    } = await getCommentList(moment.id)
     setComments(commentList)
     setTotal(total)
-    setMomentPraise(praiseList)
   })
 
   useEffect(() => {
@@ -75,27 +72,20 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
     const result = isPraise ? await cancelPraiseMoment(moment.id) : await praiseMoment(moment.id)
     let { praiseCount, momentId } = result.data
     momentId = parseInt(momentId)
-    const newMoments = moments.map((item) => {
-      if (item.id === moment.id) {
-        item.praiseCount = praiseCount
-      }
-      return item
-    })
-    dispatch(setMomentsAction(newMoments))
-    if (isPraise) {
-      setPraiseList((praiseList) => {
-        const index = praiseList.findIndex((item) => item === momentId)
-        const newPraiseList = [...praiseList]
-        delete newPraiseList[index]
-        return newPraiseList.filter(Boolean)
+    setCurrentMoments((moments) => {
+      return moments.map((item) => {
+        if (item.id === momentId) {
+          item.praiseCount = praiseCount
+          item.isPraise = !item.isPraise
+          setIsPraise(item.isPraise)
+        }
+        return item
       })
-    } else {
-      setPraiseList((praiseList) => [...praiseList, momentId])
-    }
+    })
   }
 
   return (
-    <MomentItemWrapper>
+    <MomentItemWrapper space={space}>
       <div className="title">{moment.title}</div>
       {!isOpen ? (
         moment?.images === null ? (
@@ -169,6 +159,7 @@ const MomentItem = memo(({ moment, setPraiseList, isPraise }) => {
         <div onClick={() => setShowCollect((state) => !state)}>
           <StarFilled /> 收藏
         </div>
+        {bottomBtn?.map((item) => item())}
         {isOpen && (
           <div className="closeContent" onClick={changeState}>
             收起 <UpOutlined />

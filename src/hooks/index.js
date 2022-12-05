@@ -20,15 +20,15 @@ export const useStoreInfo = (...props) => {
 
 export const useLazyLoad = () => {
   const [pagenum, setPagenum] = useState(1)
-  const { moments, momentTotal, plateId } = useStoreInfo('moments', 'momentTotal', 'plateId')
+  const { plateId, user } = useStoreInfo('plateId', 'user')
   const pagesize = 10
   const num = useRef(pagenum)
   const dispatch = useDispatch()
-  const [firstLoad, setFirstLoad] = useState(true)
 
   const reqMoment = async () => {
-    await dispatch(getMomentsAction(num.current, pagesize))
+    const result = await dispatch(getMomentsAction(num.current, pagesize, user?.id))
     setPagenum(num.current + 1)
+    return result
   }
 
   useEffect(() => {
@@ -36,7 +36,6 @@ export const useLazyLoad = () => {
   }, [pagenum])
 
   useEffect(() => {
-    // if (firstLoad) return setFirstLoad(false)
     num.current = 1
     setPagenum(num.current)
     reqMoment()
@@ -50,15 +49,15 @@ export const useLazyLoad = () => {
   }, [])
 
   useEffect(() => {
-    const scrollFn = debounce(() => {
+    const scrollFn = debounce(async () => {
       const showHeight = window.innerHeight
       const scrollTopHeight = document.body.scrollTop || document.documentElement.scrollTop
       const allHeight = document.body.scrollHeight
       if (allHeight < showHeight + scrollTopHeight + 500) {
-        if (moments === momentTotal && momentTotal !== 0) {
+        const result = await reqMoment()
+        if (!result.length) {
           window.removeEventListener('scroll', scrollFn)
         }
-        reqMoment()
       }
     }, 100)
     window.addEventListener('scroll', scrollFn)

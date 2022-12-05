@@ -1,16 +1,17 @@
 import styled from 'styled-components'
 
 export default styled.div`
-  .header {
+  .people-header {
     display: flex;
     color: #121212;
     height: 50px;
     line-height: 50px;
-    margin-left: 8px;
-    cursor: pointer;
+    margin-left: 20px;
+    border-bottom: 1px solid #f6f6f6;
 
     .head-active {
       font-weight: 600;
+      cursor: pointer;
     }
 
     div {

@@ -256,7 +256,7 @@ export const MomentItemWrapper = styled.div`
     div {
       line-height: 32px;
       cursor: pointer;
-      margin-right: 50px;
+      margin-right: ${(props) => props.space}px;
       display: flex;
       align-items: center;
       justify-content: space-between;

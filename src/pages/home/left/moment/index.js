@@ -3,38 +3,33 @@ import { useStoreInfo } from '@/hooks'
 import MomentItem from './momentItem'
 import { MomentWrapper } from './style'
 import { memo, useCallback, useEffect, useState } from 'react'
-import { getPriaseList } from '@/service/moment'
+import { setMomentsAction } from '@/store/actionCreater/homeAction'
+import { useDispatch } from 'react-redux'
+import { useLazyLoad } from '@/hooks'
 
 const Moments = memo(() => {
-  const { moments, user } = useStoreInfo('moments', 'user')
+  const { moments } = useStoreInfo('moments')
+  const dispatch = useDispatch()
 
-  let [praiseList, setPraiseList] = useState([])
-  setPraiseList = useCallback(setPraiseList, [])
-  const getPraise = async () => {
-    if (user?.id) {
-      const { data: priaseList } = await getPriaseList()
-      setPraiseList(priaseList)
-    }
-  }
+  let [currentMoments, setCurrentMoments] = useState(moments)
+  setCurrentMoments = useCallback(setCurrentMoments, [])
 
   useEffect(() => {
-    getPraise()
-  }, [user])
+    setCurrentMoments(moments)
+  }, [moments])
+
+  useEffect(() => {
+    dispatch(setMomentsAction(currentMoments))
+  }, [currentMoments])
+
+  useLazyLoad()
 
   return (
     <MomentWrapper>
       {moments?.length ? (
-        moments?.map((item) => {
-          const isPraise = praiseList.includes(item.id)
-          return (
-            <MomentItem
-              moment={item}
-              key={item.id}
-              setPraiseList={setPraiseList}
-              isPraise={isPraise}
-            />
-          )
-        })
+        moments?.map((item) => (
+          <MomentItem moment={item} key={item.id} setCurrentMoments={setCurrentMoments} />
+        ))
       ) : (
         <div className="emptyPage">
           <Empty />

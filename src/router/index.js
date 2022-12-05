@@ -15,8 +15,11 @@ import Home from '@/pages/home'
 import Moments from '@/pages/home/left/moment'
 import NotFount from '@/pages/notFount'
 import Forget from '@/pages/auth/forget'
-import Edit from '../pages/people/edit'
-import New from '../pages/home/left/moment/new'
+import Edit from '@/pages/people/edit'
+import New from '@/pages/home/left/moment/new'
+import PeopleMoment from '@/pages/people/main/moments'
+import Collection from '@/pages/people/main/collects'
+import Care from '@/pages/people/main/care'
 
 const routes = [
   {
@@ -38,6 +41,20 @@ const routes = [
       {
         path: '/people/:uid',
         element: <Profile />,
+        children: [
+          {
+            path: '/people/:uid/',
+            element: <PeopleMoment />,
+          },
+          {
+            path: '/people/:uid/collections',
+            element: <Collection />,
+          },
+          {
+            path: '/people/:uid/following',
+            element: <Care />,
+          },
+        ],
       },
       {
         path: '/moment/new',

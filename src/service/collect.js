@@ -21,7 +21,7 @@ export const getCollectByUid = (uid, momentId) => {
   })
 }
 
-export const editCollect = (collectId, { name, status }) => {
+export const editCollect = (collectId, name, status) => {
   return request({
     url: `/collect/${collectId}`,
     method: 'patch',
@@ -59,5 +59,12 @@ export const getCollectDetail = (collectId, pagenum, pagesize) => {
       pagenum,
       pagesize,
     },
+  })
+}
+
+export const delCollect = (collectId) => {
+  return request({
+    url: `/collect/del/${collectId}`,
+    method: 'delete',
   })
 }

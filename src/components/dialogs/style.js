@@ -1,6 +1,45 @@
 import styled from 'styled-components'
 
 export default styled.div`
+  .delDialogGroup {
+    box-sizing: border-box;
+    width: 328px !important;
+    box-sizing: content-box;
+    text-align: center;
+    padding: 24px 36px;
+
+    .delTitle {
+      box-sizing: border-box;
+      color: #121212;
+      margin: 0px;
+      min-width: 0px;
+      font-size: 18px;
+      line-height: 28px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .delAlert {
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .delDesc {
+      color: #999;
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    .delBtn {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 16px;
+
+      .btn {
+        width: 162px;
+      }
+    }
+  }
   .dialogGroup {
     position: fixed;
     left: 50%;
@@ -13,6 +52,7 @@ export default styled.div`
 
     .close {
       position: absolute;
+      cursor: pointer;
       font-size: 21px;
       right: 10px;
       top: 10px;
@@ -129,7 +169,6 @@ export default styled.div`
 
       :hover {
         background-color: #0461cf;
-        border-color: #0461cf;
       }
     }
 
