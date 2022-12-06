@@ -12,13 +12,19 @@ import DelDialog from '@/components/dialogs/delDialog'
 import { useStoreInfo } from '@/hooks'
 
 export default memo(() => {
+  const { user, profileUser, isProfile, isLogin } = useStoreInfo(
+    'user',
+    'profileUser',
+    'isProfile',
+    'isLogin'
+  )
   const pagesize = 10
   const [pagenum, setPagenum] = useState(1)
   const [currentMoments, setCurrentMoments] = useState([])
   const [userId, setUserId] = useState(null)
   const [delDialogShow, setDelDialogShow] = useState(false)
   const [currentMoment, setCurrentMoment] = useState({})
-  const [isProfile, setIsProfile] = useState(false)
+  const [isEnd, setIsEnd] = useState(false)
   const { uid } = useParams()
   const num = useRef(pagenum)
   const idRef = useRef(userId)
@@ -26,7 +32,6 @@ export default memo(() => {
   const reqMoment = async (uid) => {
     const result = await getMomentByUser(uid, num.current, pagesize).then(
       ({ data: { moments } }) => {
-        console.log(moments)
         setCurrentMoments((m) => [...m, ...moments])
         setPagenum(num.current + 1)
         return moments
@@ -47,6 +52,7 @@ export default memo(() => {
       const moment = await reqMoment(idRef.current)
       if (!moment.length) {
         window.removeEventListener('scroll', fn)
+        setIsEnd(true)
       }
     }
   }, 100)
@@ -87,13 +93,14 @@ export default memo(() => {
   const editMomentBtn = (moment) => {}
 
   useEffect(() => {
-    setUserId(uid)
-    reqMoment(uid)
+    if (!profileUser) return
+    setUserId(profileUser?.id)
+    reqMoment(profileUser?.id)
     return () => {
       window.removeEventListener('scroll', fn)
       setCurrentMoments([])
     }
-  }, [])
+  }, [profileUser])
 
   const tips = {
     title: '删除动态',
@@ -102,7 +109,7 @@ export default memo(() => {
 
   useEffect(() => {
     window.addEventListener('scroll', fn)
-    idRef.current = uid
+    idRef.current = profileUser?.id
     setUserId(idRef.current)
     num.current = 1
     setPagenum(num.current)
@@ -115,7 +122,9 @@ export default memo(() => {
   return (
     <MomentsWrapper>
       <div className="people-header">
-        <div className="head-active">{isProfile ? '我' : '他'}的动态</div>
+        <div className="head-active">
+          {isProfile ? '我' : !profileUser?.gender ? '他' : '她'}的动态
+        </div>
       </div>
       {currentMoments.length ? (
         currentMoments?.map((item) => (
@@ -124,11 +133,18 @@ export default memo(() => {
             moment={item}
             key={item.id}
             setCurrentMoments={setCurrentMoments}
-            bottomBtn={[() => editBtn(item), () => delBtn(item)]}
+            bottomBtn={isLogin && isProfile && [() => editBtn(item), () => delBtn(item)]}
           />
         ))
       ) : (
-        <Empty />
+        <div className="empty">
+          <Empty />
+        </div>
+      )}
+      {isEnd && (
+        <div className="Box">
+          <Empty description="没有更多动态啦" />
+        </div>
       )}
       {delDialogShow && <DelDialog backContent={backContent} submitFn={delSubmitFn} tips={tips} />}
     </MomentsWrapper>

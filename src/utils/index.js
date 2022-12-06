@@ -67,12 +67,16 @@ export function debounce(callback, duration, isFirstExecution) {
   }
 }
 
-export const handlLogin = (user) => {
-  if (user === null) {
-    xmMessage(2, '请先登录')
-    window.location.href = '#/login'
-  }
-}
-
 export const getAagByTime = (time) =>
   Math.ceil((new Date().getTime() - new Date(time).getTime()) / 31536000000)
+
+export const verifyLogin = async (isLogin) => {
+  return new Promise((resolve, reject) => {
+    if (!isLogin) {
+      xmMessage(2, '请先登录')
+      window.location.href = '#/login'
+      reject()
+    }
+    resolve()
+  })
+}

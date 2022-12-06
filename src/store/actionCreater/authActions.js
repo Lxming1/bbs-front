@@ -1,6 +1,11 @@
 import { login } from '@/service/auth'
 import { xmMessage } from '@/utils'
-import { SET_USER } from '../constant'
+import { SET_IS_LOGIN, SET_USER } from '../constant'
+
+export const setIsLogin = (isLogin) => ({
+  type: SET_IS_LOGIN,
+  isLogin,
+})
 
 export const setUserMes = (user) => ({
   type: SET_USER,
@@ -18,7 +23,7 @@ export const loginAction = ({ email, password, tokenState }) => {
         tokenState
           ? localStorage.setItem('bbs-user', jsonMes)
           : sessionStorage.setItem('bbs-user', jsonMes)
-
+        dispatch(setIsLogin(true))
         dispatch(setUserMes(res.data))
         resolve('/')
       } else {

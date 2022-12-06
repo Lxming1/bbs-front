@@ -19,7 +19,7 @@ import Edit from '@/pages/people/edit'
 import New from '@/pages/home/left/moment/new'
 import PeopleMoment from '@/pages/people/main/moments'
 import Collection from '@/pages/people/main/collects'
-import Care from '@/pages/people/main/care'
+import Follow from '@/pages/people/main/follow'
 
 const routes = [
   {
@@ -52,7 +52,11 @@ const routes = [
           },
           {
             path: '/people/:uid/following',
-            element: <Care />,
+            element: <Follow type="following" />,
+          },
+          {
+            path: '/people/:uid/followers',
+            element: <Follow type="followers" />,
           },
         ],
       },

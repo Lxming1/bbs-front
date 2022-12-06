@@ -11,7 +11,6 @@ export default memo(({ hidden, submitFn, backContent, collect, title }) => {
   const [createTitle, setCreateTitle] = useState(collect?.value === undefined ? '' : collect?.value)
 
   const createCollectBtn = async () => {
-    console.log(createTitle, stateCode)
     await submitFn(createTitle, stateCode)
     setCreateTitle('')
     setStateCode(0)

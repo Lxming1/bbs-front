@@ -1,6 +1,5 @@
 import { getMoments } from '@/service/moment'
 import { getPlateList } from '@/service/plate'
-import { getCollectByUid } from '@/service/collect'
 import { SET_MOMENTS, SET_MOMENT_TOTAL, SET_PLATE_ID, SET_PLATE_LIST } from '../constant'
 
 export const setMomentsAction = (momentList) => ({

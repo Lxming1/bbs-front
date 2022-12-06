@@ -1,15 +1,14 @@
-import { memo, Suspense, useEffect } from 'react'
+import { memo, Suspense } from 'react'
 import { useDispatch } from 'react-redux'
 import AppWrapper from './router'
-import { setUserMes } from './store/actionCreater/authActions'
+import { setUserMes, setIsLogin } from './store/actionCreater/authActions'
 
 export default memo(function App() {
   const dispatch = useDispatch()
-  useEffect(() => {
-    let userInfo = sessionStorage.getItem('bbs-user') || localStorage.getItem('bbs-user')
-    userInfo = JSON.parse(userInfo)
-    dispatch(setUserMes(userInfo))
-  }, [])
+  let userInfo = sessionStorage.getItem('bbs-user') || localStorage.getItem('bbs-user')
+  userInfo = JSON.parse(userInfo)
+  dispatch(setIsLogin(userInfo !== null))
+  dispatch(setUserMes(userInfo))
 
   return (
     <div>

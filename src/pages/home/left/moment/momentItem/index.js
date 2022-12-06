@@ -17,9 +17,10 @@ import { handlLogin, debounce } from '@/utils'
 import Comment from './comment'
 import Collect from './collect'
 import { Image } from 'antd'
+import { verifyLogin, xmMessage } from '../../../../../utils'
 
 const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) => {
-  const { user } = useStoreInfo('user')
+  const { user, isLogin } = useStoreInfo('user', 'isLogin')
   const [isOpen, setIsOpen] = useState(false)
   const [commentOpen, setCommentOpen] = useState(false)
   const [total, setTotal] = useState(0)
@@ -63,12 +64,18 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) =
     }
   }
 
-  const openComment = () => {
-    handlLogin(user)
+  const showDialog = async () => {
+    await verifyLogin(isLogin)
+    setShowCollect((state) => !state)
+  }
+
+  const openComment = async () => {
+    await verifyLogin(isLogin)
     setCommentOpen(!commentOpen)
   }
 
   const praise = async () => {
+    await verifyLogin(isLogin)
     const result = isPraise ? await cancelPraiseMoment(moment.id) : await praiseMoment(moment.id)
     let { praiseCount, momentId } = result.data
     momentId = parseInt(momentId)
@@ -156,10 +163,10 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) =
             ? '添加评论'
             : `${moment.commentCount}条评论`}
         </div>
-        <div onClick={() => setShowCollect((state) => !state)}>
+        <div onClick={showDialog}>
           <StarFilled /> 收藏
         </div>
-        {bottomBtn?.map((item) => item())}
+        {bottomBtn && bottomBtn.map((item) => item())}
         {isOpen && (
           <div className="closeContent" onClick={changeState}>
             收起 <UpOutlined />

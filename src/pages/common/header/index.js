@@ -6,6 +6,7 @@ import { Input, Menu, Popover } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useStoreInfo } from '@/hooks'
 import { UserOutlined, PoweroffOutlined } from '@ant-design/icons'
+import { setIsLogin } from '../../../store/actionCreater/authActions'
 
 export const Header = memo(() => {
   const dispatch = useDispatch()
@@ -27,6 +28,7 @@ export const Header = memo(() => {
   const logout = () => {
     sessionStorage.removeItem('bbs-user')
     localStorage.removeItem('bbs-user')
+    dispatch(setIsLogin(false))
     dispatch(setUserMes(null))
   }
 

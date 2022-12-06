@@ -4,16 +4,21 @@ import {
   SET_PLATE_LIST,
   SET_USER,
   SET_PLATE_ID,
-  SET_COLLECT_LIST,
+  SET_PROFILE_USER,
+  SET_IS_PROFILE,
+  SET_IS_LOGIN,
 } from './constant'
 import { Map } from 'immutable'
 
 const initialState = Map({
-  user: {},
+  user: null,
   momentTotal: 0,
   plateId: 0,
   moments: [],
   plateList: [],
+  profileUser: null,
+  isProfile: false,
+  isLogin: false,
 })
 
 function reducer(state = initialState, actions) {
@@ -28,6 +33,12 @@ function reducer(state = initialState, actions) {
       return state.set('momentTotal', actions.total)
     case SET_PLATE_ID:
       return state.set('plateId', actions.plateId)
+    case SET_PROFILE_USER:
+      return state.set('profileUser', actions.profileUser)
+    case SET_IS_PROFILE:
+      return state.set('isProfile', actions.isProfile)
+    case SET_IS_LOGIN:
+      return state.set('isLogin', actions.isLogin)
     default:
       return state
   }

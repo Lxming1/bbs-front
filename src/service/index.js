@@ -25,8 +25,9 @@ instance.interceptors.response.use(
     if (err && err.response.data) {
       const res = err.response.data
       if (err.response.status === 404) return err
-      // if (err.response.status === 401) {
-      // }
+      if (err.response.status === 403) {
+        window.location.href = '#/login'
+      }
       xmMessage(res.code, res.message)
     }
     // return err

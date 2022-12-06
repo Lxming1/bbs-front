@@ -65,11 +65,11 @@ const Login = memo(() => {
   }
 
   useEffect(() => {
-    const enterFn = async (e) => {
+    const enterFn = throttle(async (e) => {
       if (e.key === 'Enter') await btnRef.current.click()
-    }
-    window.addEventListener('keydown', throttle(enterFn, 1000))
-    return () => window.removeEventListener('keydown', throttle(enterFn, 1000))
+    })
+    window.addEventListener('keydown', enterFn)
+    return () => window.removeEventListener('keydown', enterFn)
   }, [])
 
   return (

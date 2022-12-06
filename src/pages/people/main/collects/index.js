@@ -9,19 +9,21 @@ import dayjs from 'dayjs'
 import { xmMessage } from '@/utils'
 import DelDialog from '@/components/dialogs/delDialog'
 import { delCollect } from '@/service/collect'
+import { useStoreInfo } from '@/hooks'
 
 export default memo(() => {
+  const { profileUser, isProfile } = useStoreInfo('user', 'profileUser', 'isProfile')
   const [dialogStateCode, setDialogStateCode] = useState(null)
   const [currentCollect, setCurrentCollect] = useState({})
   const [collects, setCollects] = useState([])
-  const { uid: userId } = useParams()
 
   const showCreateDialog = () => setDialogStateCode(0)
 
   const hidden = () => setDialogStateCode(null)
 
   const getCollectList = async () => {
-    const result = await getCollectByUid(userId)
+    if (!profileUser?.id) return
+    const result = await getCollectByUid(profileUser?.id)
     setCollects(result.data)
   }
 
@@ -76,16 +78,20 @@ export default memo(() => {
 
   useEffect(() => {
     getCollectList()
-  }, [])
+  }, [profileUser])
 
   return (
     <CollectWrapper>
       <div className="people-header">
-        <div className="head-active">我的收藏夹</div>
-        <div className="newCollect" onClick={showCreateDialog}>
-          <PlusOutlined />
-          新建收藏夹
+        <div className="head-active">
+          {isProfile ? '我' : !profileUser?.gender ? '他' : '她'}的收藏夹
         </div>
+        {isProfile && (
+          <div className="newCollect" onClick={showCreateDialog}>
+            <PlusOutlined />
+            新建收藏夹
+          </div>
+        )}
       </div>
       <div className="people-collect">
         {collects?.length ? (
@@ -98,42 +104,50 @@ export default memo(() => {
                 <div className="time">
                   {`${dayjs(item.createTime).format('YYYY-MM-DD')} 更新 · ${item.count} 条内容`}
                 </div>
-                <div className="operation">
-                  <div className="editCollect" onClick={() => editCollectBtn(item)}>
-                    <FormOutlined />
-                    编辑
+                {isProfile && (
+                  <div className="operation">
+                    <div className="editCollect" onClick={() => editCollectBtn(item)}>
+                      <FormOutlined />
+                      编辑
+                    </div>
+                    <div className="delCollect" onClick={() => delCollectBtn(item)}>
+                      <DeleteFilled />
+                      删除
+                    </div>
                   </div>
-                  <div className="delCollect" onClick={() => delCollectBtn(item)}>
-                    <DeleteFilled />
-                    删除
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           ))
         ) : (
-          <Empty />
+          <div className="empty">
+            <Empty />
+          </div>
         )}
       </div>
-      {dialogStateCode === 0 && (
-        <CollectDialog
-          title="创建新收藏夹"
-          backContent={backContent}
-          hidden={hidden}
-          submitFn={newSubmitFn}
-        />
-      )}
-      {dialogStateCode === 1 && (
-        <CollectDialog
-          submitFn={editSubmitFn}
-          title="编辑收藏夹"
-          backContent={backContent}
-          collect={currentCollect}
-          hidden={hidden}
-        />
-      )}
-      {dialogStateCode === 2 && (
-        <DelDialog backContent={backContent} submitFn={delSubmitFn} tips={tips} />
+      {isProfile && (
+        <>
+          {dialogStateCode === 0 && (
+            <CollectDialog
+              title="创建新收藏夹"
+              backContent={backContent}
+              hidden={hidden}
+              submitFn={newSubmitFn}
+            />
+          )}
+          {dialogStateCode === 1 && (
+            <CollectDialog
+              submitFn={editSubmitFn}
+              title="编辑收藏夹"
+              backContent={backContent}
+              collect={currentCollect}
+              hidden={hidden}
+            />
+          )}
+          {dialogStateCode === 2 && (
+            <DelDialog backContent={backContent} submitFn={delSubmitFn} tips={tips} />
+          )}
+        </>
       )}
     </CollectWrapper>
   )

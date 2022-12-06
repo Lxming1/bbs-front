@@ -104,32 +104,23 @@ export default styled.div`
     }
 
     .otherRightBtn {
-      height: 34px;
-      border-color: #056de8;
-      position: absolute;
-      right: 24px;
-      bottom: 24px;
-      text-decoration: none;
-      padding: 0 16px;
-      width: auto !important;
-      display: flex;
-      align-items: center;
-      font-weight: 500;
+      > div {
+        height: 34px;
+        border-color: #056de8;
+        position: absolute;
+        right: 24px;
+        bottom: 24px;
+        text-decoration: none;
+        padding: 0 16px;
+        width: auto !important;
+        display: flex;
+        align-items: center;
+        font-weight: 500;
 
-      svg {
-        font-size: 16px;
-        margin-right: 6px;
-      }
-    }
-
-    .careBtn {
-      background-color: #8590a6;
-      color: #fff;
-      border-color: #76839b !important;
-
-      :hover {
-        background-color: #76839b;
-        border-color: #76839b !important;
+        svg {
+          font-size: 16px;
+          margin-right: 6px;
+        }
       }
     }
   }

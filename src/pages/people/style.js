@@ -15,4 +15,15 @@ export default styled.div`
       width: 296px;
     }
   }
+
+  .careBtn {
+    background-color: #8590a6;
+    color: #fff;
+    border-color: #76839b !important;
+
+    :hover {
+      background-color: #76839b;
+      border-color: #76839b !important;
+    }
+  }
 `

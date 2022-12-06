@@ -10,6 +10,8 @@ export default styled.div`
     background-color: #fff;
     width: 694px;
     margin-right: 10px;
+    min-height: calc(100vh - 300px);
+    position: relative;
 
     .tabs {
       height: 51px;
@@ -53,17 +55,18 @@ export default styled.div`
       color: #121212;
       height: 50px;
       line-height: 50px;
-      margin-left: 20px;
+      margin: 0 20px;
       border-bottom: 1px solid #f6f6f6;
       font-size: 15px;
+      position: relative;
 
       .head-active {
         font-weight: 600;
-        cursor: pointer;
       }
 
       div {
         margin-right: 36px;
+        cursor: pointer;
       }
     }
   }

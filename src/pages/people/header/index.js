@@ -8,18 +8,16 @@ import {
   CheckOutlined,
 } from '@ant-design/icons'
 import { memo, useEffect, useState } from 'react'
-import { useStoreInfo } from '@/hooks'
 import HeaderWrapper from './styled'
-import { useParams } from 'react-router-dom'
-import { getUserDetail } from '@/service/users'
-import { getAagByTime, debounce } from '@/utils'
+import { getAagByTime, debounce, verifyLogin } from '@/utils'
 import { cancelCare, care, getRelationship } from '@/service/users'
+import { useStoreInfo } from '@/hooks'
+import { Image } from 'antd'
+import RelationBtn from '../relationBtn'
 
-export default memo(() => {
-  const { user } = useStoreInfo('user')
-  const { uid } = useParams()
-  const [isProfile, setIsProfile] = useState(false)
-  const [peopleInfo, setPeopleInfo] = useState({})
+export default memo(({ peopleInfo }) => {
+  const { isProfile } = useStoreInfo('isProfile')
+  const { isLogin } = useStoreInfo('isLogin')
   const [showDetail, setShowDetail] = useState(false)
   const [relation, setRelation] = useState({
     care: false,
@@ -27,45 +25,34 @@ export default memo(() => {
   })
   const [age, setAge] = useState(0)
 
-  const careU = async () => {
-    const result = await care(peopleInfo.id)
-    setRelation(result.data)
-  }
-
-  const cancelCareU = async () => {
-    const result = await cancelCare(peopleInfo.id)
-    setRelation(result.data)
+  const reqFn = async () => {
+    if (!peopleInfo?.id) return
+    if (isProfile) {
+      setAge(getAagByTime(peopleInfo?.birthday))
+      return
+    }
+    if (isLogin) {
+      const { data: relation } = await getRelationship(peopleInfo?.id)
+      setRelation(relation)
+    }
   }
 
   useEffect(() => {
-    if (user.id === undefined) return
-    if (parseInt(uid) === user.id) {
-      setIsProfile(true)
-      setPeopleInfo(user)
-      setAge(getAagByTime(user?.birthday))
-      return
-    }
-    getUserDetail(uid).then(({ data: userInfo }) => {
-      setIsProfile(false)
-      getRelationship(userInfo.id).then((res) => {
-        setRelation(res.data)
-      })
-      setPeopleInfo(userInfo)
-      setAge(getAagByTime(userInfo?.birthday))
-    })
-  }, [user, uid])
+    reqFn()
+  }, [isProfile, peopleInfo])
+
   return (
     <HeaderWrapper>
       <div className="header boxShadow">
         <div className="avatar">
-          <img src={peopleInfo.avatar_url} alt="" />
+          <Image src={peopleInfo?.avatar_url} alt="" />
         </div>
         <div className="info">
-          <h1 className="name">{peopleInfo.name}</h1>
+          <h1 className="name">{peopleInfo?.name}</h1>
           <div className="detailInfo">
             {!showDetail ? (
               <div className="gender">
-                {peopleInfo.gender === 0 ? <ManOutlined /> : <WomanOutlined />}
+                {peopleInfo?.gender === 0 ? <ManOutlined /> : <WomanOutlined />}
               </div>
             ) : (
               <ul>
@@ -111,20 +98,9 @@ export default memo(() => {
           <a href="#/profile/edit" className="Button rightBtn">
             编辑个人资料
           </a>
-        ) : relation?.care && relation?.fan ? (
-          <div className="sendBtn otherRightBtn careBtn" onClick={debounce(cancelCareU, 300, true)}>
-            <SwapOutlined />
-            互相关注
-          </div>
-        ) : relation?.care ? (
-          <div className="sendBtn otherRightBtn careBtn" onClick={debounce(cancelCareU, 300, true)}>
-            <CheckOutlined />
-            已关注
-          </div>
         ) : (
-          <div className="sendBtn otherRightBtn" onClick={debounce(careU, 300, true)}>
-            <PlusOutlined />
-            关注{!peopleInfo.gender ? '他' : '她'}
+          <div className="otherRightBtn">
+            <RelationBtn relation={relation} newRelation={setRelation} peopleInfo={peopleInfo} />
           </div>
         )}
       </div>

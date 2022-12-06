@@ -154,6 +154,17 @@ body, textarea, select, input, button {
   margin: 0 !important
 }
 
+.empty {
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
+}
+
+.Box {
+  padding: 20px
+}
+
 .ant-tabs-tab-active {
   font-size: 16px;
   font-weight: 600;

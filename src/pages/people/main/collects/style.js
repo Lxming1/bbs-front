@@ -21,7 +21,7 @@ export default styled.div`
   .newCollect {
     position: absolute;
     right: 0;
-    margin-right: 20px !important;
+    margin-right: 0 !important;
     color: #056de8;
     cursor: pointer;
 
