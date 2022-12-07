@@ -17,9 +17,10 @@ import NotFount from '@/pages/notFount'
 import Forget from '@/pages/auth/forget'
 import Edit from '@/pages/people/edit'
 import New from '@/pages/home/left/moment/new'
-import PeopleMoment from '@/pages/people/main/moments'
-import Collection from '@/pages/people/main/collects'
-import Follow from '@/pages/people/main/follow'
+import PeopleMoment from '@/pages/people/main/left/moments'
+import Collection from '@/pages/people/main/left/collects'
+import Follow from '@/pages/people/main/left/follow'
+import CollectDetail from '@/pages/people/main/left/collects/detail'
 
 const routes = [
   {
@@ -59,6 +60,10 @@ const routes = [
             element: <Follow type="followers" />,
           },
         ],
+      },
+      {
+        path: '/collection/:collectId',
+        element: <CollectDetail />,
       },
       {
         path: '/moment/new',

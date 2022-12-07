@@ -44,7 +44,6 @@ export default styled.div`
         font-size: 18px;
         font-synthesis: style;
         font-weight: 600;
-        cursor: pointer;
 
         svg {
           color: #8590a6;

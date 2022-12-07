@@ -7,6 +7,7 @@ import {
   SET_PROFILE_USER,
   SET_IS_PROFILE,
   SET_IS_LOGIN,
+  SET_PEOPLE_INDEX,
 } from './constant'
 import { Map } from 'immutable'
 
@@ -19,6 +20,7 @@ const initialState = Map({
   profileUser: null,
   isProfile: false,
   isLogin: false,
+  peopleIndex: 0,
 })
 
 function reducer(state = initialState, actions) {
@@ -39,6 +41,8 @@ function reducer(state = initialState, actions) {
       return state.set('isProfile', actions.isProfile)
     case SET_IS_LOGIN:
       return state.set('isLogin', actions.isLogin)
+    case SET_PEOPLE_INDEX:
+      return state.set('peopleIndex', actions.peopleIndex)
     default:
       return state
   }

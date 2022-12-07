@@ -7,23 +7,36 @@ import {
   SwapOutlined,
   CheckOutlined,
 } from '@ant-design/icons'
-import { memo, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import HeaderWrapper from './styled'
 import { getAagByTime, debounce, verifyLogin } from '@/utils'
 import { cancelCare, care, getRelationship } from '@/service/users'
 import { useStoreInfo } from '@/hooks'
 import { Image } from 'antd'
 import RelationBtn from '../relationBtn'
+import { useDispatch } from 'react-redux'
+import { setProfileUser } from '../../../store/actionCreater/peopleAction'
 
 export default memo(({ peopleInfo }) => {
   const { isProfile } = useStoreInfo('isProfile')
   const { isLogin } = useStoreInfo('isLogin')
+  const dispatch = useDispatch()
   const [showDetail, setShowDetail] = useState(false)
   const [relation, setRelation] = useState({
     care: false,
     fan: false,
   })
   const [age, setAge] = useState(0)
+  const changeRelation = (newRelation) => {
+    setRelation(newRelation)
+    // const people = { ...peopleInfo }
+    // if (relation.fan && !newRelation.fan) {
+    //   people.fansCount--
+    // } else if (!relation.fan && newRelation.fan) {
+    //   people.fansCount++
+    // }
+    // dispatch(setProfileUser(people))
+  }
 
   const reqFn = async () => {
     if (!peopleInfo?.id) return
@@ -100,7 +113,7 @@ export default memo(({ peopleInfo }) => {
           </a>
         ) : (
           <div className="otherRightBtn">
-            <RelationBtn relation={relation} newRelation={setRelation} peopleInfo={peopleInfo} />
+            <RelationBtn relation={relation} newRelation={changeRelation} peopleInfo={peopleInfo} />
           </div>
         )}
       </div>

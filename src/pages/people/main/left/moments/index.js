@@ -1,4 +1,4 @@
-import { memo, React, useEffect, useRef, useState } from 'react'
+import { memo, React, useCallback, useEffect, useRef, useState } from 'react'
 import { getMomentByUser } from '@/service/moment'
 import { useParams } from 'react-router-dom'
 import MomentsWrapper from './style'
@@ -20,7 +20,8 @@ export default memo(() => {
   )
   const pagesize = 10
   const [pagenum, setPagenum] = useState(1)
-  const [currentMoments, setCurrentMoments] = useState([])
+  let [currentMoments, setCurrentMoments] = useState([])
+  setCurrentMoments = useCallback(setCurrentMoments, [])
   const [userId, setUserId] = useState(null)
   const [delDialogShow, setDelDialogShow] = useState(false)
   const [currentMoment, setCurrentMoment] = useState({})
@@ -82,7 +83,6 @@ export default memo(() => {
       删除
     </div>
   )
-
   const editBtn = (moment) => (
     <div className="editCollect" onClick={() => editMomentBtn(moment)} key="edit">
       <FormOutlined />
@@ -92,30 +92,21 @@ export default memo(() => {
 
   const editMomentBtn = (moment) => {}
 
-  useEffect(() => {
-    if (!profileUser) return
-    setUserId(profileUser?.id)
-    reqMoment(profileUser?.id)
-    return () => {
-      window.removeEventListener('scroll', fn)
-      setCurrentMoments([])
-    }
-  }, [profileUser])
-
   const tips = {
     title: '删除动态',
     alert: '你确认要删除这个动态吗？',
   }
-
   useEffect(() => {
     window.addEventListener('scroll', fn)
-    idRef.current = profileUser?.id
-    setUserId(idRef.current)
+    idRef.current = parseInt(uid)
     num.current = 1
+    setUserId(idRef.current)
+    reqMoment(idRef.current)
     setPagenum(num.current)
     setCurrentMoments([])
     return () => {
       window.removeEventListener('scroll', fn)
+      setCurrentMoments([])
     }
   }, [uid])
 
@@ -138,10 +129,10 @@ export default memo(() => {
         ))
       ) : (
         <div className="empty">
-          <Empty />
+          <Empty description="还没有发表动态" />
         </div>
       )}
-      {isEnd && (
+      {isEnd && currentMoments.length !== 0 && (
         <div className="Box">
           <Empty description="没有更多动态啦" />
         </div>

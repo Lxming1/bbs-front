@@ -38,6 +38,7 @@ export default styled.div`
           font-synthesis: style;
           font-weight: 600;
           color: #121212;
+          cursor: pointer;
         }
         .intro {
           color: #646464;

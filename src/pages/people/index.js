@@ -5,21 +5,21 @@ import Main from './main'
 import { useParams } from 'react-router-dom'
 import { useStoreInfo } from '@/hooks'
 import { useDispatch } from 'react-redux'
-import { getProfileUser } from '../../store/actionCreater/peopleAction'
+import { getProfileUser, setPeopleIndex } from '../../store/actionCreater/peopleAction'
 
 const People = memo(() => {
-  const { profileUser } = useStoreInfo('user', 'profileUser')
+  const { profileUser, peopleIndex } = useStoreInfo('user', 'profileUser', 'peopleIndex')
   const { uid } = useParams()
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getProfileUser(uid))
+    dispatch(setPeopleIndex(0))
   }, [uid])
-
   return (
     <PeopleWrapper>
       <Header peopleInfo={profileUser} />
-      <Main peopleInfo={profileUser} />
+      <Main peopleInfo={profileUser} peopleIndex={peopleIndex} />
     </PeopleWrapper>
   )
 })

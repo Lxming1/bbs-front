@@ -10,6 +10,7 @@ import { xmMessage } from '@/utils'
 import DelDialog from '@/components/dialogs/delDialog'
 import { delCollect } from '@/service/collect'
 import { useStoreInfo } from '@/hooks'
+import ProfileCollectionBtn from './profileCollectionBtn'
 
 export default memo(() => {
   const { profileUser, isProfile } = useStoreInfo('user', 'profileUser', 'isProfile')
@@ -97,31 +98,25 @@ export default memo(() => {
         {collects?.length ? (
           collects?.map((item) => (
             <div className="collectItem" key={item.id}>
-              <div className="collectItemTitle">
+              <a href={`#/collection/${item.id}`} className="collectItemTitle">
                 {item.name} {item.status === 1 && <LockFilled />}
-              </div>
+              </a>
               <div className="collectItemDetail">
                 <div className="time">
                   {`${dayjs(item.createTime).format('YYYY-MM-DD')} 更新 · ${item.count} 条内容`}
                 </div>
                 {isProfile && (
-                  <div className="operation">
-                    <div className="editCollect" onClick={() => editCollectBtn(item)}>
-                      <FormOutlined />
-                      编辑
-                    </div>
-                    <div className="delCollect" onClick={() => delCollectBtn(item)}>
-                      <DeleteFilled />
-                      删除
-                    </div>
-                  </div>
+                  <ProfileCollectionBtn
+                    editCollectBtn={() => editCollectBtn(item)}
+                    delCollectBtn={() => delCollectBtn(item)}
+                  />
                 )}
               </div>
             </div>
           ))
         ) : (
           <div className="empty">
-            <Empty />
+            <Empty description="还没有创建收藏夹" />
           </div>
         )}
       </div>

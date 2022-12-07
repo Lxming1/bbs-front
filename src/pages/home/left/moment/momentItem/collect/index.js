@@ -14,13 +14,13 @@ export default memo(({ setShowCollect, momentId }) => {
   const [collectState, setCollectState] = useState(0)
 
   const getCollectList = async () => {
-    const result = await getCollectByUid(user.id)
+    const result = await getCollectByUid(user.id, momentId)
     setCollectList(result.data)
   }
 
   const collectControl = async (isCollected, id) => {
     isCollected ? await cancelCollect(id, momentId) : await addToCollect(id, momentId)
-    getCollectList()
+    getCollectList(momentId)
   }
 
   useEffect(() => {

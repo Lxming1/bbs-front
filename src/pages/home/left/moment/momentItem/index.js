@@ -79,12 +79,12 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) =
     const result = isPraise ? await cancelPraiseMoment(moment.id) : await praiseMoment(moment.id)
     let { praiseCount, momentId } = result.data
     momentId = parseInt(momentId)
+    setIsPraise((isPraise) => !isPraise)
     setCurrentMoments((moments) => {
       return moments.map((item) => {
         if (item.id === momentId) {
           item.praiseCount = praiseCount
           item.isPraise = !item.isPraise
-          setIsPraise(item.isPraise)
         }
         return item
       })
