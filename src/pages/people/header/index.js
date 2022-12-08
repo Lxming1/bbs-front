@@ -1,21 +1,13 @@
-import {
-  ManOutlined,
-  WomanOutlined,
-  DownOutlined,
-  UpOutlined,
-  PlusOutlined,
-  SwapOutlined,
-  CheckOutlined,
-} from '@ant-design/icons'
-import { memo, useCallback, useEffect, useState } from 'react'
-import HeaderWrapper from './styled'
-import { getAagByTime, debounce, verifyLogin } from '@/utils'
-import { cancelCare, care, getRelationship } from '@/service/users'
+import { ManOutlined, WomanOutlined, DownOutlined, UpOutlined } from '@ant-design/icons'
+import { memo, useEffect, useState } from 'react'
+import HeaderWrapper from './style'
+import { getAagByTime } from '@/utils'
+import { getRelationship } from '@/service/users'
 import { useStoreInfo } from '@/hooks'
 import { Image } from 'antd'
-import RelationBtn from '../relationBtn'
+import RelationBtn from '@/components/relationBtn'
 import { useDispatch } from 'react-redux'
-import { setProfileUser } from '../../../store/actionCreater/peopleAction'
+import { getProfileUser } from '@/store/actionCreater/peopleAction'
 
 export default memo(({ peopleInfo }) => {
   const { isProfile } = useStoreInfo('isProfile')
@@ -29,13 +21,7 @@ export default memo(({ peopleInfo }) => {
   const [age, setAge] = useState(0)
   const changeRelation = (newRelation) => {
     setRelation(newRelation)
-    // const people = { ...peopleInfo }
-    // if (relation.fan && !newRelation.fan) {
-    //   people.fansCount--
-    // } else if (!relation.fan && newRelation.fan) {
-    //   people.fansCount++
-    // }
-    // dispatch(setProfileUser(people))
+    dispatch(getProfileUser(peopleInfo.id))
   }
 
   const reqFn = async () => {

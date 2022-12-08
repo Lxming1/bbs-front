@@ -2,10 +2,10 @@ import { memo } from 'react'
 import { useDispatch } from 'react-redux'
 import { setUserMes } from '@/store/actionCreater/authActions'
 import HeaderWrapper from './style'
-import { Input, Menu, Popover } from 'antd'
+import { Input, Menu, Popover, Badge } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useStoreInfo } from '@/hooks'
-import { UserOutlined, PoweroffOutlined } from '@ant-design/icons'
+import { UserOutlined, PoweroffOutlined, BellFilled } from '@ant-design/icons'
 import { setIsLogin } from '../../../store/actionCreater/authActions'
 
 export const Header = memo(() => {
@@ -44,8 +44,8 @@ export const Header = memo(() => {
           我的主页
         </a>
       </li>
-      <li>
-        <a href="#/login" onClick={logout}>
+      <li onClick={logout}>
+        <a href="#/login">
           <PoweroffOutlined style={{ marginRight: '6px' }} />
           退出
         </a>
@@ -72,6 +72,14 @@ export const Header = memo(() => {
           <Input.Search placeholder="input search text" style={{ width: 200 }} />
         </div>
         <div className="rightContent">
+          <Badge
+            count={userInfo?.noticeCount}
+            className="notices"
+            size="small"
+            onClick={() => navigate('/notices')}>
+            <BellFilled />
+            <span className="title">消息</span>
+          </Badge>
           {userInfo === null || Object.keys(userInfo).length === 0 ? (
             <a href="#/login" className="link link-hover text-md">
               登录

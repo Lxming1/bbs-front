@@ -5,6 +5,7 @@ export default styled.div`
   align-items: center;
   background-color: white;
   box-shadow: 0 1px 3px hsl(0deg 0% 7% / 10%);
+  min-width: 1024px;
 
   .mainBox {
     display: flex;
@@ -40,6 +41,20 @@ export default styled.div`
     .rightContent {
       display: flex;
       align-items: center;
+
+      .notices {
+        font-size: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #8590a6;
+        margin-right: 20px;
+        cursor: pointer;
+
+        .title {
+          font-size: 12px;
+        }
+      }
 
       .avatar {
         height: 30px;

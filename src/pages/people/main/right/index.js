@@ -1,7 +1,7 @@
 import { LikeFilled } from '@ant-design/icons'
-import { memo, useEffect } from 'react'
+import { memo } from 'react'
 import { useDispatch } from 'react-redux'
-import { setPeopleIndex } from '../../../../store/actionCreater/peopleAction'
+import { setPeopleIndex } from '@/store/actionCreater/peopleAction'
 import PeopleRightWrapper from './style'
 
 export default memo(({ peopleInfo }) => {

@@ -137,14 +137,13 @@ export default styled.div`
 
         .collectedBtn {
           width: 74px;
-          height: 32px;
+          line-height: 32px;
           text-align: center;
           background-color: #8590a6;
           color: #fff;
 
           :hover {
             background-color: #76839b;
-            border-color: #76839b;
           }
         }
       }

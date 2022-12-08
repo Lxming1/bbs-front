@@ -105,6 +105,7 @@ body, textarea, select, input, button {
 
 .boxShadow {
   box-shadow: 0 1px 3px hsl(0deg 0% 7% / 10%);
+  border-radius: 2px;
 }
 
 .Button {

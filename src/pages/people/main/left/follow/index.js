@@ -1,11 +1,11 @@
 import { memo, useEffect, useState } from 'react'
 import { useStoreInfo } from '@/hooks'
 import { getCareList, getFansList } from '@/service/users'
-import RelationBtn from '../../../relationBtn'
+import RelationBtn from '@/components/relationBtn'
 import FollowWrapper from './style'
 import { Empty } from 'antd'
 import { useDispatch } from 'react-redux'
-import { setProfileUser } from '../../../../../store/actionCreater/peopleAction'
+import { setProfileUser } from '@/store/actionCreater/peopleAction'
 
 export default memo(({ type }) => {
   const { profileUser: peopleInfo, isProfile } = useStoreInfo('user', 'profileUser', 'isProfile')

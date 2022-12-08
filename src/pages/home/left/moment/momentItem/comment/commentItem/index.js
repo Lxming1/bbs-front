@@ -79,7 +79,7 @@ export default memo(({ comment, momentId, name, getComments }) => {
               )}
             </div>
             <Popover placement="bottom" className="rightMenu" content={rightMenu()} trigger="click">
-              {comment.author.id === user.id && <EllipsisOutlined />}
+              {comment?.author?.id === user?.id && <EllipsisOutlined />}
             </Popover>
           </div>
           <div className="content">{comment.content}</div>

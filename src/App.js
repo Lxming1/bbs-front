@@ -2,6 +2,7 @@ import { memo, Suspense } from 'react'
 import { useDispatch } from 'react-redux'
 import AppWrapper from './router'
 import { setUserMes, setIsLogin } from './store/actionCreater/authActions'
+import { Header } from './pages/common/header'
 
 export default memo(function App() {
   const dispatch = useDispatch()
@@ -12,6 +13,7 @@ export default memo(function App() {
 
   return (
     <div>
+      <Header />
       <Suspense fallback={<div>page loading</div>}>
         <AppWrapper />
       </Suspense>

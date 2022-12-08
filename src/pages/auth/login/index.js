@@ -36,11 +36,16 @@ const Login = memo(() => {
       setIsSending(true)
       try {
         const path = await dispatch(loginAction({ email, password, tokenState }))
+        if (path === 'err') {
+          setIsSending(true)
+          return
+        }
         navigate(path)
       } catch (e) {
-        setIsSending(false)
+        throw new Error(e)
       }
     } catch (e) {
+      setIsSending(false)
       console.log(e)
     }
   }, 1000)
