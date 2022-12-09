@@ -5,7 +5,8 @@ export default styled.div`
   padding: 20px 20px 10px 20px;
   background-color: #fff;
   margin: 0 auto;
-  margin-top: 35px;
+  top: 105px;
+  position: relative;
 
   .left {
     position: relative;

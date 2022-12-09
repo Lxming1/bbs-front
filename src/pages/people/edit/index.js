@@ -6,7 +6,7 @@ import { editUserInfo, getAddress, uploadAvatar } from '@/service/users'
 import EditWrapper from './style'
 import { CameraFilled, EditFilled, RightOutlined, RollbackOutlined } from '@ant-design/icons'
 import { xmMessage, verifyName } from '@/utils'
-import { setUserMes } from '../../../store/actionCreater/authActions'
+import { handleUserMes, setUserMes } from '../../../store/actionCreater/authActions'
 import { useDispatch } from 'react-redux'
 
 export default memo(() => {
@@ -169,14 +169,7 @@ export default memo(() => {
       introduction: introduction.value,
     })
     xmMessage(result.code, result.message)
-    dispatch(setUserMes(result.data))
-    let storeUser = JSON.parse(window.localStorage.getItem('bbs-user'))
-    if (storeUser) {
-      result.data.token = storeUser.token
-      window.localStorage.setItem('bbs-user', JSON.stringify(result.data))
-    } else {
-      window.localStorage.setItem('bbs-user', JSON.stringify(result.data))
-    }
+    dispatch(handleUserMes(result.data))
   }
 
   const changeIntroduction = (e) => {

@@ -1,4 +1,4 @@
-import { memo, React } from 'react'
+import { memo, React, useEffect } from 'react'
 
 import Right from './right'
 import Left from './left'

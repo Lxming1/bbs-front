@@ -6,6 +6,11 @@ export default styled.div`
   background-color: white;
   box-shadow: 0 1px 3px hsl(0deg 0% 7% / 10%);
   min-width: 1024px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
 
   .mainBox {
     display: flex;

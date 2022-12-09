@@ -53,7 +53,7 @@ export default styled.div`
     }
 
     .rightBtn {
-      > div {
+      > button {
         height: 34px;
         border-color: #056de8;
         text-decoration: none;
@@ -67,5 +67,10 @@ export default styled.div`
         }
       }
     }
+  }
+
+  .pagination {
+    padding: 20px 0;
+    text-align: center;
   }
 `

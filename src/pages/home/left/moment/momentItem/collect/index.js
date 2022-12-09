@@ -36,7 +36,6 @@ export default memo(({ setShowCollect, momentId }) => {
     }
     if (title.trim() === '') return
     const result = await createCollect(title, code)
-    if (result.code === undefined) return
     xmMessage(result.code, result.message)
     await getCollectList()
     setCollectState(0)

@@ -22,6 +22,7 @@ import Follow from '../pages/people/main/left/follow'
 import CollectDetail from '../pages/people/main/left/collects/detail'
 import Notices from '../pages/notices'
 import NoticesItem from '../pages/notices/items'
+import Moment from '../pages/moment'
 
 const routes = [
   {
@@ -67,9 +68,17 @@ const routes = [
     element: <New />,
   },
   {
+    path: '/moment/:momentId',
+    element: <Moment />,
+  },
+  {
     path: '/notices',
     element: <Notices />,
     children: [
+      {
+        path: '/notices',
+        element: <NoticesItem type="reply" />,
+      },
       {
         path: '/notices/reply',
         element: <NoticesItem type="reply" />,

@@ -39,6 +39,7 @@ export const MomentItemWrapper = styled.div`
     line-height: 1.6;
     font-synthesis: style;
     font-weight: 600;
+    cursor: pointer;
   }
 
   .author {

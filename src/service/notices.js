@@ -27,3 +27,9 @@ export const delNotice = (noticesId) => {
     method: 'delete',
   })
 }
+
+export const getNoticeCountDetail = () => {
+  return request({
+    url: `/notices/all`,
+  })
+}

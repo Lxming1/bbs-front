@@ -12,6 +12,19 @@ export const setUserMes = (user) => ({
   user,
 })
 
+export const handleUserMes = (user) => {
+  return (dispatch) => {
+    let storeUser = JSON.parse(window.localStorage.getItem('bbs-user'))
+    if (storeUser) {
+      user.token = storeUser.token
+      window.localStorage.setItem('bbs-user', JSON.stringify(user))
+    } else {
+      window.localStorage.setItem('bbs-user', JSON.stringify(user))
+    }
+    dispatch(setUserMes(user))
+  }
+}
+
 export const loginAction = ({ email, password, tokenState }) => {
   return async (dispatch) => {
     return new Promise(async (resolve, reject) => {

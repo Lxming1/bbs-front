@@ -20,7 +20,7 @@ import { Image } from 'antd'
 import { verifyLogin, xmMessage } from '../../../../../utils'
 
 const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) => {
-  const { user, isLogin } = useStoreInfo('user', 'isLogin')
+  const { isLogin } = useStoreInfo('isLogin')
   const [isOpen, setIsOpen] = useState(false)
   const [commentOpen, setCommentOpen] = useState(false)
   const [total, setTotal] = useState(0)
@@ -30,17 +30,17 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) =
   const [isPraise, setIsPraise] = useState(moment.isPraise)
 
   setShowCollect = useCallback(setShowCollect, [])
-  const getComments = useCallback(async () => {
+  const getComments = useCallback(async (id) => {
     const {
       data: { total, comments: commentList },
-    } = await getCommentList(moment.id)
+    } = await getCommentList(id)
     setComments(commentList)
     setTotal(total)
   })
 
   useEffect(() => {
     if (commentOpen && firstOpen) {
-      getComments()
+      getComments(moment.id)
       setFirstOpen(false)
     }
   }, [commentOpen])
@@ -93,7 +93,9 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) =
 
   return (
     <MomentItemWrapper space={space}>
-      <div className="title">{moment.title}</div>
+      <a href={`#/moment/${moment.id}`} className="title">
+        {moment.title}
+      </a>
       {!isOpen ? (
         moment?.images === null ? (
           <div className="contentBox" onClick={() => setIsOpen(true)}>
@@ -174,7 +176,12 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) =
         )}
       </div>
       {commentOpen && (
-        <Comment comments={comments} total={total} momentId={moment.id} getComments={getComments} />
+        <Comment
+          comments={comments}
+          total={total}
+          momentId={moment.id}
+          getComments={() => getComments(moment?.id)}
+        />
       )}
       {showCollect && <Collect setShowCollect={setShowCollect} momentId={moment.id} />}
     </MomentItemWrapper>

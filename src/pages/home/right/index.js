@@ -13,9 +13,9 @@ const Right = memo(() => {
 
   return (
     <RightWrapper>
-      <div className="sendBtn" onClick={createMoment}>
+      <button className="sendBtn" onClick={createMoment}>
         发表动态
-      </div>
+      </button>
     </RightWrapper>
   )
 })

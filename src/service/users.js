@@ -54,9 +54,9 @@ export const getAvatar = (userId) => {
   })
 }
 
-export const getUserDetail = (userId) => {
+export const getUserDetail = (uid, type = 'profile') => {
   return request({
-    url: `/users/${userId}/detail`,
+    url: `/users/${uid}/detail/${type}`,
   })
 }
 

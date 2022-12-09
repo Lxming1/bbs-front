@@ -104,7 +104,7 @@ export default styled.div`
     }
 
     .otherRightBtn {
-      > div {
+      > button {
         height: 34px;
         border-color: #056de8;
         position: absolute;

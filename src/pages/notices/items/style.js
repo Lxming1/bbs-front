@@ -1,12 +1,16 @@
 import styled from 'styled-components'
 
 export default styled.div`
+  padding-bottom: 100px;
+  min-height: calc(100vh - 132px);
+  position: relative;
+  margin-bottom: 10px;
+
   .noticeItem {
     padding: 24px 0;
     position: relative;
     display: flex;
     justify-content: space-between;
-    cursor: pointer;
     align-items: center;
 
     .hidden {
@@ -77,7 +81,7 @@ export default styled.div`
           margin-right: 14px;
         }
 
-        .bottom {
+        .noticeBottom {
           display: flex;
           align-items: center;
           color: #999;
@@ -88,7 +92,7 @@ export default styled.div`
             }
           }
 
-          > div {
+          > button {
             margin-right: 15px;
             font-size: 13px;
             cursor: pointer;
@@ -129,7 +133,7 @@ export default styled.div`
     }
 
     .followBtn {
-      > div {
+      > button {
         height: 34px;
         border-color: #056de8;
         text-decoration: none;
@@ -154,5 +158,12 @@ export default styled.div`
         }
       }
     }
+  }
+
+  .pagination {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    text-align: center;
   }
 `

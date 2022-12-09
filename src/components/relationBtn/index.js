@@ -21,19 +21,19 @@ export default memo(({ relation, peopleInfo, newRelation }) => {
   }
 
   return relation?.care && relation?.fan ? (
-    <div className="sendBtn careBtn" onClick={debounce(cancelCareU, 300, true)}>
+    <button className="sendBtn careBtn" onClick={debounce((e) => cancelCareU(e), 300, true)}>
       <SwapOutlined />
       互相关注
-    </div>
+    </button>
   ) : relation?.care ? (
-    <div className="sendBtn careBtn" onClick={debounce(cancelCareU, 300, true)}>
+    <button className="sendBtn careBtn" onClick={debounce((e) => cancelCareU(e), 300, true)}>
       <CheckOutlined />
       已关注
-    </div>
+    </button>
   ) : (
-    <div className="sendBtn" onClick={debounce(careU, 300, true)}>
+    <button className="sendBtn" onClick={debounce((e) => careU(e), 300, true)}>
       <PlusOutlined />
       关注{!peopleInfo?.gender ? '他' : '她'}
-    </div>
+    </button>
   )
 })

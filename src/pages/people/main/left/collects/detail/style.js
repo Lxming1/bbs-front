@@ -3,10 +3,11 @@ import styled from 'styled-components'
 export default styled.div`
   width: 1000px;
   margin: 0 auto;
-  margin-top: 10px;
-  display: flex;
+  position: relative;
+  top: 70px;
 
   .collectLeft {
+    float: left;
     width: 694px;
     margin-right: 10px;
 
@@ -77,8 +78,40 @@ export default styled.div`
   }
 
   .collectRight {
+    float: left;
+    margin-right: 50px;
     background-color: white;
     width: 243px;
-    padding: 20px;
+    position: fixed;
+    margin-left: 704px;
+
+    .rightTitle {
+      line-height: 50px;
+      color: #121212;
+      padding: 0 14px;
+      font-size: 15px;
+      font-weight: 600;
+      border-bottom: 1px solid #f6f6f6;
+    }
+
+    .collects {
+      .collectItem {
+        padding: 12px 14px;
+        box-shadow: 0 1px 1px hsl(0deg 0% 70% / 10%);
+
+        .collectName {
+          color: #175199;
+          font-size: 14px;
+          font-synthesis: style;
+          font-weight: 600;
+        }
+
+        .collectDesc {
+          font-size: 12px;
+          margin-top: 6px;
+          color: #8590a6;
+        }
+      }
+    }
   }
 `

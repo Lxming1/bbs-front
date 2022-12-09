@@ -72,24 +72,29 @@ export const Header = memo(() => {
           <Input.Search placeholder="input search text" style={{ width: 200 }} />
         </div>
         <div className="rightContent">
-          <Badge
-            count={userInfo?.noticeCount}
-            className="notices"
-            size="small"
-            onClick={() => navigate('/notices')}>
-            <BellFilled />
-            <span className="title">消息</span>
-          </Badge>
           {userInfo === null || Object.keys(userInfo).length === 0 ? (
             <a href="#/login" className="link link-hover text-md">
               登录
             </a>
           ) : (
-            <Popover placement="bottom" content={rightMenu()} trigger="click">
-              <div className="avatar">
-                <img src={userInfo?.avatar_url} alt="" />
-              </div>
-            </Popover>
+            <>
+              <Badge
+                count={
+                  userInfo?.noticeCount &&
+                  Object.values(userInfo?.noticeCount).reduce((pre, v) => pre + v)
+                }
+                className="notices"
+                size="small"
+                onClick={() => navigate('/notices/reply')}>
+                <BellFilled />
+                <span className="title">消息</span>
+              </Badge>
+              <Popover placement="bottom" content={rightMenu()} trigger="click">
+                <div className="avatar">
+                  <img src={userInfo?.avatar_url} alt="" />
+                </div>
+              </Popover>
+            </>
           )}
         </div>
       </div>

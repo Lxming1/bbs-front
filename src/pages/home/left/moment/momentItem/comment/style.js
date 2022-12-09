@@ -18,11 +18,6 @@ export default styled.div`
     display: flex;
     width: 100%;
     align-items: center;
-
-    /* .Input {
-      border-radius: 4px;
-      border: 1px solid rgb(235, 235, 235);
-    } */
   }
 
   .main {

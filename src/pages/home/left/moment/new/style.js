@@ -4,9 +4,9 @@ export default styled.div`
   width: 1000px;
   background-color: white;
   margin: 0 auto;
-  margin-top: 10px;
   padding: 20px 40px;
   position: relative;
+  top: 70px;
 
   .loading {
     position: absolute;

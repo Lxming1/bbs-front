@@ -1,15 +1,22 @@
 import { memo, useEffect, useState } from 'react'
-import { getNoticeList } from '../../../service/notices'
+import { getNoticeList, readNotices } from '../../../service/notices'
 import NoticesCollectWrapper from './style'
-import { Empty } from 'antd'
+import { Empty, Pagination } from 'antd'
 import dayjs from 'dayjs'
 import { DeleteOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons'
 import RelationBtn from '@/components/relationBtn'
+import { useStoreInfo } from '../../../hooks'
+import { useDispatch } from 'react-redux'
+import { handleUserMes, setUserMes } from '../../../store/actionCreater/authActions'
+import { getUserDetail } from '../../../service/users'
 
 export default memo(({ type }) => {
+  const { user } = useStoreInfo('user')
   const pagesize = 10
   const [pagenum, setPagenum] = useState(1)
   const [noticeList, setNoticeList] = useState([])
+  const [total, setTotal] = useState(0)
+  const dispatch = useDispatch()
 
   const replyBtn = (
     <>
@@ -39,9 +46,7 @@ export default memo(({ type }) => {
     },
   }
 
-  const newRelation = (relation, uid) => {
-    reqFn()
-  }
+  const newRelation = () => reqFn(pagenum)
 
   const userPage = (id) => {
     window.location.href = `#/people/${id}`
@@ -49,15 +54,33 @@ export default memo(({ type }) => {
 
   const action = actionMapping[type].content
 
-  const reqFn = async () => {
-    const result = await getNoticeList(type, pagenum, pagesize)
-    setNoticeList(result.data)
+  const reqFn = async (pagenum) => {
+    const {
+      data: { noticeList, total },
+    } = await getNoticeList(type, pagenum, pagesize)
+    setNoticeList(noticeList)
+    setTotal(total)
     // 读消息
-    console.log(result.data.map((item) => item.id))
+    const ids = noticeList.filter((item) => item.status === 0).map((item) => item.id)
+    await readNotices(ids)
+    setNoticeList((noticeList) =>
+      noticeList.map((item) => {
+        if (ids.includes(item.id)) {
+          item.status = 1
+        }
+        return item
+      })
+    )
+    const { data: userInfo } = await getUserDetail(user.id)
+    dispatch(handleUserMes(userInfo))
+  }
+  const changePage = (page) => {
+    setPagenum(page)
+    reqFn(page)
   }
 
   useEffect(() => {
-    reqFn()
+    reqFn(1)
     return () => {
       setNoticeList([])
     }
@@ -83,9 +106,9 @@ export default memo(({ type }) => {
                   </div>
                 </div>
                 {item?.content && <div className="content text-nowrap">{item?.content}</div>}
-                <div className="bottom">
+                <div className="noticeBottom">
                   <div className="time">
-                    {dayjs(new Date(item.createTime).getTime()).format('YYYY年MM月DD日 HH:mm')}
+                    {dayjs(item.createTime).format('YYYY年MM月DD日 HH:mm')}
                   </div>
                   {actionMapping[type].btn}
                   <div className="button hidden">
@@ -96,7 +119,9 @@ export default memo(({ type }) => {
               </div>
             </div>
             {type !== 'follow' ? (
-              <div className="right">
+              <div
+                className="right"
+                onClick={() => (window.location.href = `#/moment/${item?.moment.id}`)}>
                 {item?.moment?.images?.length ? (
                   <img src={`${item?.moment?.images?.[0]}?type=small`} alt="" />
                 ) : (
@@ -119,6 +144,15 @@ export default memo(({ type }) => {
           <Empty description="暂无消息" />
         </div>
       )}
+      <Pagination
+        hideOnSinglePage
+        className="pagination"
+        total={total}
+        showSizeChanger={false}
+        showTotal={(total) => `Total ${total} items`}
+        current={pagenum}
+        onChange={changePage}
+      />
     </NoticesCollectWrapper>
   )
 })

@@ -7,6 +7,8 @@ export default styled.div`
     box-sizing: content-box;
     text-align: center;
     padding: 24px 36px;
+    position: relative;
+    z-index: 1;
 
     .delTitle {
       box-sizing: border-box;
@@ -49,6 +51,7 @@ export default styled.div`
     background-color: white;
     overflow: auto;
     border-radius: 2px;
+    z-index: 1;
 
     .close {
       position: absolute;
@@ -126,6 +129,7 @@ export default styled.div`
         .collectBtn {
           width: 74px;
           height: 32px;
+          line-height: 32px;
           text-align: center;
           border-color: #056de8;
           color: #056de8;

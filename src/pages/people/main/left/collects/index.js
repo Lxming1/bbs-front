@@ -50,9 +50,7 @@ export default memo(() => {
 
   const submitFn = async (fn, title) => {
     if (title?.trim() === '') return
-    const result = await fn()
-    if (result.code === undefined) return
-    xmMessage(result.code, result.message)
+    await fn()
     await getCollectList()
     hidden()
   }

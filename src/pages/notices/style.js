@@ -4,13 +4,15 @@ export default styled.div`
   display: flex;
   margin: 0 auto;
   width: 980px;
+  position: relative;
+  top: 60px;
 
   .leftNav {
     width: 140px;
     background-color: white;
-    margin-top: 10px;
-    min-height: calc(100vh - 80px);
-    margin-right: 10px;
+    height: calc(100vh - 80px);
+    position: fixed;
+    top: 70px;
 
     .title {
       line-height: 62px;
@@ -49,6 +51,24 @@ export default styled.div`
       li {
         font-size: 14px;
         position: relative;
+
+        .count {
+          position: absolute;
+          height: 14px;
+          line-height: 14px;
+          left: 82px;
+          top: 13px;
+          padding: 0 8px;
+          font-size: 12px;
+          color: #fff;
+          font-weight: normal;
+          font-size: 12px;
+          white-space: nowrap;
+          text-align: center;
+          background: #ff4d4f;
+          border-radius: 10px;
+          box-shadow: 0 0 0 1px #fff;
+        }
 
         :hover {
           a {
@@ -95,6 +115,7 @@ export default styled.div`
 
   .rightContent {
     width: 820px;
+    margin-left: 150px;
 
     .title {
       margin-top: 10px;
@@ -103,7 +124,8 @@ export default styled.div`
       background-color: #fff;
       color: #666;
       font-size: 15px;
-      width: 100%;
+      width: 820px;
+      font-weight: 600;
     }
 
     .mainContent {

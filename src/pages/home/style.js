@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export default styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
+  margin-top: 70px;
+  width: 1000px;
+  margin: 70px auto;
 `

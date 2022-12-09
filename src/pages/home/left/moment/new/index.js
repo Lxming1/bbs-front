@@ -175,9 +175,9 @@ export default () => {
               <Checkbox />
             </Form.Item>
             <Form.Item name="submit">
-              <div className="sendBtn" onClick={submit}>
+              <button className="sendBtn" onClick={submit}>
                 发布
-              </div>
+              </button>
             </Form.Item>
           </div>
         </div>

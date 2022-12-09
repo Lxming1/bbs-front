@@ -2,7 +2,7 @@ import { shallowEqual, useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { debounce } from '../utils'
-import { setMomentTotal, setPlateId, setMomentsAction } from '@/store/actionCreater/homeAction'
+import { setMomentTotal, setMomentsAction } from '@/store/actionCreater/homeAction'
 import { getMomentsAction } from '../store/actionCreater/homeAction'
 
 export const useStoreInfo = (...props) => {
@@ -42,20 +42,13 @@ export const useLazyLoad = () => {
   }, [plateId])
 
   useEffect(() => {
-    return () => {
-      dispatch(setMomentsAction([]))
-      dispatch(setMomentTotal(0))
-    }
-  }, [])
-
-  useEffect(() => {
     const scrollFn = debounce(async () => {
       const showHeight = window.innerHeight
       const scrollTopHeight = document.body.scrollTop || document.documentElement.scrollTop
       const allHeight = document.body.scrollHeight
       if (allHeight < showHeight + scrollTopHeight + 500) {
         const result = await reqMoment()
-        if (!result.length) {
+        if (!result?.length) {
           window.removeEventListener('scroll', scrollFn)
         }
       }
@@ -63,6 +56,8 @@ export const useLazyLoad = () => {
     window.addEventListener('scroll', scrollFn)
     return () => {
       window.removeEventListener('scroll', scrollFn)
+      dispatch(setMomentsAction([]))
+      dispatch(setMomentTotal(0))
     }
   }, [])
 }

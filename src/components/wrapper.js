@@ -9,7 +9,7 @@ export default memo(({ hidden }) => {
     bottom: '0',
     backgroundColor: 'hsla(0, 0%, 7%, 0.45)',
     transition: 'background-color 0.3s ease-out',
-    zIndex: '0',
+    zIndex: '1',
   }
   return <div onClick={hidden && hidden} style={style}></div>
 })

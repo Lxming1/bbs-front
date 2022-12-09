@@ -3,13 +3,14 @@ import { useStoreInfo } from '@/hooks'
 import { getCareList, getFansList } from '@/service/users'
 import RelationBtn from '@/components/relationBtn'
 import FollowWrapper from './style'
-import { Empty } from 'antd'
+import { Empty, Pagination } from 'antd'
 import { useDispatch } from 'react-redux'
 import { setProfileUser } from '@/store/actionCreater/peopleAction'
 
 export default memo(({ type }) => {
   const { profileUser: peopleInfo, isProfile } = useStoreInfo('user', 'profileUser', 'isProfile')
   const [userList, setUserList] = useState([])
+  const [total, setTotal] = useState(0)
   const dispatch = useDispatch()
   const pagesize = 10
   const [pagenum, setPagenum] = useState(1)
@@ -33,7 +34,7 @@ export default memo(({ type }) => {
     dispatch(setProfileUser(people))
   }
 
-  const reqFn = async () => {
+  const reqFn = async (pagenum) => {
     if (!peopleInfo?.id) return
     let result = null
     if (type === 'following') {
@@ -41,9 +42,17 @@ export default memo(({ type }) => {
     } else {
       result = await getFansList(peopleInfo?.id, pagenum, pagesize)
     }
-    const users = result.data
-    setUserList(users)
+    const { total, followList } = result.data
+    setTotal(total)
+    setUserList(followList)
   }
+
+  const changUser = (page) => {
+    window.scrollTo(0, 0)
+    setPagenum(page)
+    reqFn(page)
+  }
+
   const followClassControl = (type) =>
     window.location.hash === `#${baseUrl}/${type}` ? 'head-active' : ''
 
@@ -54,16 +63,12 @@ export default memo(({ type }) => {
   }
 
   useEffect(() => {
-    reqFn()
+    reqFn(1)
     return () => {
       setUserList([])
       setPagenum(1)
     }
   }, [type])
-
-  // useEffect(() => {
-  //   reqFn()
-  // }, [peopleInfo])
 
   return (
     <FollowWrapper>
@@ -98,7 +103,7 @@ export default memo(({ type }) => {
                 </div>
                 <div className="intro">{user.introduction}</div>
                 <div className="desc">
-                  {user.momentCount && `${user.momentCount} 条动态 · `}
+                  {user.momentCount !== 0 && `${user.momentCount} 条动态 · `}
                   {`${user.fansCount} 关注者`}
                 </div>
               </div>
@@ -117,6 +122,14 @@ export default memo(({ type }) => {
           <Empty description="还没有关注的用户" />
         </div>
       )}
+      <Pagination
+        hideOnSinglePage
+        className="pagination"
+        total={total}
+        showSizeChanger={false}
+        current={pagenum}
+        onChange={(page) => changUser(page)}
+      />
     </FollowWrapper>
   )
 })

@@ -14,7 +14,7 @@ export default memo(({ peopleInfo }) => {
   }
 
   return (
-    <PeopleRightWrapper>
+    <PeopleRightWrapper className="boxShadow">
       <div className="topContent boxShadow">
         <div className="title">个人成就</div>
         <div className="achievement">

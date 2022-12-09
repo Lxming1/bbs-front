@@ -42,7 +42,7 @@ export default memo(({ comments, total, momentId, getComments }) => {
       </div>
       <div className="main">
         <div className="mainHeader">{total}条评论</div>
-        {comments.length ? (
+        {comments?.length ? (
           <div className="mainComment">
             {comments?.map((item) => {
               let children = []

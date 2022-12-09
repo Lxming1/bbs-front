@@ -11,24 +11,32 @@ import { delCollect } from '@/service/collect'
 import { useStoreInfo } from '@/hooks'
 import { Empty } from 'antd'
 import MomentItem from '@/pages/home/left/moment/momentItem'
+import dayjs from 'dayjs'
 
 export default memo(() => {
   const { user, isLogin } = useStoreInfo('user', 'isLogin')
-  const pagesize = 10
-  const [pagenum, setPagenum] = useState(1)
   const { collectId } = useParams()
   const [collectInfo, setCollectInfo] = useState({})
+  const [collectList, setCollectList] = useState([])
   const [isProfile, setIsProfile] = useState(false)
   const [dialogStateCode, setDialogStateCode] = useState(null)
   let [collectMoments, setCollectMoments] = useState([])
   setCollectMoments = useCallback(setCollectMoments, [])
 
   const reqFn = async () => {
-    const result = await getCollectDetail(collectId, pagenum, pagesize)
+    const result = await getCollectDetail(collectId)
     setCollectInfo(result.data)
     setCollectMoments(result.data.children)
+    return result.data.author.id
   }
+  const getCollectList = async (id) => {
+    const result = await getCollectByUid(id)
+    setCollectList(result.data)
+  }
+
   const hidden = () => setDialogStateCode(null)
+
+  const title = `${isProfile ? '我' : !collectInfo?.author?.gender ? '他' : '她'}的收藏夹`
 
   const tips = {
     title: '删除收藏夹',
@@ -43,14 +51,19 @@ export default memo(() => {
 
   const submitFn = async (fn, title) => {
     if (title?.trim() === '') return
-    const result = await fn()
-    if (result.code === undefined) return
-    xmMessage(result.code, result.message)
+    const falg = await fn()
+    if (!falg) return
     await reqFn()
     hidden()
   }
 
-  const delSubmitFn = () => submitFn(() => delCollect(collectInfo.id))
+  const delSubmitFn = () => {
+    submitFn(async () => {
+      await delCollect(collectInfo.id)
+      window.location.href = `#/people/${collectInfo.uid}`
+      return false
+    })
+  }
 
   const editSubmitFn = (name, status) => {
     submitFn(() => editCollect(collectInfo.id, name, status), name)
@@ -60,8 +73,12 @@ export default memo(() => {
   const delCollectBtn = () => setDialogStateCode(1)
 
   useEffect(() => {
-    reqFn()
-  }, [])
+    reqFn().then((id) => {
+      window.scrollTo(0, 0)
+      getCollectList(id)
+    })
+  }, [collectId])
+
   useEffect(() => {
     setIsProfile(isLogin && user?.id === collectInfo.uid)
   }, [user, isLogin, collectInfo])
@@ -91,7 +108,21 @@ export default memo(() => {
           )}
         </div>
       </div>
-      <div className="collectRight boxShadow"></div>
+      <div className="collectRight boxShadow">
+        <div className="rightTitle">{title}</div>
+        <div className="collects">
+          {collectList?.map((item) => (
+            <div className="collectItem" key={item.id}>
+              <a href={`#/collection/${item.id}`} className="collectName">
+                {item.name}
+              </a>
+              <div className="collectDesc">
+                {`${dayjs(item.createTime).format('YYYY-MM-DD')} 更新 · ${item.count} 条内容`}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
       {dialogStateCode === 0 && (
         <CollectDialog
           submitFn={editSubmitFn}

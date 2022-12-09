@@ -96,16 +96,19 @@ export default memo(() => {
     title: '删除动态',
     alert: '你确认要删除这个动态吗？',
   }
+
   useEffect(() => {
-    window.addEventListener('scroll', fn)
+    window.scrollTo(0, 0)
     idRef.current = parseInt(uid)
+    reqMoment(idRef.current)
+    setTimeout(() => {
+      window.addEventListener('scroll', fn)
+    }, 0)
     num.current = 1
     setUserId(idRef.current)
-    reqMoment(idRef.current)
     setPagenum(num.current)
     setCurrentMoments([])
     return () => {
-      window.removeEventListener('scroll', fn)
       setCurrentMoments([])
     }
   }, [uid])
