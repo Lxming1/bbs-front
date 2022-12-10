@@ -5,7 +5,6 @@ export default styled.div`
   margin: 0 auto;
 
   .header {
-    margin-top: 10px;
     background-color: white;
     padding: 20px;
     border-radius: 2px;

@@ -38,7 +38,7 @@ export default memo(() => {
     const updateTime = transTime(moment?.updateTime)
     const createTime = transTime(moment?.createTime)
     const mes = updateTime > createTime ? '编辑于 ' : '发布于 '
-    const date = dayjs(moment?.createTime).format('YYYY-MM-DD hh:ss')
+    const date = dayjs(moment?.createTime).format('YYYY-MM-DD HH:mm')
     return mes + date
   }
 
@@ -81,18 +81,22 @@ export default memo(() => {
         {moment?.praiseCount}人赞同了该动态
       </a>
       <div className="content">{moment?.content}</div>
-      <div className="images">
-        <Image.PreviewGroup>
-          {moment?.images?.map((item, index) => (
-            <div className="imgBox" key={item + index}>
-              <Image src={item} key={item + index} />
-            </div>
-          ))}
-        </Image.PreviewGroup>
-      </div>
+      {moment?.images?.length && (
+        <div className="images">
+          <Image.PreviewGroup>
+            {moment?.images?.map((item, index) => (
+              <div className="imgBox" key={item + index}>
+                <Image src={item} key={item + index} />
+              </div>
+            ))}
+          </Image.PreviewGroup>
+        </div>
+      )}
       <div className="time">{time()}</div>
       <div className="plate">
-        <div className="plateBtn">{moment?.plate?.name}</div>
+        <a href={`#/${moment?.plate.id}`} className="plateBtn">
+          {moment?.plate?.name}
+        </a>
       </div>
 
       <div className="bottomBtn">

@@ -15,15 +15,14 @@ import { handleDate, xmMessage } from '@/utils'
 import { praiseComment, cancelPraiseComment, delelteComment } from '@/service/comment'
 import { debounce } from '@/utils'
 
-export default memo(({ comment, momentId, name, getComments }) => {
+export default memo(({ comment, moment, name, getComments }) => {
   const { user } = useStoreInfo('user')
   const [content, setContent] = useState('')
   const [isOpen, setIsOpen] = useState(false)
-  const [position, setPosition] = useState()
 
   const sendInput = async (id) => {
     if (content.trim() === '') return
-    const result = await replyComment(id, content, momentId)
+    const result = await replyComment(id, content, moment.id)
     setContent('')
     setIsOpen(false)
     xmMessage(result.code, result.message)
@@ -31,23 +30,16 @@ export default memo(({ comment, momentId, name, getComments }) => {
   }
 
   const delComment = async () => {
-    const result = await delelteComment(comment.id)
+    const result = await delelteComment(comment.id, moment.id)
     xmMessage(result.code, result.message)
     getComments()
-    window.scroll(0, position)
   }
-
-  useEffect(() => {
-    setPosition(document.documentElement.scrollTop)
-  }, [])
 
   const rightMenu = () => (
     <div className="rightMenu">
       <ul>
-        <li>
-          <a href="#" onClick={delComment}>
-            删除
-          </a>
+        <li onClick={delComment}>
+          <span>删除</span>
         </li>
       </ul>
     </div>
@@ -55,8 +47,8 @@ export default memo(({ comment, momentId, name, getComments }) => {
 
   const praise = async () => {
     comment.isPraise
-      ? await cancelPraiseComment(comment.id, momentId)
-      : await praiseComment(comment.id, momentId)
+      ? await cancelPraiseComment(comment.id, moment.id)
+      : await praiseComment(comment.id, moment.id)
     getComments()
   }
 
@@ -79,7 +71,7 @@ export default memo(({ comment, momentId, name, getComments }) => {
               )}
             </div>
             <Popover placement="bottom" className="rightMenu" content={rightMenu()} trigger="click">
-              {comment?.author?.id === user?.id && <EllipsisOutlined />}
+              {[comment?.author?.id, moment?.author?.id].includes(user?.id) && <EllipsisOutlined />}
             </Popover>
           </div>
           <div className="content">{comment.content}</div>
@@ -91,7 +83,7 @@ export default memo(({ comment, momentId, name, getComments }) => {
                 回复
               </div>
               <div
-                onClick={debounce(praise, 1000, true)}
+                onClick={debounce(praise, 300, true)}
                 className={comment.isPraise ? 'isPraise' : ''}>
                 <LikeFilled style={{ fontSize: '15px' }} />
                 {comment.praiseCount !== 0 ? comment.praiseCount : '赞'}

@@ -10,14 +10,11 @@ import { delMoment } from '@/service/moment'
 import { xmMessage } from '@/utils'
 import DelDialog from '@/components/dialogs/delDialog'
 import { useStoreInfo } from '@/hooks'
+import { useDispatch } from 'react-redux'
 
 export default memo(() => {
-  const { user, profileUser, isProfile, isLogin } = useStoreInfo(
-    'user',
-    'profileUser',
-    'isProfile',
-    'isLogin'
-  )
+  const { profileUser, isProfile, isLogin } = useStoreInfo('profileUser', 'isProfile', 'isLogin')
+  const dispatch = useDispatch()
   const pagesize = 10
   const [pagenum, setPagenum] = useState(1)
   let [currentMoments, setCurrentMoments] = useState([])
@@ -90,7 +87,9 @@ export default memo(() => {
     </div>
   )
 
-  const editMomentBtn = (moment) => {}
+  const editMomentBtn = (moment) => {
+    window.location.href = `#/moment/edit/${moment.id}`
+  }
 
   const tips = {
     title: '删除动态',

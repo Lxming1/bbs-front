@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setUserMes } from '@/store/actionCreater/authActions'
 import HeaderWrapper from './style'
@@ -24,6 +24,10 @@ export const Header = memo(() => {
   ]
 
   const navigate = useNavigate()
+
+  const search = (value) => {
+    window.location.href = `#/search/moment/${value}`
+  }
 
   const logout = () => {
     sessionStorage.removeItem('bbs-user')
@@ -69,7 +73,7 @@ export const Header = memo(() => {
           />
         </div>
         <div className="centerContent">
-          <Input.Search placeholder="input search text" style={{ width: 200 }} />
+          <Input.Search placeholder="input search text" style={{ width: 200 }} onSearch={search} />
         </div>
         <div className="rightContent">
           {userInfo === null || Object.keys(userInfo).length === 0 ? (
@@ -89,7 +93,7 @@ export const Header = memo(() => {
                 <BellFilled />
                 <span className="title">消息</span>
               </Badge>
-              <Popover placement="bottom" content={rightMenu()} trigger="click">
+              <Popover placement="bottom" content={rightMenu()} trigger="hover">
                 <div className="avatar">
                   <img src={userInfo?.avatar_url} alt="" />
                 </div>

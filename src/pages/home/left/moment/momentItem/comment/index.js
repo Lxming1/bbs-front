@@ -6,14 +6,14 @@ import { xmMessage } from '@/utils'
 import { createComment } from '@/service/comment'
 import CommentItem from './commentItem'
 
-export default memo(({ comments, total, momentId, getComments }) => {
+export default memo(({ comments, total, moment, getComments }) => {
   const { user } = useStoreInfo('user')
   const [commentContent, setCommentContent] = useState('')
   const ref = useRef(null)
 
   const send = async () => {
     if (commentContent.trim() === '') return
-    const result = await createComment(commentContent, momentId)
+    const result = await createComment(commentContent, moment.id)
     setCommentContent('')
     xmMessage(result.code, result.message)
     getComments()
@@ -49,7 +49,7 @@ export default memo(({ comments, total, momentId, getComments }) => {
               if (item.children) {
                 const getChildren = (item) => {
                   if (!item.children) return
-                  item.children.forEach((item, index) => {
+                  item.children.forEach((item) => {
                     children.push(item)
                     return getChildren(item)
                   })
@@ -64,14 +64,14 @@ export default memo(({ comments, total, momentId, getComments }) => {
               })
               return (
                 <div key={item.id}>
-                  <CommentItem comment={item} momentId={momentId} getComments={getComments} />
+                  <CommentItem comment={item} moment={moment} getComments={getComments} />
                   {children?.map((cItem) => {
                     const name = children?.find((item1) => item1.id === cItem.commentId)?.author
                       ?.name
                     return (
                       <CommentItem
                         comment={cItem}
-                        momentId={momentId}
+                        moment={moment}
                         name={name}
                         key={cItem.id}
                         getComments={getComments}

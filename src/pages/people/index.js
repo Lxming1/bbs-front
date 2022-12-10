@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import { useStoreInfo } from '@/hooks'
 import { useDispatch } from 'react-redux'
 import { getProfileUser, setPeopleIndex } from '../../store/actionCreater/peopleAction'
+import BackTop from '@/components/backTop'
 
 const People = memo(() => {
   const { profileUser, peopleIndex } = useStoreInfo('user', 'profileUser', 'peopleIndex')
@@ -20,6 +21,7 @@ const People = memo(() => {
     <PeopleWrapper>
       <Header peopleInfo={profileUser} />
       <Main peopleInfo={profileUser} peopleIndex={peopleIndex} />
+      <BackTop />
     </PeopleWrapper>
   )
 })

@@ -1,8 +1,7 @@
+import SearchWrapper from './style'
 import HeadMenu from './menus'
-import LeftWrapper from './style'
 import { getPlates } from '@/store/actionCreater/homeAction'
 import BackTop from '@/components/backTop'
-import Moments from './moment'
 import { setMomentsAction, setMomentTotal } from '@/store/actionCreater/homeAction'
 import { useDispatch } from 'react-redux'
 import { useStoreInfo } from '@/hooks'
@@ -10,15 +9,20 @@ import { memo, useCallback, useEffect, useState, useRef } from 'react'
 import { debounce } from '@/utils'
 import { getMomentsAction } from '@/store/actionCreater/homeAction'
 import { useParams } from 'react-router-dom'
+import Moments from '../left/moment'
+import { getMomentBySearch } from '../../../store/actionCreater/homeAction'
+import { searchUser } from '../../../service/users'
+import UserList from '@/components/userList'
 
 export default memo(() => {
   const dispatch = useDispatch()
   const { moments } = useStoreInfo('moments')
 
   let [currentMoments, setCurrentMoments] = useState(moments)
+  let [userList, setUserList] = useState([])
   setCurrentMoments = useCallback(setCurrentMoments, [])
+  setUserList = useCallback(setUserList, [])
   const [pagenum, setPagenum] = useState(1)
-  const { plateId } = useStoreInfo('plateId')
   const pagesize = 10
   const num = useRef(pagenum)
 
@@ -33,10 +37,16 @@ export default memo(() => {
   const { type, value } = useParams()
 
   const reqMoment = async () => {
-    // result = await dispatch(getMomentsAction(num.current, pagesize, user?.id, search, value))
-    const result = await dispatch(getMomentsAction(num.current, pagesize))
-    setPagenum(num.current + 1)
-    return result
+    if (type === 'moment') {
+      const result = await dispatch(getMomentBySearch(num.current, pagesize, value))
+      setPagenum(num.current + 1)
+      return result
+    } else if (type === 'user') {
+      const result = await searchUser(value, num.current, pagesize)
+      setPagenum(num.current + 1)
+      setUserList((userList) => [...userList, ...result.data.followList])
+      return result
+    }
   }
 
   useEffect(() => {
@@ -44,6 +54,9 @@ export default memo(() => {
   }, [pagenum])
 
   useEffect(() => {
+    setUserList([])
+    dispatch(setMomentsAction([]))
+    dispatch(setMomentTotal(0))
     num.current = 1
     setPagenum(num.current)
     reqMoment()
@@ -61,10 +74,11 @@ export default memo(() => {
     window.addEventListener('scroll', scrollFn)
     return () => {
       window.removeEventListener('scroll', scrollFn)
+      setUserList([])
       dispatch(setMomentsAction([]))
       dispatch(setMomentTotal(0))
     }
-  }, [plateId])
+  }, [value, type])
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -72,10 +86,12 @@ export default memo(() => {
   }, [])
 
   return (
-    <LeftWrapper>
+    <SearchWrapper>
       <HeadMenu />
-      <Moments moments={moments} setCurrentMoments={setCurrentMoments} />
+      {type === 'moment' && <Moments moments={moments} setCurrentMoments={setCurrentMoments} />}
+      {type === 'user' && <UserList setUserList={setUserList} userList={userList} />}
+      <UserList setUserList={setUserList} userList={userList} />
       <BackTop />
-    </LeftWrapper>
+    </SearchWrapper>
   )
 })

@@ -1,14 +1,11 @@
 import request from './'
 
-export const getMoments = (pagenum, pagesize, plateId, uid) => {
+export const getMoments = (pagenum, pagesize, plateId) => {
   return request({
     url: `/moment/plate/${plateId}`,
     params: {
       pagenum,
       pagesize,
-    },
-    data: {
-      uid,
     },
   })
 }
@@ -54,11 +51,11 @@ export const editMoment = (momentId, { title, content, plateId, visible }) => {
 
 export const searchMoment = (content, pagenum, pagesize) => {
   return request({
-    url: '/moment',
+    url: '/moment/search',
     params: {
-      content,
       pagenum,
       pagesize,
+      content,
     },
   })
 }
@@ -107,5 +104,19 @@ export const getMomentByUser = (uid, pagenum, pagesize) => {
       pagenum,
       pagesize,
     },
+  })
+}
+
+export const getProfileMoment = (momentId) => {
+  return request({
+    url: `/moment/profile/${momentId}`,
+  })
+}
+
+export const delMomentPic = (images, momentId) => {
+  return request({
+    url: `/upload/picture/${momentId}`,
+    method: 'delete',
+    data: images,
   })
 }

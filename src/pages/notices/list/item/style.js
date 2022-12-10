@@ -1,14 +1,22 @@
 import styled from 'styled-components'
 
 export default styled.div`
-  padding-bottom: 100px;
-  min-height: calc(100vh - 132px);
+  padding: 24px 0;
   position: relative;
-  margin-bottom: 10px;
 
-  .noticeItem {
-    padding: 24px 0;
-    position: relative;
+  :not(:last-child)::after {
+    content: '';
+    display: block;
+    width: 100%;
+    width: calc(100% - 44px);
+    height: 1px;
+    border-bottom: 1px solid #e5e9ef;
+    position: absolute;
+    bottom: 0;
+    left: 60px;
+  }
+
+  .item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -23,20 +31,19 @@ export default styled.div`
       }
     }
 
-    :not(:last-child)::after {
-      content: '';
-      display: block;
-      width: 100%;
-      width: calc(100% - 44px);
-      height: 1px;
-      border-bottom: 1px solid #e5e9ef;
-      position: absolute;
-      bottom: 0;
-      left: 60px;
-    }
-
     .left {
       display: flex;
+      flex: 1;
+
+      .spot {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #ff4d4f;
+        right: -8px;
+        top: 10px;
+      }
 
       .leftAvatar {
         width: 46px;
@@ -53,6 +60,8 @@ export default styled.div`
       }
 
       .leftDesc {
+        flex: 1;
+
         .nameHeader {
           flex: 1;
           display: flex;
@@ -86,13 +95,17 @@ export default styled.div`
           align-items: center;
           color: #999;
 
+          .isPraise {
+            color: #056de8;
+          }
+
           .button {
             :hover {
               color: #056de8;
             }
           }
 
-          > button {
+          > div {
             margin-right: 15px;
             font-size: 13px;
             cursor: pointer;
@@ -103,7 +116,6 @@ export default styled.div`
           }
 
           .time {
-            flex: 1;
             font-size: 12px;
             line-height: 22px;
           }
@@ -160,10 +172,10 @@ export default styled.div`
     }
   }
 
-  .pagination {
-    position: absolute;
-    bottom: 30px;
-    width: 100%;
-    text-align: center;
+  .replyInput {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    margin: 10px 58px 0 58px;
   }
 `

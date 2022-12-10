@@ -40,16 +40,34 @@ export const verifyForm = (refs) => {
 }
 
 export function handleDate(time) {
-  const nowYear = dayjs().format('YYYY')
-  const split = time.split('T')
-  if (time.substring(0, 4) !== nowYear) {
-    return split[0]
+  const nowDayjs = dayjs()
+  const timeDayjs = dayjs(time)
+
+  const nowYDM = nowDayjs.format('YYYY-MM-DD')
+  const timeYDM = timeDayjs.format('YYYY-MM-DD')
+
+  if (timeYDM === nowYDM) {
+    const nowH = nowDayjs.format('HH')
+    const timeH = timeDayjs.format('HH')
+    if (nowH === timeH) {
+      const nowM = nowDayjs.format('mm')
+      const timeM = timeDayjs.format('mm')
+      if (nowM === timeM) {
+        const nows = nowDayjs.format('ss')
+        const times = timeDayjs.format('ss')
+        return `${nows - times}秒前`
+      }
+      return `${nowM - timeM}分钟前`
+    }
+    return `${nowH - timeH}小时前`
   }
-  const nowDay = dayjs().format('YYYY-MM-DD')
-  if (split[0] === nowDay) {
-    return split[1].substring(0, 5)
-  }
-  return split[0].substring(5, 10)
+
+  const nowY = nowDayjs.format('YYYY')
+  const timeY = timeDayjs.format('YYYY')
+  const timeMD = timeDayjs.format('MM-DD')
+  if (timeY === nowY) return timeMD
+
+  return timeYDM
 }
 
 let debounceTimer = null

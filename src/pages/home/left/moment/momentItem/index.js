@@ -7,17 +7,15 @@ import {
 } from '@ant-design/icons'
 import dayjs from 'dayjs'
 import { memo, useCallback, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useStoreInfo } from '@/hooks'
 import { praiseMoment, cancelPraiseMoment } from '@/service/moment'
 import { MomentItemWrapper } from './style'
-import { setMomentsAction } from '@/store/actionCreater/homeAction'
 import { getCommentList } from '@/service/comment'
-import { handlLogin, debounce } from '@/utils'
+import { debounce } from '@/utils'
 import Comment from './comment'
 import Collect from './collect'
 import { Image } from 'antd'
-import { verifyLogin, xmMessage } from '../../../../../utils'
+import { verifyLogin } from '../../../../../utils'
 
 const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) => {
   const { isLogin } = useStoreInfo('isLogin')
@@ -54,7 +52,7 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) =
     const updateTime = transTime(moment.updateTime)
     const createTime = transTime(moment.createTime)
     const mes = updateTime > createTime ? '编辑于 ' : '发布于 '
-    const date = dayjs(moment.createTime).format('YYYY-MM-DD hh:ss')
+    const date = dayjs(moment.createTime).format('YYYY-MM-DD HH:mm')
     return mes + date
   }
 
@@ -179,11 +177,11 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) =
         <Comment
           comments={comments}
           total={total}
-          momentId={moment.id}
+          moment={moment}
           getComments={() => getComments(moment?.id)}
         />
       )}
-      {showCollect && <Collect setShowCollect={setShowCollect} momentId={moment.id} />}
+      {showCollect && <Collect setShowCollect={setShowCollect} moment={moment} />}
     </MomentItemWrapper>
   )
 })

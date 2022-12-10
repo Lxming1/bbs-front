@@ -4,20 +4,19 @@ import { useEffect, useState } from 'react'
 import { getPlateList } from '@/service/plate'
 import { xmMessage } from '@/utils'
 import { CloseCircleFilled, PictureOutlined, RightOutlined } from '@ant-design/icons'
-import { sendMoment, uploadPicture } from '@/service/moment'
-import { useNavigate } from 'react-router-dom'
-import { useStoreInfo } from '@/hooks'
-import { useDispatch } from 'react-redux'
-import { setMomentsAction, setMomentTotal } from '@/store/actionCreater/homeAction'
+import { uploadPicture } from '@/service/moment'
+import { useNavigate, useParams } from 'react-router-dom'
+import { delMomentPic, editMoment, getProfileMoment } from '../../../service/moment'
 
 export default () => {
-  const { moments, momentTotal } = useStoreInfo('moments', 'momentTotal')
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [palteOptions, setPalteOptions] = useState([])
   const [previewPicList, setPreviewPicList] = useState([])
   const [uploadPicList, setUploadPicList] = useState([])
+  const [removePicList, setRemovePicList] = useState([])
+
+  const { momentId } = useParams()
+
   const [fields, setFields] = useState([
     {
       name: ['title'],
@@ -33,7 +32,7 @@ export default () => {
     },
     {
       name: ['visible'],
-      value: false,
+      value: '',
     },
   ])
 
@@ -65,22 +64,30 @@ export default () => {
     }
   }
 
-  const removeImg = (id) => {
+  const removeImg = (pic) => {
+    const id = pic.id
     const filterFn = (p) => p.filter((i) => i.id !== id)
     setUploadPicList(filterFn)
     setPreviewPicList(filterFn)
+    setRemovePicList((p) => [...p, pic.data.split('image/')[1]])
   }
-  const upload = async (result) => {
-    const { id: momentId } = result.data
+
+  const upload = async () => {
     if (uploadPicList.length) {
       const form = new FormData()
       uploadPicList.forEach((item) => {
         form.append('picture', item)
       })
-      return await uploadPicture(momentId, form)
+      await uploadPicture(momentId, form)
     }
-    return result
   }
+
+  const removePic = async () => {
+    if (removePicList.length) {
+      await delMomentPic(removePicList, momentId)
+    }
+  }
+
   const submit = async () => {
     const [title, content, plate, visible] = fields
     if ([title.value, content.value, plate.value].includes('')) {
@@ -94,13 +101,11 @@ export default () => {
       visible: visible.value ? 1 : 0,
     }
     try {
-      let result = await sendMoment(obj)
-      result = await upload(result)
-      setLoading(false)
-      dispatch(setMomentsAction([result.data, ...moments]))
-      dispatch(setMomentTotal(momentTotal + 1))
-      xmMessage(result.code, result.message)
-      navigate('/')
+      const pormiseArr = [editMoment(momentId, obj), upload(), removePic()]
+      await Promise.all(pormiseArr)
+      await setLoading(false)
+      xmMessage(0, '编辑成功')
+      window.history.back()
     } catch (e) {
       console.log(e)
       xmMessage(2, '未知错误')
@@ -116,6 +121,32 @@ export default () => {
         }))
       )
     })
+    getProfileMoment(momentId).then(({ data: res }) => {
+      setFields([
+        {
+          name: ['title'],
+          value: res.title,
+        },
+        {
+          name: ['content'],
+          value: res.content,
+        },
+        {
+          name: ['plate'],
+          value: res.plate.id,
+        },
+        {
+          name: ['visible'],
+          value: res.visible === 1,
+        },
+      ])
+      setPreviewPicList(
+        res?.images?.map((item, index) => ({
+          id: item + index,
+          data: item,
+        })) ?? []
+      )
+    })
   }, [])
 
   return (
@@ -125,10 +156,10 @@ export default () => {
           <Spin size="large" />
         </div>
       )}
-      <h1>发表动态</h1>
-      <a href={`#/`} className="back">
-        返回首页 <RightOutlined />
-      </a>
+      <h1>编辑动态</h1>
+      <span onClick={() => window.history.back()} className="back">
+        返回个人主页 <RightOutlined />
+      </span>
       <Form
         className="form"
         autoComplete="off"
@@ -147,7 +178,7 @@ export default () => {
               <Image.PreviewGroup>
                 {previewPicList?.map((item) => (
                   <div className="image" key={item.id}>
-                    <i className="removeImage" onClick={() => removeImg(item.id)}>
+                    <i className="removeImage" onClick={() => removeImg(item)}>
                       <CloseCircleFilled />
                     </i>
                     <Image src={item.data} />
@@ -176,7 +207,7 @@ export default () => {
             </Form.Item>
             <Form.Item name="submit">
               <button className="sendBtn" onClick={submit}>
-                发布
+                提交
               </button>
             </Form.Item>
           </div>

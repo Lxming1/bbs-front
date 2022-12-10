@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 
 export default styled.div`
+  position: sticky;
+  top: 70px;
+
   .topContent {
     background-color: #fff;
     .title {

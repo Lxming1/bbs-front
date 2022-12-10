@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export default styled.div`
   position: relative;
-  top: 60px;
+  top: 70px;
 
   .mainBox {
     margin: 0 auto;

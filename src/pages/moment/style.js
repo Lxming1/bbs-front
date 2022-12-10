@@ -97,14 +97,13 @@ export default styled.div`
   }
 
   .plate {
-    height: 65px;
-    padding: 16px 0;
+    height: 30px;
+    margin-bottom: 10px;
 
     .plateBtn {
       font-size: 13px;
       height: 33px;
       line-height: 30px;
-      margin-bottom: 10px;
       overflow: hidden;
       height: 30px;
       padding: 0 12px;

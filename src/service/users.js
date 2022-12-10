@@ -82,3 +82,14 @@ export const getRelationship = (uid) => {
     url: `/users/care_fan/${uid}`,
   })
 }
+
+export const searchUser = (content, pagenum, pagesize) => {
+  return request({
+    url: '/users/search',
+    params: {
+      pagenum,
+      pagesize,
+      content,
+    },
+  })
+}

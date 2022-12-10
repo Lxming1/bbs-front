@@ -8,7 +8,7 @@ export default memo(() => {
   const { user } = useStoreInfo('user')
   const [currentHash, setCurrentHash] = useState('#/notices/reply')
 
-  const getNoticeCount = (type) => user?.noticeCount[type]
+  const getNoticeCount = (type) => user?.noticeCount?.[type]
 
   const items = [
     {

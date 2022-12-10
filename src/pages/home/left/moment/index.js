@@ -1,33 +1,9 @@
 import { Empty } from 'antd'
-import { useStoreInfo } from '@/hooks'
 import MomentItem from './momentItem'
 import { MomentWrapper } from './style'
-import { memo, useCallback, useEffect, useState } from 'react'
-import { setMomentsAction } from '@/store/actionCreater/homeAction'
-import { useDispatch } from 'react-redux'
-import { useLazyLoad } from '@/hooks'
+import { memo } from 'react'
 
-const Moments = memo(() => {
-  const { moments } = useStoreInfo('moments')
-  const dispatch = useDispatch()
-
-  let [currentMoments, setCurrentMoments] = useState(moments)
-  setCurrentMoments = useCallback(setCurrentMoments, [])
-
-  useEffect(() => {
-    setCurrentMoments(moments)
-  }, [moments])
-
-  useEffect(() => {
-    dispatch(setMomentsAction(currentMoments))
-  }, [currentMoments])
-
-  useLazyLoad()
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
+const Moments = memo(({ moments, setCurrentMoments }) => {
   return (
     <MomentWrapper>
       {moments?.length ? (

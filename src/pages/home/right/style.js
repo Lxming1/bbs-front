@@ -7,5 +7,5 @@ export default styled.div`
   background-color: white;
   position: fixed;
   margin-left: 704px;
-  z-index: -1;
+  z-index: 0;
 `

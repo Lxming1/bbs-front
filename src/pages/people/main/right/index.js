@@ -1,5 +1,5 @@
 import { LikeFilled } from '@ant-design/icons'
-import { memo } from 'react'
+import { memo, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setPeopleIndex } from '@/store/actionCreater/peopleAction'
 import PeopleRightWrapper from './style'

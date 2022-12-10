@@ -1,19 +1,19 @@
-import { memo, useContext, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { setMomentTotal, setPlateId, setMomentsAction } from '@/store/actionCreater/homeAction'
 import { HeadMenuWrapper } from './style'
 import { useStoreInfo } from '@/hooks'
 
-export default memo(() => {
+export default memo(({ search }) => {
   const { plateList } = useStoreInfo('plateList')
-  const { palteId } = useParams()
+  const { plateId } = useParams()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [currentPlateId, setCurrentPlateId] = useState(0)
 
   const changePlate = (id) => {
-    if (palteId === id) return
+    if (parseInt(plateId) === id) return
     setCurrentPlateId(id)
     dispatch(setMomentsAction([]))
     dispatch(setMomentTotal(0))
@@ -22,6 +22,13 @@ export default memo(() => {
   }
 
   const classControl = (id) => (id === currentPlateId ? 'active' : null)
+
+  useEffect(() => {
+    const plate = isNaN(parseInt(plateId)) ? 0 : parseInt(plateId)
+    dispatch(setMomentsAction([]))
+    dispatch(setPlateId(plate))
+    setCurrentPlateId(plate)
+  }, [plateId])
 
   return (
     <HeadMenuWrapper>
