@@ -103,7 +103,7 @@ export default memo(() => {
             ))
           ) : (
             <div className="empty">
-              <Empty />
+              <Empty description="暂无收藏的动态" />
             </div>
           )}
         </div>

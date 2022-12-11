@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react'
+import { memo } from 'react'
 import PeopleLeftWrapper from './style'
 import { Outlet } from 'react-router-dom'
 import { useDispatch } from 'react-redux'

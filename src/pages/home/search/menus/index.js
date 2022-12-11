@@ -23,10 +23,6 @@ export default memo(() => {
       label: '用户',
       type: 'user',
     },
-    {
-      label: '我的',
-      type: 'profile',
-    },
   ]
 
   const changePlate = (type) => {

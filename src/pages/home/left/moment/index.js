@@ -3,7 +3,7 @@ import MomentItem from './momentItem'
 import { MomentWrapper } from './style'
 import { memo } from 'react'
 
-const Moments = memo(({ moments, setCurrentMoments }) => {
+const Moments = memo(({ moments, setCurrentMoments, desc = '暂无动态', isEnd }) => {
   return (
     <MomentWrapper>
       {moments?.length ? (
@@ -12,7 +12,12 @@ const Moments = memo(({ moments, setCurrentMoments }) => {
         ))
       ) : (
         <div className="emptyPage">
-          <Empty />
+          <Empty description={desc} />
+        </div>
+      )}
+      {isEnd && moments.length !== 0 && (
+        <div className="Box">
+          <Empty description="没有更多动态啦" />
         </div>
       )}
     </MomentWrapper>

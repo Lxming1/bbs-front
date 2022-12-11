@@ -1,32 +1,34 @@
-import { memo, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setUserMes } from '@/store/actionCreater/authActions'
 import HeaderWrapper from './style'
 import { Input, Menu, Popover, Badge } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useStoreInfo } from '@/hooks'
-import { UserOutlined, PoweroffOutlined, BellFilled } from '@ant-design/icons'
+import { UserOutlined, PoweroffOutlined, BellFilled, SearchOutlined } from '@ant-design/icons'
 import { setIsLogin } from '../../../store/actionCreater/authActions'
 
 export const Header = memo(() => {
   const dispatch = useDispatch()
-  const { user: userInfo } = useStoreInfo('user')
+  const { user: userInfo, plateId } = useStoreInfo('user', 'plateId')
+  const [isFocu, setIsFocu] = useState(false)
+  const [searchContent, setSearchContent] = useState('')
 
   const items = [
     {
       label: '首页',
-      key: '/',
+      href: '#/',
     },
     {
       label: '我的',
-      key: `/people/${userInfo?.id}`,
+      href: `#/people/${userInfo?.id}`,
     },
   ]
 
   const navigate = useNavigate()
 
-  const search = (value) => {
-    window.location.href = `#/search/moment/${value}`
+  const search = () => {
+    window.location.href = searchContent.trim() === '' ? `#/` : `#/search/moment/${searchContent}`
   }
 
   const logout = () => {
@@ -36,8 +38,23 @@ export const Header = memo(() => {
     dispatch(setUserMes(null))
   }
 
-  const changeRoute = (item) => {
-    navigate(item.key)
+  const changeRoute = (href) => {
+    setSearchContent('')
+    window.location.href = href
+  }
+
+  const classControl = (href) => {
+    if (
+      ![window.location.hash.indexOf(href), href.indexOf(`#/people/${userInfo?.id}`)].includes(-1)
+    ) {
+      return 'tabs-active'
+    }
+    if (window.location.hash === href) {
+      return 'tabs-active'
+    } else if (window.location.hash === href + plateId) {
+      return 'tabs-active'
+    }
+    return ''
   }
 
   const rightMenu = () => (
@@ -63,17 +80,29 @@ export const Header = memo(() => {
           <div className="logo">
             <img src={require('@/assets/img/logo.png')} alt="PYPBBS" />
           </div>
-          <Menu
-            className="navigate"
-            style={{ fontWeight: 'bold' }}
-            items={items}
-            mode="horizontal"
-            onClick={changeRoute}
-            defaultSelectedKeys={['/']}
-          />
+          <ul className="tabs">
+            {items.map((item) => (
+              <li key={item.label} onClick={() => changeRoute(item.href)}>
+                <span className={classControl(item.href)}>{item.label}</span>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className="centerContent">
-          <Input.Search placeholder="input search text" style={{ width: 200 }} onSearch={search} />
+          <form className={`search ${isFocu ? 'boxBgc' : ''}`}>
+            <Input
+              placeholder="搜索"
+              type="text"
+              className={`searchInput ${isFocu ? 'isFocus' : ''}`}
+              onClick={() => setIsFocu(true)}
+              onBlur={() => setIsFocu(false)}
+              value={searchContent}
+              onChange={(e) => setSearchContent(e.target.value)}
+            />
+            <div className="searchIcon" onClick={search}>
+              <SearchOutlined />
+            </div>
+          </form>
         </div>
         <div className="rightContent">
           {userInfo === null || Object.keys(userInfo).length === 0 ? (

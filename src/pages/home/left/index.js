@@ -9,11 +9,10 @@ import { useStoreInfo } from '@/hooks'
 import { memo, useCallback, useEffect, useState, useRef } from 'react'
 import { debounce } from '@/utils'
 import { getMomentsAction } from '@/store/actionCreater/homeAction'
-import { useParams } from 'react-router-dom'
 
 export default memo(() => {
   const dispatch = useDispatch()
-  const { moments } = useStoreInfo('moments')
+  const { moments, momentTotal } = useStoreInfo('moments', 'momentTotal')
 
   let [currentMoments, setCurrentMoments] = useState(moments)
   setCurrentMoments = useCallback(setCurrentMoments, [])
@@ -21,7 +20,6 @@ export default memo(() => {
   const { plateId } = useStoreInfo('plateId')
   const pagesize = 10
   const num = useRef(pagenum)
-
   useEffect(() => {
     setCurrentMoments(moments)
   }, [moments])
@@ -30,15 +28,11 @@ export default memo(() => {
     dispatch(setMomentsAction(currentMoments))
   }, [currentMoments])
 
-  const { type, value } = useParams()
-
   const reqMoment = async () => {
-    // result = await dispatch(getMomentsAction(num.current, pagesize, user?.id, search, value))
     const result = await dispatch(getMomentsAction(num.current, pagesize))
     setPagenum(num.current + 1)
     return result
   }
-
   useEffect(() => {
     num.current = pagenum
   }, [pagenum])
@@ -74,7 +68,11 @@ export default memo(() => {
   return (
     <LeftWrapper>
       <HeadMenu />
-      <Moments moments={moments} setCurrentMoments={setCurrentMoments} />
+      <Moments
+        moments={moments}
+        setCurrentMoments={setCurrentMoments}
+        isEnd={momentTotal === moments.length}
+      />
       <BackTop />
     </LeftWrapper>
   )

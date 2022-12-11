@@ -120,3 +120,13 @@ export const delMomentPic = (images, momentId) => {
     data: images,
   })
 }
+
+export const getMomentsByCare = (pagenum, pagesize) => {
+  return request({
+    url: `/moment/care`,
+    params: {
+      pagenum,
+      pagesize,
+    },
+  })
+}

@@ -1,7 +1,7 @@
-import { getMoments } from '@/service/moment'
+import { getMoments, getMomentsByCare, searchMoment } from '@/service/moment'
 import { getPlateList } from '@/service/plate'
-import { searchMoment } from '../../service/moment'
 import { SET_MOMENTS, SET_MOMENT_TOTAL, SET_PLATE_ID, SET_PLATE_LIST } from '../constant'
+import { xmMessage } from '@/utils'
 
 export const setMomentsAction = (momentList) => ({
   type: SET_MOMENTS,
@@ -29,9 +29,19 @@ export const getMomentsAction = (pagenum, pagesize) => {
     const moments = state.get('moments')
     const total = state.get('momentTotal')
     const plateId = state.get('plateId')
-
+    const isLogin = state.get('isLogin')
     if (total !== 0 && total === moments.length) return
-    const result = await getMoments(pagenum, pagesize, plateId)
+    let result
+    if (plateId === 'care') {
+      if (!isLogin) {
+        window.location.href = '#/login'
+        xmMessage(2, '请先登录')
+        return
+      }
+      result = await getMomentsByCare(pagenum, pagesize)
+    } else {
+      result = await getMoments(pagenum, pagesize, plateId)
+    }
     const { moments: newMoments, total: momentTotal } = result.data
     dispatch(setMomentsAction([...moments, ...newMoments]))
     dispatch(setMomentTotal(momentTotal))

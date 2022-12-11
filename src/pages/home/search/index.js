@@ -16,10 +16,11 @@ import UserList from '@/components/userList'
 
 export default memo(() => {
   const dispatch = useDispatch()
-  const { moments } = useStoreInfo('moments')
+  const { moments, momentTotal } = useStoreInfo('moments', 'momentTotal')
 
   let [currentMoments, setCurrentMoments] = useState(moments)
   let [userList, setUserList] = useState([])
+  const [userTotal, setUserTotal] = useState(0)
   setCurrentMoments = useCallback(setCurrentMoments, [])
   setUserList = useCallback(setUserList, [])
   const [pagenum, setPagenum] = useState(1)
@@ -44,7 +45,8 @@ export default memo(() => {
     } else if (type === 'user') {
       const result = await searchUser(value, num.current, pagesize)
       setPagenum(num.current + 1)
-      setUserList((userList) => [...userList, ...result.data.followList])
+      setUserTotal(result.data.total)
+      setUserList((users) => [...users, ...result.data.followList])
       return result
     }
   }
@@ -52,7 +54,6 @@ export default memo(() => {
   useEffect(() => {
     num.current = pagenum
   }, [pagenum])
-
   useEffect(() => {
     setUserList([])
     dispatch(setMomentsAction([]))
@@ -86,11 +87,26 @@ export default memo(() => {
   }, [])
 
   return (
-    <SearchWrapper>
+    <SearchWrapper className="boxShadow">
       <HeadMenu />
-      {type === 'moment' && <Moments moments={moments} setCurrentMoments={setCurrentMoments} />}
-      {type === 'user' && <UserList setUserList={setUserList} userList={userList} />}
-      <UserList setUserList={setUserList} userList={userList} />
+      {type === 'moment' && (
+        <Moments
+          moments={moments}
+          setCurrentMoments={setCurrentMoments}
+          desc={`未找到标题或内容包含'${value}'的动态`}
+          isEnd={momentTotal === moments.length}
+        />
+      )}
+      {type === 'user' && (
+        <div style={{ minHeight: 'calc(100vh - 140px)' }}>
+          <UserList
+            setUserList={setUserList}
+            userList={userList}
+            desc={`未找到昵称包含'${value}'的用户`}
+            isEnd={userTotal === userList.length}
+          />
+        </div>
+      )}
       <BackTop />
     </SearchWrapper>
   )

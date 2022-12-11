@@ -50,7 +50,7 @@ export default memo(({ type }) => {
       setUserList([])
       setPagenum(1)
     }
-  }, [type])
+  }, [type, peopleInfo])
 
   return (
     <FollowWrapper>
@@ -66,7 +66,9 @@ export default memo(({ type }) => {
           关注{gender}的人
         </div>
       </div>
-      <UserList userList={userList} setUserList={setUserList} />
+      <div className="userList">
+        <UserList userList={userList} setUserList={setUserList} />
+      </div>
       <Pagination
         hideOnSinglePage
         className="pagination"

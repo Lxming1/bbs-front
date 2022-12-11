@@ -14,9 +14,9 @@ export default styled.div`
 
   .mainBox {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    padding: 0 200px;
+    padding: 0 80px;
 
     .leftContent {
       display: flex;
@@ -31,14 +31,113 @@ export default styled.div`
           width: auto;
         }
       }
-      .navigate {
+
+      .tabs {
+        height: 60px;
+        line-height: 60px;
+        border-bottom: 1px solid #f6f6f6;
         display: flex;
-        align-items: center;
-        height: 60px !important;
+        color: #121212;
+        font-size: 16px;
+        margin-left: 60px;
 
         li {
-          height: 60px !important;
-          line-height: 60px;
+          padding: 0 20px;
+          cursor: pointer;
+
+          span {
+            color: #121212;
+            display: inline-block;
+            line-height: 32px;
+            padding: 14px 0;
+            text-align: center;
+            position: relative;
+          }
+
+          .tabs-active {
+            font-synthesis: style;
+            font-weight: 600;
+
+            ::after {
+              background: #056de8;
+              bottom: -1px;
+              content: '';
+              height: 4px;
+              left: 0;
+              position: absolute;
+              right: 0;
+            }
+          }
+        }
+      }
+    }
+
+    .centerContent {
+      width: 320px;
+
+      .boxBgc {
+        background-color: white !important;
+      }
+
+      .search {
+        border-radius: 8px;
+        background: #f1f2f3;
+        padding-right: 50px;
+        display: flex;
+        align-items: center;
+        padding: 0 48px 0 4px;
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        line-height: 38px;
+        border: 1px solid #e3e5e7;
+        height: 40px;
+        opacity: 0.9;
+        transition: background-color 0.3s;
+
+        :hover {
+          background-color: white;
+        }
+
+        .searchInput {
+          border: 2px solid transparent;
+          border-radius: 6px;
+          background: #f1f2f3;
+          width: 100%;
+          height: 32px;
+
+          :hover {
+            background-color: white;
+          }
+        }
+
+        .isFocus {
+          background-color: #e3e5e7 !important;
+        }
+
+        .searchIcon {
+          width: 32px;
+          height: 32px;
+          position: absolute;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          right: 7px;
+          border-radius: 6px;
+          cursor: pointer;
+
+          svg {
+            font-size: 20px;
+          }
+
+          :hover {
+            background-color: #e3e5e7;
+          }
+        }
+
+        .ant-input:focus,
+        .ant-input-focused {
+          box-shadow: none;
         }
       }
     }
@@ -53,7 +152,7 @@ export default styled.div`
         flex-direction: column;
         align-items: center;
         color: #8590a6;
-        margin-right: 20px;
+        margin-right: 30px;
         cursor: pointer;
 
         .title {

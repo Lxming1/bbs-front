@@ -8,9 +8,10 @@ import { CameraFilled, EditFilled, RightOutlined, RollbackOutlined } from '@ant-
 import { xmMessage, verifyName } from '@/utils'
 import { handleUserMes, setUserMes } from '../../../store/actionCreater/authActions'
 import { useDispatch } from 'react-redux'
+import { verifyLogin } from '../../../utils'
 
 export default memo(() => {
-  const { user } = useStoreInfo('user')
+  const { user, isLogin } = useStoreInfo('user', 'isLogin')
   const [cityData, setCityData] = useState([])
   const [isBadName, setIsBadName] = useState(false)
   const [provinceData, setProvinceData] = useState([])
@@ -23,7 +24,6 @@ export default memo(() => {
   const nameTip = '限16个字符，支持中英文、数字、下划线'
 
   const handleProvinceChange = (value) => {
-    console.log(value)
     if (value === undefined) {
       setCities([])
       setSecondCity({ id: 0, name: '' })
@@ -125,8 +125,8 @@ export default memo(() => {
         const form = new FormData()
         form.append('avatar', fileList[0])
         const result = await uploadAvatar(form)
+        dispatch(setUserMes({ ...user, avatar_url: result.data }))
         xmMessage(result.code, result.message)
-        window.location.reload()
       }
     }
   }
@@ -215,14 +215,16 @@ export default memo(() => {
   }, [user])
 
   useEffect(() => {
-    getAddress().then(({ data: result }) => {
-      setCityData(result)
-      setProvinceData(
-        result.map((item) => ({
-          id: item.id,
-          name: item.name,
-        }))
-      )
+    verifyLogin(isLogin).then(() => {
+      getAddress().then(({ data: result }) => {
+        setCityData(result)
+        setProvinceData(
+          result.map((item) => ({
+            id: item.id,
+            name: item.name,
+          }))
+        )
+      })
     })
   }, [])
   return (

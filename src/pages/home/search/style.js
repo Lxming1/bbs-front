@@ -8,4 +8,6 @@ export default styled.div`
   background-color: white;
   border-radius: 2px;
   float: left;
+  height: 100%;
+  position: relative;
 `

@@ -3,6 +3,17 @@ export const MomentItemWrapper = styled.div`
   border-bottom: 1px solid #f0f2f7;
   padding: 20px;
 
+  .momentItemHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .headTime {
+      color: #8590a6;
+      font-size: 14px;
+    }
+  }
+
   .openContent {
     width: 80px;
     height: 24px;

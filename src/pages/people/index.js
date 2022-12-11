@@ -7,15 +7,25 @@ import { useStoreInfo } from '@/hooks'
 import { useDispatch } from 'react-redux'
 import { getProfileUser, setPeopleIndex } from '../../store/actionCreater/peopleAction'
 import BackTop from '@/components/backTop'
+import { verifyLogin, xmMessage } from '../../utils'
 
 const People = memo(() => {
-  const { profileUser, peopleIndex } = useStoreInfo('user', 'profileUser', 'peopleIndex')
+  const { profileUser, peopleIndex } = useStoreInfo('profileUser', 'peopleIndex', 'isLogin')
   const { uid } = useParams()
   const dispatch = useDispatch()
 
-  useEffect(() => {
+  const reqFn = async () => {
+    if (uid === 'undefined') {
+      xmMessage(2, '请先登录')
+      window.location.href = '#/login'
+      return
+    }
     dispatch(getProfileUser(uid))
-    dispatch(setPeopleIndex(0))
+  }
+
+  useEffect(() => {
+    reqFn()
+    return () => dispatch(setPeopleIndex(0))
   }, [uid])
   return (
     <PeopleWrapper>

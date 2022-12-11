@@ -91,9 +91,14 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) =
 
   return (
     <MomentItemWrapper space={space}>
-      <a href={`#/moment/${moment.id}`} className="title">
-        {moment.title}
-      </a>
+      <div className="momentItemHead">
+        <a href={`#/moment/${moment.id}`} className="title">
+          {moment.title}
+        </a>
+        {!isOpen && (
+          <div className="headTime">{dayjs(moment?.updateTime).format('YYYY-MM-DD HH:mm')}</div>
+        )}
+      </div>
       {!isOpen ? (
         moment?.images === null ? (
           <div className="contentBox" onClick={() => setIsOpen(true)}>

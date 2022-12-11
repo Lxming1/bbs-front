@@ -5,12 +5,13 @@ import { useStoreInfo } from '@/hooks'
 import { setProfileUser } from '@/store/actionCreater/peopleAction'
 import RelationBtn from '@/components/relationBtn'
 import UserListWrapper from './style'
+import { handleUserMes } from '../../store/actionCreater/authActions'
 
-export default memo(({ userList, setUserList }) => {
-  const { profileUser: peopleInfo } = useStoreInfo('user', 'profileUser')
+export default memo(({ userList, setUserList, desc = '还没有关注的用户', isEnd }) => {
+  const { user, isProfile } = useStoreInfo('user', 'isProfile')
   const dispatch = useDispatch()
   const changeRelation = (newRelation, userId) => {
-    const people = { ...peopleInfo }
+    const people = { ...user }
     const newUserList = userList.map((item) => {
       if (item.id === userId) {
         if (item.relation.care && !newRelation.care) {
@@ -23,7 +24,10 @@ export default memo(({ userList, setUserList }) => {
       return item
     })
     setUserList(newUserList)
-    dispatch(setProfileUser(people))
+    dispatch(handleUserMes(people))
+    if (isProfile) {
+      dispatch(setProfileUser(people))
+    }
   }
   return (
     <UserListWrapper>
@@ -62,7 +66,12 @@ export default memo(({ userList, setUserList }) => {
         ))
       ) : (
         <div className="empty">
-          <Empty description="还没有关注的用户" />
+          <Empty description={desc} />
+        </div>
+      )}
+      {isEnd && userList.length !== 0 && (
+        <div className="Box">
+          <Empty description="没有更多用户啦" />
         </div>
       )}
     </UserListWrapper>

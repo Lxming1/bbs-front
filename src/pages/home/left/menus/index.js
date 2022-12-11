@@ -5,7 +5,7 @@ import { setMomentTotal, setPlateId, setMomentsAction } from '@/store/actionCrea
 import { HeadMenuWrapper } from './style'
 import { useStoreInfo } from '@/hooks'
 
-export default memo(({ search }) => {
+export default memo(() => {
   const { plateList } = useStoreInfo('plateList')
   const { plateId } = useParams()
   const dispatch = useDispatch()
@@ -13,18 +13,22 @@ export default memo(({ search }) => {
   const [currentPlateId, setCurrentPlateId] = useState(0)
 
   const changePlate = (id) => {
-    if (parseInt(plateId) === id) return
+    if (plateId === String(id)) return
     setCurrentPlateId(id)
     dispatch(setMomentsAction([]))
     dispatch(setMomentTotal(0))
     dispatch(setPlateId(id))
     navigate(id === 0 ? '/' : `/${id}`)
   }
-
   const classControl = (id) => (id === currentPlateId ? 'active' : null)
 
   useEffect(() => {
-    const plate = isNaN(parseInt(plateId)) ? 0 : parseInt(plateId)
+    let plate
+    if (plateId !== 'care') {
+      plate = isNaN(parseInt(plateId)) ? 0 : parseInt(plateId)
+    } else {
+      plate = plateId
+    }
     dispatch(setMomentsAction([]))
     dispatch(setPlateId(plate))
     setCurrentPlateId(plate)
@@ -35,6 +39,9 @@ export default memo(({ search }) => {
       <ul>
         <li onClick={() => changePlate(0)} className={classControl(0)}>
           全部
+        </li>
+        <li onClick={() => changePlate('care')} className={classControl('care')}>
+          关注
         </li>
         {plateList?.map((item) => (
           <li key={item.id} onClick={() => changePlate(item.id)} className={classControl(item.id)}>

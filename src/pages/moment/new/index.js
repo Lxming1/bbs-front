@@ -6,8 +6,11 @@ import { xmMessage } from '@/utils'
 import { CloseCircleFilled, PictureOutlined, RightOutlined } from '@ant-design/icons'
 import { sendMoment, uploadPicture } from '@/service/moment'
 import { useNavigate } from 'react-router-dom'
+import { useStoreInfo } from '@/hooks'
+import { verifyLogin } from '../../../utils'
 
 export default () => {
+  const { isLogin } = useStoreInfo('isLogin')
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [palteOptions, setPalteOptions] = useState([])
@@ -102,13 +105,15 @@ export default () => {
   }
 
   useEffect(() => {
-    getPlateList().then(({ data: plateList }) => {
-      setPalteOptions(
-        plateList.map((item) => ({
-          value: item.id,
-          label: item.name,
-        }))
-      )
+    verifyLogin(isLogin).then(() => {
+      getPlateList().then(({ data: plateList }) => {
+        setPalteOptions(
+          plateList.map((item) => ({
+            value: item.id,
+            label: item.name,
+          }))
+        )
+      })
     })
   }, [])
 

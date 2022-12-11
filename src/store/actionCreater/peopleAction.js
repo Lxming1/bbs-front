@@ -1,6 +1,5 @@
 import { getUserDetail } from '../../service/users'
 import { SET_IS_PROFILE, SET_PEOPLE_INDEX, SET_PROFILE_USER } from '../constant'
-import { handleUserMes, setUserMes } from './authActions'
 
 export const setProfileUser = (profileUser) => ({
   type: SET_PROFILE_USER,

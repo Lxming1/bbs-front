@@ -3,9 +3,10 @@ import { memo, useEffect, useState } from 'react'
 import NoticesWrapper from './style'
 import { Outlet } from 'react-router-dom'
 import { useStoreInfo } from '../../hooks'
+import { verifyLogin } from '../../utils'
 
 export default memo(() => {
-  const { user } = useStoreInfo('user')
+  const { user, isLogin } = useStoreInfo('user', 'isLogin')
   const [currentHash, setCurrentHash] = useState('#/notices/reply')
 
   const getNoticeCount = (type) => user?.noticeCount?.[type]

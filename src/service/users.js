@@ -93,3 +93,9 @@ export const searchUser = (content, pagenum, pagesize) => {
     },
   })
 }
+
+export const userTopList = (count = 3) => {
+  return request({
+    url: `/users/toplist/${count}`,
+  })
+}
