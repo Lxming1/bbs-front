@@ -74,20 +74,30 @@ export default memo(({ comment, moment, name, getComments }) => {
               {[comment?.author?.id, moment?.author?.id].includes(user?.id) && <EllipsisOutlined />}
             </Popover>
           </div>
-          <div className="content">{comment.content}</div>
+          <div className="content">
+            {comment.content !== null ? (
+              comment.content
+            ) : (
+              <span style={{ color: '#999aaa' }}>该评论已被屏蔽</span>
+            )}
+          </div>
           <div className="bottom">
             <span className="time">{handleDate(comment.createTime)}</span>
             <div className="btn">
-              <div onClick={() => setIsOpen(!isOpen)}>
-                <MessageFilled />
-                回复
-              </div>
-              <div
-                onClick={debounce(praise, 300, true)}
-                className={comment.isPraise ? 'isPraise' : ''}>
-                <LikeFilled style={{ fontSize: '15px' }} />
-                {comment.praiseCount !== 0 ? comment.praiseCount : '赞'}
-              </div>
+              {comment.content !== null && (
+                <>
+                  <div onClick={() => setIsOpen(!isOpen)}>
+                    <MessageFilled />
+                    回复
+                  </div>
+                  <div
+                    onClick={debounce(praise, 300, true)}
+                    className={comment.isPraise ? 'isPraise' : ''}>
+                    <LikeFilled style={{ fontSize: '15px' }} />
+                    {comment.praiseCount !== 0 ? comment.praiseCount : '赞'}
+                  </div>
+                </>
+              )}
             </div>
           </div>
           {isOpen && (

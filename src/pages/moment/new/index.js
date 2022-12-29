@@ -69,7 +69,7 @@ export default () => {
     setPreviewPicList(filterFn)
   }
   const upload = async (result) => {
-    const { id: momentId } = result.data
+    const { insertId: momentId } = result.data
     if (uploadPicList.length) {
       const form = new FormData()
       uploadPicList.forEach((item) => {

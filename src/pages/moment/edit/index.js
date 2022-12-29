@@ -102,9 +102,9 @@ export default () => {
     }
     try {
       const pormiseArr = [editMoment(momentId, obj), upload(), removePic()]
-      await Promise.all(pormiseArr)
+      const [result] = await Promise.all(pormiseArr)
       await setLoading(false)
-      xmMessage(0, '编辑成功')
+      xmMessage(result.code, result.message)
       window.history.back()
     } catch (e) {
       console.log(e)

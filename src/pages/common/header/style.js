@@ -25,6 +25,7 @@ export default styled.div`
 
       .logo {
         height: 50px;
+        padding: 5px 0;
 
         img {
           height: 100%;

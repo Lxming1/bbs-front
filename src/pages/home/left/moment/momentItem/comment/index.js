@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, useRef, useState } from 'react'
 import { Empty, Input } from 'antd'
 import { useStoreInfo } from '@/hooks'
 import CommentWrapper from './style'

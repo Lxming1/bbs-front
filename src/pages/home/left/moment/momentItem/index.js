@@ -17,7 +17,7 @@ import Collect from './collect'
 import { Image } from 'antd'
 import { verifyLogin } from '../../../../../utils'
 
-const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) => {
+const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50, hasType = true }) => {
   const { isLogin } = useStoreInfo('isLogin')
   const [isOpen, setIsOpen] = useState(false)
   const [commentOpen, setCommentOpen] = useState(false)
@@ -135,10 +135,14 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) =
               <div className="introduction">，{moment.author.introduction}</div>
             )}
           </div>
-          <div className="praise" style={{ color: '#121212' }}>
-            {moment.praiseCount}人赞同了该动态
+          {hasType && (
+            <div className="praise" style={{ color: '#121212' }}>
+              {moment.praiseCount}人赞同了该动态
+            </div>
+          )}
+          <div className="content" style={!hasType ? { marginTop: '10px' } : null}>
+            {moment.content}
           </div>
-          <div className="content">{moment.content}</div>
           {moment?.images !== null && (
             <div className="picture">
               <Image.PreviewGroup>
@@ -154,23 +158,27 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) =
         </>
       )}
       <div className="bottomBtn">
-        <div
-          onClick={debounce(praise, 300, true)}
-          className={`${isPraise ? 'praiseBtn-active ' : ' '} praiseBtn`}>
-          <CaretUpFilled />
-          {isPraise ? '已赞同' : '赞同'} {!moment.praiseCount ? '' : moment.praiseCount}
-        </div>
-        <div onClick={openComment}>
-          <MessageFilled />
-          {commentOpen
-            ? '收起评论'
-            : !moment.commentCount
-            ? '添加评论'
-            : `${moment.commentCount}条评论`}
-        </div>
-        <div onClick={showDialog}>
-          <StarFilled /> 收藏
-        </div>
+        {hasType && (
+          <>
+            <div
+              onClick={debounce(praise, 300, true)}
+              className={`${isPraise ? 'praiseBtn-active ' : ' '} praiseBtn`}>
+              <CaretUpFilled />
+              {isPraise ? '已赞同' : '赞同'} {!moment.praiseCount ? '' : moment.praiseCount}
+            </div>
+            <div onClick={openComment}>
+              <MessageFilled />
+              {commentOpen
+                ? '收起评论'
+                : !moment.commentCount
+                ? '添加评论'
+                : `${moment.commentCount}条评论`}
+            </div>
+            <div onClick={showDialog}>
+              <StarFilled /> 收藏
+            </div>
+          </>
+        )}
         {bottomBtn && bottomBtn.map((item) => item())}
         {isOpen && (
           <div className="closeContent" onClick={changeState}>
@@ -178,7 +186,7 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) =
           </div>
         )}
       </div>
-      {commentOpen && (
+      {hasType && commentOpen && (
         <Comment
           comments={comments}
           total={total}
@@ -186,7 +194,7 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50 }) =
           getComments={() => getComments(moment?.id)}
         />
       )}
-      {showCollect && <Collect setShowCollect={setShowCollect} moment={moment} />}
+      {hasType && showCollect && <Collect setShowCollect={setShowCollect} moment={moment} />}
     </MomentItemWrapper>
   )
 })

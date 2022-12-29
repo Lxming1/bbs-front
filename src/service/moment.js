@@ -97,12 +97,13 @@ export const uploadPicture = (momentId, data) => {
   })
 }
 
-export const getMomentByUser = (uid, pagenum, pagesize) => {
+export const getMomentByUser = (uid, pagenum, pagesize, type) => {
   return request({
     url: `/users/${uid}/moments`,
     params: {
       pagenum,
       pagesize,
+      type,
     },
   })
 }

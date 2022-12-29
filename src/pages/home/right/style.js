@@ -8,6 +8,12 @@ export default styled.div`
 
   .rightOne {
     background-color: white;
+    text-align: center;
+    padding: 10px;
+
+    button {
+      margin-left: 0;
+    }
   }
 
   .userToplist {

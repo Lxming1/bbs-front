@@ -10,11 +10,9 @@ import { delMoment } from '@/service/moment'
 import { xmMessage } from '@/utils'
 import DelDialog from '@/components/dialogs/delDialog'
 import { useStoreInfo } from '@/hooks'
-import { useDispatch } from 'react-redux'
 
 export default memo(() => {
   const { profileUser, isProfile, isLogin } = useStoreInfo('profileUser', 'isProfile', 'isLogin')
-  const dispatch = useDispatch()
   const pagesize = 10
   const [pagenum, setPagenum] = useState(1)
   let [currentMoments, setCurrentMoments] = useState([])
@@ -22,20 +20,26 @@ export default memo(() => {
   const [userId, setUserId] = useState(null)
   const [delDialogShow, setDelDialogShow] = useState(false)
   const [currentMoment, setCurrentMoment] = useState({})
+  const [currentKey, setCurrentKey] = useState('pass')
   const [isEnd, setIsEnd] = useState(false)
   const { uid } = useParams()
   const num = useRef(pagenum)
   const idRef = useRef(userId)
 
   const reqMoment = async (uid) => {
-    const result = await getMomentByUser(uid, num.current, pagesize).then(
-      ({ data: { moments } }) => {
-        setCurrentMoments((m) => [...m, ...moments])
-        setPagenum(num.current + 1)
-        return moments
-      }
-    )
-    return result
+    let result
+    console.log(uid)
+    if (isProfile) {
+      result = await getMomentByUser(uid, num.current, pagesize, currentKey)
+    } else {
+      result = await getMomentByUser(uid, num.current, pagesize, 'pass')
+    }
+    const {
+      data: { moments },
+    } = result
+    setCurrentMoments((m) => [...m, ...moments])
+    setPagenum(num.current + 1)
+    return moments
   }
 
   useEffect(() => {
@@ -96,28 +100,54 @@ export default memo(() => {
     alert: '你确认要删除这个动态吗？',
   }
 
+  const items = [
+    {
+      label: '已通过',
+      key: 'pass',
+    },
+    {
+      label: '待审核',
+      key: 'await',
+    },
+    {
+      label: '未通过',
+      key: 'failed',
+    },
+  ]
+
   useEffect(() => {
+    num.current = 1
     window.scrollTo(0, 0)
     idRef.current = parseInt(uid)
     reqMoment(idRef.current)
     setTimeout(() => {
       window.addEventListener('scroll', fn)
     }, 0)
-    num.current = 1
     setUserId(idRef.current)
     setPagenum(num.current)
     setCurrentMoments([])
     return () => {
       setCurrentMoments([])
     }
-  }, [uid])
+  }, [uid, currentKey])
 
   return (
     <MomentsWrapper>
       <div className="people-header">
-        <div className="head-active">
-          {isProfile ? '我' : !profileUser?.gender ? '他' : '她'}的动态
-        </div>
+        {isProfile ? (
+          items.map((item) => (
+            <div
+              className={item.key === currentKey ? 'head-active' : ''}
+              key={item.key}
+              onClick={() => {
+                setCurrentKey(item.key)
+              }}>
+              {item.label}
+            </div>
+          ))
+        ) : (
+          <div className="head-active">{!profileUser?.gender ? '他' : '她'}的动态</div>
+        )}
       </div>
       {currentMoments.length ? (
         currentMoments?.map((item) => (
@@ -126,6 +156,7 @@ export default memo(() => {
             moment={item}
             key={item.id}
             setCurrentMoments={setCurrentMoments}
+            hasType={!['await', 'failed'].includes(currentKey)}
             bottomBtn={isLogin && isProfile && [() => editBtn(item), () => delBtn(item)]}
           />
         ))
@@ -139,7 +170,9 @@ export default memo(() => {
           <Empty description="没有更多动态啦" />
         </div>
       )}
-      {delDialogShow && <DelDialog backContent={backContent} submitFn={delSubmitFn} tips={tips} />}
+      {delDialogShow && isProfile ? (
+        <DelDialog backContent={backContent} submitFn={delSubmitFn} tips={tips} />
+      ) : null}
     </MomentsWrapper>
   )
 })

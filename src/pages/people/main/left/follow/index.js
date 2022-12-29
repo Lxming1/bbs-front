@@ -4,7 +4,6 @@ import { getCareList, getFansList } from '@/service/users'
 import RelationBtn from '@/components/relationBtn'
 import FollowWrapper from './style'
 import { Empty, Pagination } from 'antd'
-import { useDispatch } from 'react-redux'
 import UserList from '@/components/userList'
 
 export default memo(({ type }) => {
@@ -50,7 +49,7 @@ export default memo(({ type }) => {
       setUserList([])
       setPagenum(1)
     }
-  }, [type, peopleInfo])
+  }, [type])
 
   return (
     <FollowWrapper>
