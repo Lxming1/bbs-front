@@ -45,13 +45,12 @@ export const Header = memo(() => {
 
   const classControl = (href) => {
     if (
-      ![window.location.hash.indexOf(href), href.indexOf(`#/people/${userInfo?.id}`)].includes(-1)
+      ![window.location.hash.indexOf(href), href.indexOf(`#/people/${userInfo?.id}`)].includes(
+        -1
+      ) ||
+      [href, `${href}${plateId}`].includes(window.location.hash) ||
+      (href === '#/' && window.location.hash === '')
     ) {
-      return 'tabs-active'
-    }
-    if (window.location.hash === href) {
-      return 'tabs-active'
-    } else if (window.location.hash === href + plateId) {
       return 'tabs-active'
     }
     return ''

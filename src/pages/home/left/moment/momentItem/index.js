@@ -194,7 +194,7 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50, has
           getComments={() => getComments(moment?.id)}
         />
       )}
-      {hasType && showCollect && <Collect setShowCollect={setShowCollect} moment={moment} />}
+      {hasType && showCollect && <Collect setShowCollect={setShowCollect} momentId={moment?.id} />}
     </MomentItemWrapper>
   )
 })
