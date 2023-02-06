@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { xmMessage } from '../utils'
+import store from '@/store'
+import { setIsLogin, setUserMes } from '../store/actionCreater/authActions'
 
 const instance = axios.create({
   baseURL: '/api',
@@ -26,11 +28,15 @@ instance.interceptors.response.use(
       const res = err.response.data
       if (err.response.status === 404) return err
       if (err.response.status === 403) {
+        const { dispatch } = store
+        sessionStorage.removeItem('bbs-user')
+        localStorage.removeItem('bbs-user')
+        dispatch(setIsLogin(false))
+        dispatch(setUserMes(null))
         window.location.href = '#/login'
       }
       xmMessage(res.code, res.message)
     }
-    // return err
   }
 )
 

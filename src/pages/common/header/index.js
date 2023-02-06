@@ -76,9 +76,9 @@ export const Header = memo(() => {
     <HeaderWrapper>
       <div className="mainBox">
         <div className="leftContent">
-          <div className="logo">
-            <img src={require('@/assets/img/logo.png')} alt="PYPBBS" />
-          </div>
+          <a href="/#" className="logo">
+            <img src={require('@/assets/img/logo.png')} alt="BBS" />
+          </a>
           <ul className="tabs">
             {items.map((item) => (
               <li key={item.label} onClick={() => changeRoute(item.href)}>

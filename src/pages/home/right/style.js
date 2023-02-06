@@ -18,6 +18,7 @@ export default styled.div`
 
   .userToplist {
     width: 100%;
+    height: 222.2px;
     margin-top: 10px;
     background-color: white;
     padding: 15px;
