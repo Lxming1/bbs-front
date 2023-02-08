@@ -47,12 +47,13 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50, has
     setIsOpen(!isOpen)
   }
 
-  const time = (moment) => {
+  const time = () => {
     const transTime = (time) => new Date(time).getTime()
-    const updateTime = transTime(moment.updateTime)
-    const createTime = transTime(moment.createTime)
-    const mes = updateTime > createTime ? '编辑于 ' : '发布于 '
-    const date = dayjs(moment.createTime).format('YYYY-MM-DD HH:mm')
+    const updateTime = transTime(moment?.updateTime)
+    const createTime = transTime(moment?.createTime)
+    const flag = updateTime > createTime
+    const mes = flag ? '编辑于 ' : '发布于 '
+    const date = dayjs(flag ? updateTime : createTime).format('YYYY-MM-DD HH:mm')
     return mes + date
   }
 
@@ -96,7 +97,9 @@ const MomentItem = memo(({ moment, setCurrentMoments, bottomBtn, space = 50, has
           {moment.title}
         </a>
         {!isOpen && (
-          <div className="headTime">{dayjs(moment?.updateTime).format('YYYY-MM-DD HH:mm')}</div>
+          <div className="headTime">
+            发布于 {dayjs(moment?.createTime).format('YYYY-MM-DD HH:mm')}
+          </div>
         )}
       </div>
       {!isOpen ? (

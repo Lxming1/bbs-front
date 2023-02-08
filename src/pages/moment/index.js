@@ -37,8 +37,9 @@ export default memo(() => {
     const transTime = (time) => new Date(time).getTime()
     const updateTime = transTime(moment?.updateTime)
     const createTime = transTime(moment?.createTime)
-    const mes = updateTime > createTime ? '编辑于 ' : '发布于 '
-    const date = dayjs(moment?.createTime).format('YYYY-MM-DD HH:mm')
+    const flag = updateTime > createTime
+    const mes = flag ? '编辑于 ' : '发布于 '
+    const date = dayjs(flag ? updateTime : createTime).format('YYYY-MM-DD HH:mm')
     return mes + date
   }
 

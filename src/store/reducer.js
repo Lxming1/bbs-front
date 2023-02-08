@@ -8,7 +8,6 @@ import {
   SET_IS_PROFILE,
   SET_IS_LOGIN,
   SET_PEOPLE_INDEX,
-  SET_CURRENT_EDIT_MOMENT,
 } from './constant'
 import { Map } from 'immutable'
 

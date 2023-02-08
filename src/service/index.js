@@ -4,7 +4,8 @@ import store from '@/store'
 import { setIsLogin, setUserMes } from '../store/actionCreater/authActions'
 
 const instance = axios.create({
-  baseURL: '/api',
+  // baseURL: '/api',
+  baseURL: 'http://1.12.47.237:8004/api',
   timeout: 20000,
 })
 
